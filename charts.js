@@ -568,6 +568,87 @@
   }
 
   /* ------------------------------------------------------------------------
+     8B. PER-DOMAIN BUILD STATISTICS SVG (NO CROSS-DOMAIN MIXING, SSOT!)
+     ------------------------------------------------------------------------ */
+  function renderDomainStatsSVG() {
+    const host = $("#chart-domain-stats");
+    if (!host) return;
+    const core = D.benchmarks.filter(b => b.track !== "legacy");
+    const domains = [
+      { key: "code", label: "代码与系统工程", sizeTip: "66-132 题 (20h 项 34 题)", orgTip: "1 核心队 + 20 维护者 / 8+ 校底座" },
+      { key: "sci",  label: "科学研究",       sizeTip: "52-100 题 (湿测 15 靶点)", orgTip: "1 厂 + CRO / 10+ 校科学家" },
+      { key: "off",  label: "白领办公与劳动", sizeTip: "91-240 题 (SaaS 可至 657)", orgTip: "产品方或评测机构 + 23-300 专家" },
+      { key: "emb",  label: "桌面与三维物理", sizeTip: "60-108 题 (统考 456 核)",  orgTip: "12-18+ 高校联盟共摊基建" }
+    ];
+
+    const W = 940, rowH = 54, padL = 152, barW = 340, colSizeX = 520, colOrgX = 716, padT = 48, padB = 18;
+    const H = padT + domains.length * rowH + padB;
+
+    let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block;font-family:var(--font-sans);">`;
+
+    // Legend at top
+    const leg = [
+      ["全开源 (Open)", "#2D6A5B"],
+      ["公私混合 (Hybrid)", "#8C6239"],
+      ["私有闭源 (Private)", "#A84A32"]
+    ];
+    leg.forEach(([txt, col], i) => {
+      const lx = padL + i * 136;
+      svg += `<rect x="${lx}" y="8" width="10" height="10" rx="2" fill="${col}"/>`;
+      svg += `<text x="${lx + 14}" y="17" font-size="10.8" font-weight="600" fill="#333333">${txt}</text>`;
+    });
+
+    // Column headers
+    svg += `<text x="8" y="39" font-size="11" font-weight="650" fill="#666666">赛道与样本量 (N = 16)</text>`;
+    svg += `<text x="${padL}" y="39" font-size="11" font-weight="650" fill="#666666">开放形态按赛道分布（由 data.js 实时计算）</text>`;
+    svg += `<text x="${colSizeX}" y="39" font-size="11" font-weight="650" fill="#666666">实测收敛题量</text>`;
+    svg += `<text x="${colOrgX}" y="39" font-size="11" font-weight="650" fill="#666666">主流协作阵型</text>`;
+    svg += `<line x1="8" y1="45" x2="${W - 8}" y2="45" stroke="#E5E7EB"/>`;
+
+    domains.forEach((dm, idx) => {
+      const items = core.filter(b => b.track === dm.key);
+      const n = items.length;
+      const nOpen = items.filter(b => b.access === "open").length;
+      const nHyb = items.filter(b => b.access === "hyb").length;
+      const nPriv = items.filter(b => b.access === "priv").length;
+      const y = padT + idx * rowH + 14;
+
+      if (idx > 0) {
+        svg += `<line x1="8" y1="${padT + idx * rowH}" x2="${W - 8}" y2="${padT + idx * rowH}" stroke="#F2F4F7"/>`;
+      }
+
+      svg += `<text x="8" y="${y + 11}" font-size="12.4" font-weight="650" fill="#1A1A1A">${dm.label}</text>`;
+      svg += `<text x="8" y="${y + 26}" font-size="10.4" fill="#8A8A8A">核心样本 N = ${n}</text>`;
+
+      let cx = padL;
+      const segs = [
+        { k: "全开源", cnt: nOpen, col: "#2D6A5B" },
+        { k: "公私混合", cnt: nHyb, col: "#8C6239" },
+        { k: "纯私有", cnt: nPriv, col: "#A84A32" }
+      ];
+      segs.forEach(s => {
+        if (!s.cnt) return;
+        const w = (s.cnt / n) * barW;
+        const pctVal = Math.round((s.cnt / n) * 100);
+        const lbl = w >= 86 ? `${s.k} ${pctVal}% (${s.cnt})` : (w >= 48 ? `${pctVal}% (${s.cnt})` : `${s.cnt}`);
+        const names = items.filter(b => (s.k === "全开源" ? b.access === "open" : s.k === "公私混合" ? b.access === "hyb" : b.access === "priv")).map(b => b.name).join("、");
+        svg += `<g class="dom-seg" data-tip="<b>${dm.label} | ${s.k} (${s.cnt}/${n})</b><br>${names}" style="cursor:pointer;">`;
+        svg += `<rect x="${cx}" y="${y + 2}" width="${Math.max(w - 2, 4)}" height="24" rx="3" fill="${s.col}"/>`;
+        svg += `<text x="${cx + (w - 2) / 2}" y="${y + 18}" text-anchor="middle" font-size="10.6" font-weight="600" fill="#FFFFFF">${lbl}</text>`;
+        svg += `</g>`;
+        cx += w;
+      });
+
+      svg += `<text x="${colSizeX}" y="${y + 18}" font-size="11.6" font-weight="600" fill="#1A1A1A">${dm.sizeTip}</text>`;
+      svg += `<text x="${colOrgX}" y="${y + 18}" font-size="11.4" fill="#333333">${dm.orgTip}</text>`;
+    });
+
+    svg += `</svg>`;
+    host.innerHTML = svg;
+    bindTooltips("#chart-domain-stats .dom-seg", el => el.dataset.tip);
+  }
+
+  /* ------------------------------------------------------------------------
      9. FIVE-FAMILY TIMELINE SWIMLANES
      ------------------------------------------------------------------------ */
   function renderTimelineSVG() {
@@ -756,21 +837,26 @@
   }
 
   /* ------------------------------------------------------------------------
-     11. DYNAMIC 60-LINK PRIMARY REFERENCES RENDERER
+     11. DYNAMIC 60-LINK ACADEMIC REFERENCES RENDERER ([1]..[60])
      ------------------------------------------------------------------------ */
   function renderReferences() {
     const host = $("#ref-grid-host");
     if (!host || !D.references) return;
-    const total = D.references.reduce((acc, g) => acc + g.items.length, 0);
-    const titleEl = $("#refs-count-title");
-    if (titleEl) titleEl.textContent = `一手来源索引（${total} 条核验链接）`;
+    let seq = 0;
+    const hostOf = url => {
+      try { return new URL(url).hostname.replace(/^www\./, ""); } catch (_) { return ""; }
+    };
 
     host.innerHTML = D.references.map(g => `
       <div class="ref-group">
         <h4>${g.cat} (${g.items.length})</h4>
-        <ul>
-          ${g.items.map(it => `<li><a href="${it.url}" target="_blank" rel="noopener">${it.title}</a></li>`).join("")}
-        </ul>
+        <ol class="ref-list">
+          ${g.items.map(it => {
+            seq += 1;
+            const dom = hostOf(it.url);
+            return `<li><span class="ref-idx">[${seq}]</span><span><a href="${it.url}" target="_blank" rel="noopener">${it.title}</a>${dom ? `<span class="ref-host">${dom}</span>` : ""}</span></li>`;
+          }).join("")}
+        </ol>
       </div>
     `).join("");
   }
@@ -810,6 +896,7 @@
     renderOfficeDual("autobench");
     renderEmbodiedSplit();
     renderDynamicStats();
+    renderDomainStatsSVG();
     renderTimelineSVG();
     renderDiagramHarbor();
     renderDiagramCoevolution();

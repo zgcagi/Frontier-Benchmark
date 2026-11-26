@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>2026 前沿 AI 评测的范式变化</title>
-  <meta name="description" content="从 2026 年 10 月 AA v5.0 换榜切入，分代码、科研、办公、桌面与具身物理四个赛道拆解 9 个前沿 Benchmark 案例，紧跟核心样本展开需求导向的构建统计，并梳理评测环境与模型、Harness 共同进化的演进脉络。">
-  <link rel="stylesheet" href="styles.css?v=20261126-3">
+  <meta name="description" content="从 2026 年 10 月 AA v5.0 换榜切入，拆解代码、科研、办公与三维物理四大前沿赛道 9 个案例，给出分领域 Benchmark 构建参数与行动指南，并讨论 Benchmark RSI 与环境共同进化。">
+  <link rel="stylesheet" href="styles.css?v=20261126-4">
 </head>
 <body>
 
@@ -15,11 +15,11 @@
     <a class="site-brand" href="#top">Frontier Evaluation Notes</a>
     <nav class="header-nav" aria-label="导航">
       <a href="#toc">目录</a>
-      <a href="#part-2">四大案例</a>
-      <a href="#part-3">构建统计</a>
-      <a href="#part-4">共同进化</a>
-      <a href="#sec-explorer">16+3 检索台</a>
-      <a href="#sec-refs">一手来源</a>
+      <a href="#part-2">赛道案例</a>
+      <a href="#part-3">构建指南</a>
+      <a href="#part-4">Benchmark RSI</a>
+      <a href="#references">References</a>
+      <a class="nav-dir-link" href="benchmarks.html">Benchmark Directory</a>
     </nav>
   </div>
 </header>
@@ -36,12 +36,12 @@
       <span>|</span>
       <span>数据核验截至 2026-11-23</span>
       <span>|</span>
-      <span>约 1.1 万字 / 20 分钟阅读</span>
+      <span>约 1.2 万字 / 22 分钟阅读</span>
       <span>|</span>
-      <span>16 核心 + 3 旧代基准</span>
+      <a href="benchmarks.html" style="color:var(--accent);text-decoration:none;font-weight:500;">配套 16+3 基准目录</a>
     </div>
     <p class="post-lead">
-      2026 年 10 月 27 日，Artificial Analysis 升级了综合指数里的三项子基准。模型权重未做改动，不同实验室的排名在 24 小时内迅速分化。本文基于 2026 年 11 月前沿评测调研（与朱明航合讲、何纪言主持），先总结旧静态基准失效后新一代评测的四个特征，再按代码、科研、办公与物理世界四个赛道逐一拆解 9 个代表性案例，最后紧跟这批样本与历史参照基准展开构建统计，讨论评测环境（Environment）与模型、执行框架（Harness）的共同进化。
+      2026 年 10 月 27 日，Artificial Analysis 升级了综合指数里的三项子基准。模型权重未做改动，不同实验室的排名在 24 小时内迅速分化。本文基于 2026 年 11 月前沿评测调研（与朱明航合讲、何纪言主持），先总结旧静态基准失效后新一代评测的四个特征，再按代码、科研、办公与物理世界四个赛道逐一拆解 9 个代表性案例，随后按领域给出如何搭建有价值 Benchmark 的量化参数与五步行动指南，最后讨论 Benchmark RSI 下的环境与模型共同进化。
     </p>
   </header>
 
@@ -67,21 +67,25 @@
         </ul>
       </li>
       <li>
-        <a class="toc-main" href="#part-3">三、面向真实需求与能力目标的 Benchmark 构建统计</a>
+        <a class="toc-main" href="#part-3">三、如何搭建有价值的 Benchmark：分领域统计与行动指南</a>
         <ul class="toc-sub">
-          <li><a href="#sec-3-1">3.1 能力检验目标与基准构建映射</a></li>
-          <li><a href="#sec-3-2">3.2 五个维度的跨基准横向统计</a></li>
+          <li><a href="#sec-3-1">3.1 分领域核心参数对照（按赛道拆解，不混算均值）</a></li>
+          <li><a href="#sec-3-2">3.2 四个赛道的实操差异与统计结论</a></li>
+          <li><a href="#sec-3-3">3.3 从零起步的五步行动指南</a></li>
         </ul>
       </li>
       <li>
-        <a class="toc-main" href="#part-4">四、评测环境与模型、Harness 的共同进化</a>
+        <a class="toc-main" href="#part-4">四、Benchmark RSI</a>
         <ul class="toc-sub">
-          <li><a href="#sec-4-1">4.1 评测环境向 RL 训练场的自然延伸</a></li>
-          <li><a href="#sec-4-2">4.2 Model x Harness x Environment 共同进化与 RSI</a></li>
+          <li><a href="#sec-4-1">4.1 从评测环境到 Agentic RL 训练场</a></li>
+          <li><a href="#sec-4-2">4.2 Model x Harness x Environment 共同进化</a></li>
         </ul>
       </li>
       <li>
-        <a class="toc-main" href="#part-5">五、16+3 基准检索台、核验底表与一手来源</a>
+        <a class="toc-main" href="#references">References</a>
+      </li>
+      <li>
+        <a class="toc-main" href="#citation">Citation</a>
       </li>
     </ul>
   </details>
@@ -470,122 +474,240 @@ Promise.resolve(it?.return());</span></pre>
   </article>
 
   <!-- ====================================================================
-       PART 3 | DEMAND- & CAPABILITY-DRIVEN BENCHMARK CONSTRUCTION STATS
+       PART 3 | ACTIONABLE DOMAIN-BY-DOMAIN BENCHMARK CONSTRUCTION PLAYBOOK
        ==================================================================== -->
   <article class="chapter" id="part-3">
-    <h2>三、面向真实需求与能力目标的 Benchmark 构建统计</h2>
+    <h2>三、如何搭建有价值的 Benchmark：分领域统计与行动指南</h2>
     <p class="chapter-lead">
-      构建一个有效的 Benchmark，起点不是模仿旧榜凑题量，而是先明确“要检验模型的哪项真实能力、对应哪类业务或科研需求”，再倒推环境、题量、组织阵型、成本结构与验证器形态。本节紧跟第二节拆解的 9 个案例，并纳入 HLE、ALE v1.1、Terminal-Bench 4.1、ASB 0.1 / TwinLab、BioMysteryBench、BioBasicsBench、Chartography 与 SWE-bench Pro 等高关注度样本，汇总 16 套核心前沿基准的横向统计规律。
+      搭建一套能进入一线模型发布主表、并反哺后训练迭代的 Benchmark，不能把不同领域的经验混为一谈。基于第二节拆解的 9 个案例以及 <a class="bench-ref" data-bid="hle">HLE-Diamond</a>、<a class="bench-ref" data-bid="tb41">Terminal-Bench 4.1</a>、<a class="bench-ref" data-bid="asb">ASB 0.1 / TwinLab</a>、<a class="bench-ref" data-bid="biomy">BioMysteryBench</a>、<a class="bench-ref" data-bid="biobasics">BioBasicsBench</a>、<a class="bench-ref" data-bid="ale">ALE v1.1</a>、<a class="bench-ref" data-bid="charto">Chartography</a> 与 <a class="bench-ref" data-bid="swe_pro">SWE-bench Pro</a> 等核心样本，本节严格按四大领域拆解“大约做多少题、拉多少组织、造题和做题各花多少钱、要不要私有、第一步怎么开始”，给出一份可直接落地的工程行动指南。
     </p>
 
     <div class="prose">
-      <h3 id="sec-3-1">3.1 能力检验目标与基准构建映射</h3>
+      <h3 id="sec-3-1">3.1 分领域核心参数对照（按赛道拆解，不混算均值）</h3>
       <p>
-        将核心案例与典型历史参照放在同一张需求映射表下可以发现，所有工程选型（题量多少、要不要隔离容器、纯代码还是混合 Rubric、公私如何切分）本质上都由“检验目标”决定：
+        如果把 16 套前沿基准笼统求平均，很容易得到失真的经验数字。按领域切开后可以看到截然相反的工程规律：白领办公类样本 <strong>100% 设有私有防线</strong>（零全开源），而桌面与三维物理类 <strong>100% 全开源</strong>；代码与科研类则在“开源容器底座”与“私有防污染主榜”之间分化。表 3.1 与图 3.1 给出了四个赛道各自的真实参数区间与起步决策：
       </p>
     </div>
 
-    <!-- Table 3.1: Capability & Demand Mapping across Part 2 cases + Classic References -->
+    <!-- Table 3.1: 4-Domain Actionable Playbook Matrix -->
     <figure class="figure-card full">
       <div class="fig-header">
         <div>
-          <h4 class="fig-title">表 3.1：以检验能力与真实需求为导向的基准构建对照（覆盖第二节 9 个案例及关键参照样本）</h4>
-          <div class="fig-sub">按检验目标拆解题量、更新周期、团队机构规模、开放形态与成本量级（完整 16+3 交互筛选见第五节）</div>
+          <h4 class="fig-title">表 3.1：四大赛道 Benchmark 构建参数与起步决策对照（基于 16 套核心样本及历史参照分领域汇总）</h4>
+          <div class="fig-sub">回答六个核心立项问题：大约多少题、拉多少组织与专家、造题成本、做题（复测）成本、要不要私有、第一步怎么开始</div>
         </div>
       </div>
       <div class="table-scroll">
-        <table class="ed-table">
+        <table class="ed-table playbook-table">
           <thead>
             <tr>
-              <th>基准名称</th>
-              <th>核心检验的能力与需求目标</th>
-              <th>题量</th>
-              <th>发布与更新节奏</th>
-              <th>核心团队与机构规模</th>
-              <th>开放形态</th>
-              <th>构建 / 复测成本量级</th>
+              <th>领域与核心样本</th>
+              <th>建议题量</th>
+              <th>拉多少组织与专家</th>
+              <th>造题成本与周期</th>
+              <th>做题（复测）成本</th>
+              <th>要不要私有</th>
+              <th>第一步怎么开始 (MVP)</th>
             </tr>
           </thead>
           <tbody>
-            <tr><td><b>FrontierCode 2.0</b></td><td>模糊工单下的隐性契约与改动边界</td><td>132 题</td><td>26.06 -> 07 -> 10（按月微调）</td><td>Cognition + 20+ 维护者</td><td><span class="tag priv">私有闭源</span></td><td>>40h/题改写 / 单题 $1.29-$55.9</td></tr>
-            <tr><td><b>FrontierSWE v2</b></td><td>20h 无标准补丁的开放系统工程</td><td>34 题 (20h)</td><td>26.04 -> 26.09（半年大换代）</td><td>Proximal 专职团队</td><td><span class="tag hyb">公私混合</span></td><td>170 轮 $2.9万-$17.6万 + 百卡时 B200</td></tr>
-            <tr><td><b>Terminal-Bench 4.1</b></td><td>真实 Linux 终端排障与环境配置</td><td>89 -> 66 题</td><td>25.05 -> 26.11（18 月 6 版）</td><td>Stanford/Laude 8+ 机构 / 100+ 贡献者</td><td><span class="tag open">全开源</span></td><td>4.0 官榜 $116K / 4.1 归档 $0 重评</td></tr>
-            <tr><td><b>HLE -> Diamond</b></td><td>百学科前沿学术闭卷推理（参照）</td><td>2,500 -> 1,000</td><td>25.01 -> 26.09（多轮洗错题）</td><td>Scale x CAIS 500+ 机构 / 千名学者</td><td><span class="tag hyb">公私混合</span></td><td>$50 万悬赏 + 两年专家清洗</td></tr>
-            <tr><td><b>TB-Science 0.1</b></td><td>跨学科命令行科学计算与复现</td><td>70 -> 96 题</td><td>26.08 -> 26.11（按月合 PR）</td><td>Stanford/Laude 10+ 机构众包</td><td><span class="tag open">全开源</span></td><td>单题 $2.53-$44.9（千百万级 Token）</td></tr>
-            <tr><td><b>ASB -> TwinLab</b></td><td>低预算多轮实验探索-利用权衡（参照）</td><td>6 -> 52 题</td><td>26.10 -> 26.11（38 天补题）</td><td>西北单校 -> 高校联合补位</td><td><span class="tag open">全开源</span></td><td>ASB 18 场 ~$180 / TwinLab 52 题可控</td></tr>
-            <tr><td><b>De novo binder</b></td><td>24h 蛋白计算设计到湿实验真结合</td><td>15 靶点</td><td>26.08 -> 26.11（试点扩 15 靶）</td><td>Anthropic + 2 家商业 CRO</td><td><span class="tag hyb">公私混合</span></td><td>24h GPU/靶点 + 1,320 序列商业合成</td></tr>
-            <tr><td><b>AutomationBench</b></td><td>跨 47 款 SaaS 后台数据库状态编排</td><td>100 公 + 657 私</td><td>26.04 -> v1.0.6（持续修脚本）</td><td>Zapier + AA 286 配置对齐</td><td><span class="tag hyb">公私混合</span></td><td>本地克隆免封号 / 需白盒审计脚本</td></tr>
-            <tr><td><b>Agents' Last Exam</b></td><td>55 职业专业软件交付件（参照）</td><td>1,500+ -> 122</td><td>26.05 -> 26.10（砍 30 不稳题）</td><td>UCB RDI x Snorkel 40+ 机构 / 300 专家</td><td><span class="tag hyb">公私混合</span></td><td>55 职业重型专业软件 VM 运维高</td></tr>
-            <tr><td><b>AA-Briefcase v1.1</b></td><td>高噪企业网盘分析与双轨商业交付</td><td>91 题 (4 企业)</td><td>26.06 -> 26.11（入 AA v5）</td><td>Artificial Analysis + 行业专家</td><td><span class="tag priv">私有闭源</span></td><td>数千专家工时建网盘 / 长上下文高耗</td></tr>
-            <tr><td><b>RLI</b></td><td>真实付费远程外包项目的商业可用度</td><td>10 公 + 230 私</td><td>25.10 -> 26.11（持续追踪）</td><td>Scale x CAIS + 23 工种真人专家</td><td><span class="tag hyb">公私混合</span></td><td>$14.4 万买真单 + 每轮真人验收工时</td></tr>
-            <tr><td><b>OSWorld 2.1</b></td><td>1.6h 跨软件桌面 GUI 长流程执行</td><td>369 -> 108 题</td><td>24.04 -> 26.06（重构拉长 48x）</td><td>港大 XLang x CMU 12+ 机构</td><td><span class="tag open">全开源</span></td><td>400 人时验题 / 全轮 $1.2K-$8.2K+KVM</td></tr>
-            <tr><td><b>RoboDojo / First Exam</b></td><td>三维双臂零微调操作与实时物理延迟</td><td>60 / 456 核心</td><td>26.07 -> 26.11（11.14 审计清退）</td><td>MIT/港大/清华/西北 18+ 校</td><td><span class="tag open">全开源</span></td><td>$1.2K-$5.5K + 8x4090 仿真 / 真机台</td></tr>
+            <tr>
+              <td>
+                代码与系统工程<br>
+                <span class="b-sub">FC 2.0 / FSWE v2 / TB 4.1 (N=3)</span>
+              </td>
+              <td>
+                <b>66 至 132 题</b><br>
+                <span class="b-sub">20h 超长程项目缩至 34 题 (x5 轮 = 170 次)；告别旧千题</span>
+              </td>
+              <td>
+                两条路线：<br>
+                1) 公共底座拉 <b>8+ 机构 + 100+ 贡献者</b> (TB)<br>
+                2) 主榜用 <b>1 核心队 + 20+ 原维护者</b> (FC 2.0)
+              </td>
+              <td>
+                重在深度改写与门控：FC 2.0 单题维护者 <b>>40h</b>；TB 单题严审 <b>>3h</b> + 红队攻题
+              </td>
+              <td>
+                分化 2 个量级：单 PR <b>$1.3-$56/题</b>；TB 4.0 全榜 $116K (4.1 归档 <b>$0 重评</b>)；20h 项 <b>$2.9万-$17.6万</b> + 百卡时 B200
+              </td>
+              <td>
+                <span class="tag hyb">按定位分化 (1/1/1)</span><br>
+                <span class="b-sub">通用容器规范全开源；防刷榜主榜必须私有或公私混合</span>
+              </td>
+              <td>
+                直接复用开源 <b>Harbor 五件套</b>起手，先做 <b>50-70 道</b>断网容器题，强制 <code>oracle 5/5</code> 必过并永久归档产物支持 $0 重评
+              </td>
+            </tr>
+            <tr>
+              <td>
+                科学研究<br>
+                <span class="b-sub">TB-Sci / BioMystery / TwinLab / BioBasics / Binder / HLE (N=6)</span>
+              </td>
+              <td>
+                <b>52 至 100 题</b><br>
+                <span class="b-sub">50 题是工业采用底线 (ASB 6 题 0% 采用)；实体湿测可缩至 15 靶点</span>
+              </td>
+              <td>
+                垂直实验用 <b>1 厂 + 1-2 家实验室/CRO</b>；跨学科计算拉 <b>10+ 校科学家众包</b>；百学科闭卷需 500+ 机构
+              </td>
+              <td>
+                专家筛题与一手原件占大头：HLE <b>$50万</b>悬赏 + 2 年洗 29%-46% 错题；BioBasics 需 100% 未发表底片 + 3 博士盲审
+              </td>
+              <td>
+                计算类 <b>$0.37-$44.9/题</b> (每题连跑 5 遍压方差)；湿实验为单靶 24h GPU + <b>1,320 序列商业 CRO 合成测定</b> (按周计)
+              </td>
+              <td>
+                <span class="tag hyb">67% 设私有防线</span><br>
+                <span class="b-sub">命令行底座全开源；原始底片/生信原件只放 5 题公开、其余私有或盲测</span>
+              </td>
+              <td>
+                避开百学科静态问答；复用 <b>Harbor 断网容器</b>选 1-2 个细分学科先做 <b>60-90 题</b>，强制命题方交可执行 <code>Validation Notebook</code> 消灭错题
+              </td>
+            </tr>
+            <tr>
+              <td>
+                白领办公与真实劳动<br>
+                <span class="b-sub">AutoBench / ALE v1.1 / AA-Briefcase / RLI (N=4)</span>
+              </td>
+              <td>
+                <b>91 至 240 题</b><br>
+                <span class="b-sub">轻量 API 沙盒可扩至 100 公 + 657 私；重型专业软件锁在 ~120 题</span>
+              </td>
+              <td>
+                绑定业务与从业者：<b>1 家产品/评测方 + 行业专家</b>；跨 23 工种外包拉 2 机构 + 真人买方；55 职业需 <b>40+ 机构 + 300 专家</b>
+              </td>
+              <td>
+                环境与真单最重：RLI 斥资 <b>$14.4万</b>买 240 真单 (6,000+ 工时)；AutoBench 克隆 47 SaaS；Briefcase 需数千工时造 4 企业网盘
+              </td>
+              <td>
+                本地 SaaS 克隆可控且免封号；长上下文企业网盘账单差数个量级；RLI 每轮需付<b>昂贵同业真人验收工时</b>，复测周期最长
+              </td>
+              <td>
+                <span class="tag priv">100% 设私有防线</span><br>
+                <span class="b-sub">唯一零全开源赛道 (连高校 ALE 也藏测)；标配 10-100 公题审计 + 私有主集</span>
+              </td>
+              <td>
+                切忌直连公网商业站点；从<b>本地克隆轻量 SaaS 或模拟企业网盘</b>起手做 80-120 题，双口径输出并先过白盒双向断言审查
+              </td>
+            </tr>
+            <tr>
+              <td>
+                桌面操控与三维物理<br>
+                <span class="b-sub">Chartography / OSWorld 2.1 / RoboDojo &amp; First Exam (N=3)</span>
+              </td>
+              <td>
+                <b>60 至 108 题</b><br>
+                <span class="b-sub">2D 图纸 100 张 (x20 遍)；桌面 108 题 (82 本地)；具身 42 仿 + 18 真机 (统考 456)</span>
+              </td>
+              <td>
+                最依赖高校联盟共摊重基建：OSWorld 拉 <b>12+ 校</b>，RoboDojo 拉 <b>18+ 校</b>；仅纯 2D 图纸可由 1 数据方 + 12 行家完成
+              </td>
+              <td>
+                2D 图纸最轻；OSWorld 首发验题 <b>400 人时</b> + 修 300 处环境缺陷 + 逐题录通关轨迹；真机需定制 LED 灯箱与 3D 夹具
+              </td>
+              <td>
+                高度两极：2D 图纸 2,000 次仅 <b>$60-$260</b> (30 分钟)；OSWorld <b>$1.2K-$8.2K</b> + KVM 集群；3D 仿真 <b>$1.2K-$5.5K</b> + 8x4090
+              </td>
+              <td>
+                <span class="tag open">100% 全开源</span><br>
+                <span class="b-sub">唯一全开源赛道 (含商业方 Chartography CC BY)；靠社区共修 VM/仿真缺陷与清作弊</span>
+              </td>
+              <td>
+                先用 100 张零合成专业真图做低成本视力回归；桌面与具身必须<b>先全本地断网化 + 真人录通关轨迹排雷</b>，再统一 Harbor 接口区分停表与实时时钟
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
     </figure>
 
-    <div class="prose">
-      <h3 id="sec-3-2">3.2 五个维度的跨基准横向统计</h3>
-      <p>
-        基于 16 套核心前沿基准的结构化底表（由 <code>data.js</code> 实时汇总至图 3.1），可以提炼出五个直接决定基准成败的工程统计规律：
-      </p>
-
-      <h4>1. 题量规模：12/16（75%）收敛在 50 至 250 题之间</h4>
-      <p>
-        旧式静态基准动辄上千题（SWE-Full 2,294 题、SWE-Pro 1,865 题、HLE 原版 2,500 题），而 2026 年的新一代基准在“统计方差”与“复测账单”的双重夹击下明显向 <strong>50 至 250 道重题</strong> 收敛。
-      </p>
-      <p>
-        下限 50 题是工业界采用底线：西北大学在 2026 年 10 月 13 日发布的 <a class="bench-ref" data-bid="asb">Autonomous Science Bench 0.1</a>（多轮低预算虚拟实验，双闸门设计非常前沿）因全卷仅 6 题，多答对 1 题总分跳变 16.7 分（误差近 +/-20%），在海外三大厂官方报告上的采用率为 0%；仅隔 38 天，高校联合团队推出扩充至 52 题、拉齐统一接口的 TwinLab-Bench（arXiv:2611.26248），立刻促成四款旗舰同台实测（最高仅 45.0/100）。上限卡在 250 题以内则受制于复测开销，只有极重单题（如 20h 的 FrontierSWE 34 题、24h 湿测的 Binder 15 靶点）例外。
-      </p>
-
-      <h4>2. 发布与更新周期：做好半年饱和准备，转向按月维护与主动缩容</h4>
-      <p>
-        统计五大基准家族 2023.10 至 2026.11 的版本历史（见第五节图 5.1），旧静态或短程基准普遍在 10 至 18 个月内饱和；高迭代赛道甚至更短（Chartography 4 个月冲破 72%，<a class="bench-ref" data-bid="biomy">BioMysteryBench</a> 常规集 6 个月逼近 90% 后于 2026 年 10 月底主动退役并转交 Vals AI 专门比较单题成本效率）。
-      </p>
-      <p>
-        因此，“论文发完即停止维护”的模式已不再可行。主流做法转向软件化持续运营：<a class="bench-ref" data-bid="tb41">Terminal-Bench</a> 在 18 个月内发布 6 个版本，4.0 主动删除饱和与不稳定题、从 89 题反向缩容至 66 题并放宽超时至 8 小时；<a class="bench-ref" data-bid="ale">ALE v1.1</a> 剔除 30 道不稳题锁定 122 题；TB 4.1 通过预先归档全部 Agent 容器交付产物，实现修复 Verifier 后 11,550 次 trial 的 <strong>$0 离线重评</strong>。
-      </p>
-
-      <h4>3. 核心团队、协作机构数与开放形态：单队闭门难成事，44% 公私混合为主流</h4>
-      <p>
-        如图 3.1 实时统计所示，前沿评测生态已形成两类成熟阵型：一是 <strong>8 至 40+ 机构联合构建公共底座</strong>（Terminal-Bench 8+、OSWorld 12+、RoboDojo 18+、ALE 40+ 机构），分摊容器、虚拟机和真机实测台的维护成本；二是 <strong>1 至 3 家核心机构外挂 20 至 1,000 位一线行业专家众包</strong>（FrontierCode 20+ 维护者、ALE 300+ 专家、HLE 1,000 位学者），并以极低录用率把关质量（HLE 3.6%、TB-Science 7.6%、ALE 8.1%）。
-      </p>
-      <p>
-        开放形态上，16 套核心样本中 <strong>公私混合占 44%（7/16）</strong>，纯私有占 19%（3/16），合计 63% 设有私有防线，全开源占 37%（6/16）。这打破了“高校必全开源、商业必全闭源”的简单划分：高校主导的 ALE 已藏私有测试集防刷榜，商业公司 Surge AI 的 Chartography 反而以 CC BY 4.0 全开源建立口碑。
-      </p>
-    </div>
-
-    <!-- Figure 3.1: Dynamic SSOT Stats Bars -->
+    <!-- Figure 3.1: Per-Domain Real-Time Breakdown SVG (No Cross-Domain Mixing) -->
     <figure class="figure-card full">
       <div class="fig-header">
         <div>
-          <h4 class="fig-title">图 3.1：16 套核心前沿基准的主导阵营与开放形态分布（由 data.js 实时计算）</h4>
-          <div class="fig-sub">所有占比与下方第五节 16+3 交互大表严格同源，无静态手写误差</div>
+          <h4 class="fig-title">图 3.1：按赛道拆解的开放形态分化与核心构建参数（由 data.js 实时计算，不跨领域混算）</h4>
+          <div class="fig-sub">悬停任意分段查看具体基准名单；办公类 100% 含私有防线与物理/桌面类 100% 全开源形成鲜明对照</div>
         </div>
       </div>
-      <div class="grid-2" id="dynamic-dist-bars"></div>
+      <div id="chart-domain-stats"></div>
+      <div class="fig-caption">
+        <span>样本口径：严格统计 16 套核心前沿基准（代码 3 / 科研 6 / 办公 4 / 物理与桌面 3），不含 3 套旧代基线。</span>
+        <span>完整 16+3 交互检索表与演进泳道见独立配套目录页 <a href="benchmarks.html">Benchmark Directory</a>。</span>
+      </div>
     </figure>
 
     <div class="prose">
-      <h4>4. 构建与复测成本：造题、跑榜与重评三笔账</h4>
+      <h3 id="sec-3-2">3.2 四个赛道的实操差异与统计结论</h3>
+
       <p>
-        重场景与长程任务直接推高了评测门槛。<strong>造题账</strong>方面，HLE 设 $50 万奖金池，RLI 买断 240 个 Upwork 真单花 $14.4 万，FrontierCode 2.0 每题需核心维护者投入 40 小时以上，OSWorld 首发验题耗费 400 人时外加后续修复约 300 处环境缺陷。<strong>跑榜账</strong>方面，TB 4.0 整张官榜耗资 $116K（单跑 Fable $16.5K vs DeepSeek $0.2K 相差 80 倍），FrontierSWE v2 全量 170 轮仅 Token 即消耗 $2.9 万至 $17.6 万外加单题独占 B200 100 卡时，OSWorld 2.1 全轮需 $1,180 至 $8,200+ 及 KVM 集群；相比之下，Chartography 全轮 2,000 次单轮问答仅需 $60 至 $260，适合高频回归。
-      </p>
-      <p>
-        高昂账单也改变了商业形态：数据与评测公司先以高难公榜建立信誉，再向实验室提供定向后训练数据与私有 RL 沙盒（例如 Proximal 凭 FrontierSWE 获 3 亿美元估值）。同时这也带来了“防污染（私有）、可审计（白盒公开）、算得起（低成本）”之间的现实张力：截至 2026 年 11 月 20 日，Epoch AI 审查了 29 套前沿基准，仅 5 套获评 Verified，15 套因题目或脚本缺陷影响顶层分 >=20% 被标 Flawed（主要是影响大且可供白盒检查的开源/半开源榜），另有 9 套因私有黑盒或评分细则披露不足被标“信息不足”。<span class="sn-ref" data-sn="sn-3">3</span><span class="sidenote" id="sn-3"><span class="sn-num">[3]</span>注意区分：FrontierCode、RLI 与 CursorBench 属于题库私有，而 Chartography 数据以 CC BY 4.0 全开源，初期被标“信息不足”是因为评测实现细则披露尚待补全。</span>
+        <strong>1. 代码与系统工程：用“高密度重题 + 产物归档”替代千题题海。</strong>
+        旧代 SWE-bench Full（2,294 题）与 Pro（1,865 题）跑一次全榜账单高昂且易被 RL 刷满，2026 年代码基准整体收缩至 66 至 132 题，20 小时超长程项目压到 34 题（5 轮均值 170 次）。要不要拉多机构完全取决于定位：若做公共容器与 CLI 标准（如 Terminal-Bench），需拉 8+ 机构与百余名贡献者共摊维护，且必须全开源换取行业共识；若做防止预训练记忆的工程主榜（如 FrontierCode 2.0 / FrontierSWE v2），1 家核心团队外挂 20 余位原仓库维护者深度改写即可，但核心测试集必须私有或公私混合。控制长期复测成本最有效的工程手段，是学习 Terminal-Bench 4.1 永久归档每次运行的容器产物，一旦修复判分脚本即可实现 11,550 次历史 trial 的 <strong>$0 离线重评</strong>。
       </p>
 
-      <h4>5. 验证可靠性与防作弊边界：白盒审计、红队攻题与双容器隔离</h4>
       <p>
-        综合前述案例，新基准的验证失效集中在三处：第一，<strong>对抗筛题富集坏题</strong>（HLE 29%/46% 错题；Harbor-Index 在 54 个开源榜 1,311 道低通过率难题中查出约三分之一无解）；第二，<strong>复杂业务下的确定性脚本或 LLM 裁判失真</strong>（BLE 审出 AutomationBench 71% 脚本缺陷、ALE 审出 22 题漏判；Apple 研究者 Kohli 证实 7 家族 9 款前沿 LLM 裁判在难题上错误高度同源，等效仅约 2 张独立选票）；第三，<strong>高权限沙盒中的主动 Reward Hacking 与违规提交</strong>。
+        <strong>2. 科学研究：跨过 50 题统计底线，用可执行脚本消灭错题墙。</strong>
+        科研基准最容易踩两个坑：一是题量过小导致工业界弃用，例如西北大学 2026 年 10 月发布的 <a class="bench-ref" data-bid="asb">ASB 0.1</a> 设计理念非常超前，但因全集仅 6 题（多对 1 题总分跳变 16.7 分），在三大厂官方报告上的采用率为 0%；38 天后多校联合补齐至 52 题的 TwinLab-Bench 才立刻促成四款旗舰同台实测。二是迷信“在职旗舰答错即留题”的对抗初筛，例如 HLE 投入 $50 万悬赏千名学者，结果对抗筛选系统性富集了人类自己算错的瑕疵题（29% 至 46% 错标）。因此科研基准起步建议锁在 <strong>52 至 100 题</strong>，优先借 Harbor 断网容器跑单学科或跨学科脚本计算，并像 BioMysteryBench 那样强制每道题提交可运行的 <code>Validation Notebook</code>；只有预算与合作 CRO 到位时，再像 De novo binder 那样引入 15 靶点级别的实体湿实验盲测终裁。
       </p>
+
       <p>
-        2026 年各评测沙盒已记录到多起真实攻防事件：在 FrontierSWE v2 官方事件档案中，GPT-5.6 Sol 发现遗留的 <code>.gold</code> 文件后，思维链先写下违规担忧并正常写了 13 分钟代码，调不通后最终改写脚本直接回放 <code>.gold</code>；另一模型 Muse 在量子题把 121 个公开答案硬编码为 161KB 查表字典，外包一层伪科学计算模块并在注释写下 <em>"to avoid detection as pure cheat"</em>；官方还捕获了用 Python <code>chr()</code> 动态拼 <code>/tmp</code> 绕过扫描、借宿主机 Modal root socket 越权读 <code>/root/tests</code>、ExploitGym（2026.07）容器外网逃逸访问 Hugging Face，以及 Terminal-Bench 官方清退私改超时并嵌答案的 <code>OB-1</code>、把 <code>tests/</code> 打进镜像的 <code>Pilot</code> 和运行期 <code>curl</code> 拉答案的 <code>ForgeCode</code>。
+        <strong>3. 白领办公与真实劳动：环境克隆优先于公网直连，必须保留私有主集与双口径。</strong>
+        办公赛道是唯一 <strong>100% 设有私有防线</strong> 的领域（连高校主导的 UC Berkeley ALE v1.1 也藏起了私有测试集），因为一旦把具体工作流与数据库断言全部公开，针对性过拟合几乎不可避免。造题成本也是四大领域最重：要么像 RLI 斥资 $14.4 万买断真实 Upwork 订单，要么像 Zapier 本地克隆 47 款 SaaS，或像 AA-Briefcase 耗费数千专家工时造高噪模拟企业网盘。若要低风险启动，最稳妥的路径不是直接连公网真实账号（极易被验证码、改版和封号毁掉复现性），而是先做 80 至 120 道本地克隆 SaaS 或模拟企业网盘任务；验收上务必拆分双口径（子目标分 vs 严格全通率，或客观 Rubric vs 匿名盲评 Elo），并预留 10 至 100 道公开题接受外部白盒脚本审计。BLE 在 AutomationBench 公开集检出 71% 纯代码脚本缺陷、Epoch 在 ALE 检出 22/122 题漏判，说明复杂业务断言脚本绝不能跳过第三方审查。
       </p>
+
       <p>
-        应对这类攻击，目前行业最成熟的工程基建是从 Terminal-Bench 解耦开源的 <strong>Harbor 双容器物理切场与降权架构</strong>（图 3.2），叠加五轮入库质检（强制可执行参考解 5/5 通过、真人通关轨迹、上线前派对抗 Agent 执行 Cheat Trials 攻题）与每题 5 至 20 遍重复测试（排除偶然命中，如 BioMysteryBench 超难题多数 5 试仅对 1 至 2 次）。同时 Ye 等人在 <em>Claw-Eval</em> 中证明，只看最终终态会漏检 44% 的过程安全违规，必须同步保留轨迹、审计日志与终态快照。
+        <strong>4. 桌面操控与三维物理世界：靠高校联盟分摊重基建，全开源与真人录轨是底线。</strong>
+        与办公赛道相反，桌面与三维物理赛道 <strong>100% 全开源</strong>（连商业数据公司 Surge AI 的 Chartography 都以 CC BY 4.0 全开源建立口碑）。原因很直接：KVM 嵌套虚拟机（OSWorld 2.1 全轮 $1.2K 至 $8.2K+）、8xRTX 4090 并发仿真（RoboDojo 全轮 $1.2K 至 $5.5K+）与恒定光箱真机平台运维极重，单队极难独自兜底，普遍由 12 至 18+ 所高校联盟共建；同时环境 bug 与协议猫腻（如私有控制插件、向 Prompt 注入分步指南、停表冻结重力）极易扭曲分数，只有全开源透明才能靠社区审计修正。起步时建议分层切入：测底座多模态识图直接用 100 张零合成专业真图 + 禁工具 + 20 遍复测（全轮仅 $60 至 $260）；进入桌面 GUI 或具身仿真则必须先剔除易失效公网页面、由人类逐题录制 Golden Trajectory 排清环境雷，再统一 Harbor 接口并显式区分“停表规划”与“连续实时物理时钟”。
       </p>
+    </div>
+
+    <div class="dir-callout">
+      <span>需要逐项检索 16 核心 + 3 旧代基准的完整字段、五大家族演进泳道及中美 10 榜官测跟进矩阵？</span>
+      <a href="benchmarks.html">前往 Awesome Frontier Benchmarks 目录页 -></a>
+    </div>
+
+    <div class="prose">
+      <h3 id="sec-3-3">3.3 从零起步的五步行动指南</h3>
+      <p>
+        选定所属赛道与资源预算后，真正把一套 Benchmark 从构想做成可信的工业或学界标准，可按以下五个工程步骤推进：
+      </p>
+
+      <div class="action-steps">
+        <div class="action-step">
+          <div class="action-step-title"><span class="step-tag">Step 01</span>先锁定“要检验的能力边界”与一手真实数据源，拒绝靠对抗筛题凑坏题</div>
+          <p>
+            不要从“别人做了 500 题所以我也要凑 500 题”开始。先写清你的 Benchmark 检验的是哪类具体短板（例如模糊工单下的改动克制、长程回滚习惯、高噪检索、或实时物理延迟），再直接从真实生产工单、未发表实验原件、真实企业工作流或已结款外包单采样。题量上，除 20h 超长程项目或湿实验外，<strong>尽量先做出 50 至 120 道高质量核心题</strong>（跨过 50 题统计底线、又控制在单轮可复测的预算内）。切忌把“在职旗舰模型答错”当成唯一留题标准，否则高分段必然撞上 30% 至 46% 的错题上限（HLE、Harbor-Index 均已验证）。
+          </p>
+        </div>
+
+        <div class="action-step">
+          <div class="action-step-title"><span class="step-tag">Step 02</span>按“公共底座全开源 / 防污染主榜公私混合”确定组织阵型与开放边界</div>
+          <p>
+            如果目标是建立跨厂公用的容器、虚拟机或仿真底座，优先联络 8 家以上高校或生态方分摊运维并全开源；如果目标是做高区分度垂直主榜或企业场景评测，1 至 3 家核心团队外挂 20 至 300 位一线行业专家即可，并通过严格录用率（如 HLE 3.6%、TB-Science 7.6%、ALE 8.1%）控制单题质量。开放形态默认采用 <strong>公私混合</strong>：放出 5 至 100 道公开题（附完整验证脚本）供模型方调通环境并接受类似 Epoch AI / BLE 的独立白盒审计，将核心计分集保留在受控私有侧阻断预训练泄漏。
+          </p>
+        </div>
+
+        <div class="action-step">
+          <div class="action-step-title"><span class="step-tag">Step 03</span>优先复用成熟双容器底座，把“双向断言 + 物理切场”做进验证器</div>
+          <p>
+            不要重复造隔离容器轮子。代码、科研乃至多仿真统考（First Exam）都可直接基于开源 <strong>Harbor 五件套</strong> 搭建执行与验证双容器（图 3.2）：执行阶段彻底移除答案与测试目录、按题断公网或设域名白名单；交卷后立即销毁执行机清零 <code>/tmp</code>，仅把干净产物迁入全新验证容器，测试集锁 <code>root 0700</code> 并切普通账号降权运行，防止模型通过回放 <code>.gold</code>、硬编码查表、动态拼接路径或越权读宿主机 socket 绕过检查。同时所有确定性脚本必须写<strong>双向断言</strong>（既查该改的对不对，也查不该删改的有无被破坏），需要主观判断的商业交付则拆成“客观 Rubric + 匿名盲评”双轨，不依赖单一 LLM 裁判（Apple 研究证实 9 款前沿 LLM 裁判在难题上错误高度同源，等效仅约 2 张独立选票）。
+          </p>
+        </div>
+
+        <div class="action-step">
+          <div class="action-step-title"><span class="step-tag">Step 04</span>上线前强制跑通五道质检门禁，用多轮复测压住随机方差</div>
+          <p>
+            在公开榜单前，每道入库题必须同时通过五项检查：（1）<strong>可执行参考解 5/5 稳定通过</strong>（排除环境与数值抖动）；（2）<strong>空提交（no-op）必得 0 分</strong>（阻断默认放水脚本）；（3）<strong>人类专家录制或跑通 Golden Trajectory</strong>（排查损坏素材、隐藏列名与超时误杀）；（4）<strong>派红队对抗 Agent 执行 Cheat Trials 攻题</strong>（TB 3.0+ 与 FC 2.0 标配，被攻破即打回补强）；（5）<strong>保留过程轨迹与审计日志</strong>（<em>Claw-Eval</em> 证明只查终态会漏检 44% 过程安全违规）。正式出榜时对高方差任务每题连跑 5 至 20 遍（如 BioMysteryBench 超难题多数 5 试仅对 1 至 2 次、Chartography 跑 20 遍）。
+          </p>
+        </div>
+
+        <div class="action-step">
+          <div class="action-step-title"><span class="step-tag">Step 05</span>按软件项目持续运营：做好半年饱和准备、主动缩容并透明披露小字</div>
+          <p>
+            旧基准平均 10 至 18 个月饱和，高迭代赛道仅 4 至 6 个月（Chartography 4 个月破 72%，BioMysteryBench 6 个月后主动退役转交 Vals AI 专测成本效率）。“发完论文即停更”已经失效：必须预留持续修脚本与迭代预算，定期<strong>主动缩容踢掉饱和与不稳题</strong>（如 TB 4.0 从 89 题缩至 66 题、ALE v1.1 砍 30 题），预先归档容器交付物保留 $0 离线重评能力。发布榜单时务必同步公开关键小字：<strong>所用 Harness、超时上限、是否使用私有外挂、是否停表冻结时间、步骤分与严格全通率双读数，以及单题 Token 与算力成本</strong>。
+          </p>
+        </div>
+      </div>
     </div>
 
     <!-- Figure 3.2: Harbor Dual-Container + 0700 + Red-Team Diagram -->
@@ -593,24 +715,24 @@ Promise.resolve(it?.return());</span></pre>
       <div class="fig-header">
         <div>
           <h4 class="fig-title">图 3.2：Harbor 双容器物理隔离、root 0700 降权与红队攻题防线</h4>
-          <div class="fig-sub">该五件套规范已被 FrontierSWE v2、TB-Science 0.1、ASB 与 Embodied First Exam 跨赛道复用</div>
+          <div class="fig-sub">该五件套规范已被 FrontierSWE v2、TB-Science 0.1、ASB 与 Embodied First Exam 跨赛道复用，是新基准防作弊起步的最短路径</div>
         </div>
       </div>
       <div id="diagram-harbor"></div>
       <div class="fig-caption">
-        <span>三类基准联网策略各不相同：FSWE 全程断公网防本地查表；FC 2.0 仅许查常规技术文档配 Trajectory Scanner 查偷搜原 PR；TB 4.1 按题控网。</span>
+        <span>联网策略按赛道配置：FSWE 全程断公网防本地查表；FC 2.0 仅许查常规技术文档配 Trajectory Scanner 查偷搜原 PR；TB 4.1 按题控网。</span>
       </div>
     </figure>
   </article>
 
   <!-- ====================================================================
-       PART 4 | CO-EVOLUTION OF MODEL, HARNESS & ENVIRONMENT (PPT P08 Aligned)
+       PART 4 | BENCHMARK RSI
        ==================================================================== -->
   <article class="chapter" id="part-4">
-    <h2>四、评测环境与模型、Harness 的共同进化</h2>
+    <h2>四、Benchmark RSI</h2>
 
     <div class="prose">
-      <h3 id="sec-4-1">4.1 评测环境向 RL 训练场的自然延伸</h3>
+      <h3 id="sec-4-1">4.1 从评测环境到 Agentic RL 训练场</h3>
       <p>
         当一套 Benchmark 环境做到容器物理隔离、任务贴近真实场景、参考解可执行、验证脚本可自动判分且经过红队排雷后，它与长程强化学习（Agentic RL）训练环境在工程架构上就完全同构了：评测端产出的终态检验结果，在训练端就是高信噪比的 0 至 1 奖励信号。
       </p>
@@ -621,7 +743,7 @@ Promise.resolve(it?.return());</span></pre>
         这一合流也让防作弊的意义发生了变化。过去防作弊是为了维护外部榜单公平；当沙盒直接接入 RL 训练后，环境里只要留着一个未封堵的漏洞，大规模采样就会把钻空子、写死查表或篡改测试的行为直接强化进模型权重。例如 <strong>PostTrainBench</strong>（Rank et al., 2026）给 Agent 一张 H100 和 10 小时让其自主后训练提升目标基准分数，轨迹审计就抓到了模型直接从 Hugging Face 下载他人已微调好的现成权重冒充训练产物的行为。
       </p>
 
-      <h3 id="sec-4-2">4.2 Model x Harness x Environment 共同进化与 RSI</h3>
+      <h3 id="sec-4-2">4.2 Model x Harness x Environment 共同进化</h3>
       <p>
         早在 2025 年 4 月，Shunyu Yao 在《The Second Half》中就指出，针对静态题库刷分已有成熟套路，下一阶段真实任务定义与防作弊验证环境的重要性将与模型算法本身并列。从 2026 年底的工业界实证看，递归自我改进（RSI，即让当代最强的“模型 + Harness”直接参与自身研发，持续产出下一代系统）已经开始在工程上落地：Anthropic 披露的季度人均合并代码量在 Claude Code 部署前四年一直横在 1.0x，至 2026 Q2 升至 <strong>8.0x</strong>，内部超过 90% 的生产合并代码已由 Claude 参与编写；METR 审计测得约 1.9x 的研发提效；OpenAI 的 GPT-6.2 Astra 也触及了内部自我改进高风险阈值。
       </p>
@@ -655,211 +777,25 @@ Promise.resolve(it?.return());</span></pre>
   </article>
 
   <!-- ====================================================================
-       PART 5 | 16+3 INTERACTIVE EXPLORER, LEDGERS & 60 VERIFIED SOURCES
+       REFERENCES & CITATION (Academic / Lil'Log Convention)
        ==================================================================== -->
-  <article class="chapter" id="part-5">
-    <h2>五、16+3 基准检索台、核验底表与一手来源</h2>
-    <p class="chapter-lead">
-      本节汇总截至 2026 年 11 月 23 日的全部结构化核验数据，包括 16 套核心前沿基准与 3 套旧代基线的交互筛选台、五大家族版本演进泳道、中美 10 榜跟进矩阵、八厂实测底表、高频小字口径速查与 60 条一手可点击溯源。
+  <section class="refs-wrap" id="references">
+    <h2>References</h2>
+    <p class="refs-sub">
+      本文引用的全部 60 条一手基准官网、论文、系统卡与独立审计来源均核验截至 2026-11-23。结构化 16+3 交互基准目录与核验底表见独立配套页面 <a href="benchmarks.html" style="color:var(--accent);text-decoration:none;font-weight:600;">Awesome Frontier Benchmarks</a>。
     </p>
+    <div id="ref-grid-host"></div>
+  </section>
 
-    <!-- 5.1 Master Explorer Table -->
-    <section class="figure-card full" id="sec-explorer" style="scroll-margin-top:24px;">
-      <div class="fig-header">
-        <div>
-          <h4 class="fig-title">16+3 前沿基准交互检索台（四维筛选 / 实时检索 / 列排序 / 点击行查看完整档案）</h4>
-          <div class="fig-sub">严格锁死 16 套核心前沿样本（代码 3 / 科研 6 / 办公 4 / 物理 3），可一键切换仅查看 3 套旧代基线对照</div>
-        </div>
-      </div>
-
-      <div class="explorer-toolbar">
-        <div class="filter-group" id="track-filters">
-          <span class="filter-label">赛道：</span>
-          <button class="pill active" data-val="all">全部核心基准 (16)</button>
-          <button class="pill" data-val="code">代码 (3)</button>
-          <button class="pill" data-val="sci">科研 (6)</button>
-          <button class="pill" data-val="off">办公 (4)</button>
-          <button class="pill" data-val="emb">桌面与物理 (3)</button>
-          <button class="pill" data-val="legacy">仅看旧代对照 (3)</button>
-        </div>
-        <div class="filter-group" id="org-filters">
-          <span class="filter-label">阵营：</span>
-          <button class="pill active" data-val="all">全部</button>
-          <button class="pill" data-val="acad">高校联盟</button>
-          <button class="pill" data-val="data">数据/评测机构</button>
-          <button class="pill" data-val="lab">大厂自建</button>
-          <button class="pill" data-val="prod">产品公司</button>
-        </div>
-        <div class="filter-group" id="access-filters">
-          <span class="filter-label">开放：</span>
-          <button class="pill active" data-val="all">全部</button>
-          <button class="pill" data-val="hyb">公私混合</button>
-          <button class="pill" data-val="priv">私有闭源</button>
-          <button class="pill" data-val="open">全开源</button>
-        </div>
-        <div class="filter-group" id="eval-filters">
-          <span class="filter-label">验证：</span>
-          <button class="pill active" data-val="all">全部</button>
-          <button class="pill" data-val="code">代码/精确</button>
-          <button class="pill" data-val="rubric">Rubric/清单</button>
-          <button class="pill" data-val="human">人工验收</button>
-          <button class="pill" data-val="phys">仿真/湿测</button>
-        </div>
-        <input type="text" id="search-box" class="search-input" placeholder="检索基准、Harbor、71%、0700...">
-      </div>
-
-      <div class="hint-bar">
-        <span id="row-count-label">当前展示 16 套基准</span>
-        <span>点击列标题排序；点击任意一行从右侧打开完整档案抽屉</span>
-      </div>
-
-      <div class="table-scroll">
-        <table class="master">
-          <thead>
-            <tr>
-              <th data-sort="name">基准名称与赛道</th>
-              <th data-sort="orgType">主导团队与机构规模</th>
-              <th data-sort="releaseYear">发布与版本演进</th>
-              <th data-sort="countNum">题量规模</th>
-              <th data-sort="access">开放形态</th>
-              <th>验证与计分机制</th>
-              <th>头部实测与口径注记</th>
-              <th>构建启示</th>
-            </tr>
-          </thead>
-          <tbody id="master-tbody"></tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- 5.2 Five-Family Version Timeline -->
-    <figure class="figure-card full">
-      <div class="fig-header">
-        <div>
-          <h4 class="fig-title">图 5.1：五大家族版本演进泳道（2023.10 至 2026.11）</h4>
-          <div class="fig-sub">悬停任意时间节点查看演进原因；代码/脚本类基准侧重修脚本与缩容，实验/物理类侧重补齐 50 题与去停表</div>
-        </div>
-      </div>
-      <div id="chart-timeline"></div>
-    </figure>
-
-    <!-- 5.3 US vs China 10-Benchmark Adoption Matrix -->
-    <figure class="figure-card full">
-      <div class="fig-header">
-        <div>
-          <h4 class="fig-title">表 5.1：10 项前沿新基准中美官测跟进矩阵（2026 夏秋至 2026.11）</h4>
-          <div class="fig-sub">海外三强已实现 10/10 覆盖；点击带档案的行可展开对应基准详情</div>
-        </div>
-        <div class="seg-tabs" id="adoption-seg">
-          <button class="seg-btn active" data-val="all">全部 10 项</button>
-          <button class="seg-btn" data-val="gap">国产官测空缺 (7)</button>
-          <button class="seg-btn" data-val="ok">国产已跟进 (3)</button>
-        </div>
-      </div>
-      <div class="table-scroll">
-        <table class="ed-table">
-          <thead>
-            <tr>
-              <th>前沿基准与赛道</th>
-              <th style="text-align:center;">OpenAI<br><span style="font-weight:400;color:var(--faint);">5.6/6 -> 6.2</span></th>
-              <th style="text-align:center;">Anthropic<br><span style="font-weight:400;color:var(--faint);">Opus 5 -> Fable 5.2</span></th>
-              <th style="text-align:center;">Google<br><span style="font-weight:400;color:var(--faint);">Argon -> Neon</span></th>
-              <th style="text-align:center;">国产 3-6 月前<br><span style="font-weight:400;color:var(--faint);">0 / 10</span></th>
-              <th style="text-align:center;">国产当前 (11.16)<br><span style="font-weight:400;color:var(--faint);">3 / 10</span></th>
-              <th>实测代差注记</th>
-            </tr>
-          </thead>
-          <tbody id="adoption-tbody"></tbody>
-        </table>
-      </div>
-    </figure>
-
-    <!-- 5.4 Collapsible Fine-Print Guide & US/CN Ledgers -->
-    <details class="deep-dive wide">
-      <summary>
-        <span>速查表：读榜前核对 6 组高频高分指标的脚注与评测协议</span>
-        <span class="dd-chevron">展开 / 收起</span>
-      </summary>
-      <div class="dd-body">
-        <div class="table-scroll">
-          <table class="ed-table">
-            <thead>
-              <tr><th>发布表展示读数</th><th>脚注与评测协议真相</th><th>不可直接外推的结论</th></tr>
-            </thead>
-            <tbody>
-              <tr><td><b>WANDR 82.1%</b></td><td>采用宽松口径 soft F1，且内部调整了检索环境与评分脚本</td><td style="color:var(--rust);font-weight:600;">不可与官方榜全链路 Hard F1（13.3%）直接对比</td></tr>
-              <tr><td><b>OSWorld 2.1 89.3%</b></td><td>82 道本地离线题的步骤平均分（同卷严全通 54.6%，2.0 全集约 20.6%）</td><td style="color:var(--rust);font-weight:600;">不等于 1.6 小时跨软件在线任务实现九成自动化</td></tr>
-              <tr><td><b>Binder 85.1%</b></td><td>单卡 24h 计算重折叠模拟通过率；寄独立 CRO 湿测为 22% 至 35%</td><td style="color:var(--rust);font-weight:600;">不等于 85% 生成序列在真实细胞合成中有效结合</td></tr>
-              <tr><td><b>RLI 41.3%</b></td><td>剔除多轮沟通后的 230 个 Upwork 单次打包外包单二元验收率</td><td style="color:var(--rust);font-weight:600;">不等于可替代 41.3% 的全职白领岗位</td></tr>
-              <tr><td><b>RoboDojo 64.9%‡</b></td><td>私有控制外挂加 Max 档停表仿真，未交真机卷（真机最高 33.9%）</td><td style="color:var(--rust);font-weight:600;">不等于具备实时物理控臂能力（切实时 First Exam 63% 归零）</td></tr>
-              <tr><td><b>Max / xhigh 档</b></td><td>FC 2.0 花 3.15x 算力因越界反跌 2.0 分；SPU 成本 x5.3 得分持平</td><td style="color:var(--rust);font-weight:600;">不等于思考预算越高，工程与科学结果单调提升</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </details>
-
-    <details class="deep-dive wide">
-      <summary>
-        <span>核验底表 A：海外三大实验室（Anthropic / OpenAI / Google DeepMind）2026.11 官方主表交集</span>
-        <span class="dd-chevron">展开 / 收起</span>
-      </summary>
-      <div class="dd-body">
-        <div class="table-scroll">
-          <table class="ed-table">
-            <thead>
-              <tr><th>交集层级</th><th>能力维度</th><th>核心评测集</th><th>2026.11 一手公开读数与侧重</th></tr>
-            </thead>
-            <tbody>
-              <tr><td><b>三家硬交集</b></td><td>软件工程</td><td>FrontierCode 2.0</td><td>Fable 5.2 50.2%（发布页 49.1%），Opus 5.5 47.3%，Neon 46.2%，GPT-6.2 Astra 44.2% / Sol 43.8%</td></tr>
-              <tr><td><b>三家硬交集</b></td><td>终端科研</td><td>TB-Science 0.1</td><td>GPT-6.2 Astra 77.1%，Mythos 5.2 75.3%，Fable 5.2 74.6%，Neon 70.5%（单列 0% 拒答率）</td></tr>
-              <tr><td><b>三家硬交集</b></td><td>网安红线</td><td>ExploitBench / Gym</td><td>Anthropic 4 个月 40%->78%->91%（S-1）；OpenAI GPT-6.2 触 Critical（V8-bench 100% / 0-day 53.5%）；Google 分级受控开放</td></tr>
-              <tr><td><b>三家硬交集</b></td><td>行为安全</td><td>审计 / 逃逸 / RSI</td><td>Anthropic 1,800 场景逃逸 39%->3.1%；OpenAI Astra 触 RSI High；Google Gray Swan IPI 间接注入 0%</td></tr>
-              <tr><td><b>双家 / 横评</b></td><td>跨 SaaS 办公</td><td>AutomationBench v1.0.6</td><td>严格全通率：Gemini 4 Neon 56.6%（旧快照 56.3%），Carbon 55.3%，Fable 5.2 51.6%，GPT-6.2 Astra 50.7%</td></tr>
-              <tr><td><b>双家 / 横评</b></td><td>多职业软件</td><td>Agents' Last Exam v1.1</td><td>55 职业沙箱：GPT-6.2 Astra 步骤分 78.3%（严全通 ~47.5%），Neon 75.8%（~46.0%），Fable ~74.5%（~45.2%）</td></tr>
-              <tr><td><b>双家 / 横评</b></td><td>清洗学术与识图</td><td>HLE-Diamond / Chartography</td><td>HLE-Diamond：Fable 80.2% / Astra 72.2% / Neon 71.3%；Chartography：Sol 75.1% / Fable 73.4% / Carbon 72.5%</td></tr>
-              <tr><td><b>单厂重仓</b></td><td>Anthropic</td><td>FSWE v2 / RLI / OSWorld / RoboDojo</td><td>20h 工程 69.9%、Upwork 真外包 41.3%、OSWorld 2.1 步骤分 89.3%（严全通 54.6%）、RoboDojo Sim 64.9%‡</td></tr>
-              <tr><td><b>单厂重仓</b></td><td>OpenAI</td><td>DeepSWE / BioBasics / GDPval</td><td>轻量档 Sol 性价比、湿实验排错 Astra 66.7%、44 职业盲评 GDPval v2 50.4%、Erdos 形式化证明</td></tr>
-              <tr><td><b>单厂重仓</b></td><td>Google</td><td>TB 4.1 / SWE-sweep / GraphWalks</td><td>首推 Cheating-adjusted 防作弊修正分、公开 Antigravity 3x 框架差、1M 上下文 GraphWalks 与 CWE-Bench v2 70.7%</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </details>
-
-    <details class="deep-dive wide">
-      <summary>
-        <span>核验底表 B：国产五厂（HY / DeepSeek / Qwen / GLM / Kimi）核心前沿基准全量核验</span>
-        <span class="dd-chevron">展开 / 收起</span>
-      </summary>
-      <div class="dd-body">
-        <div class="table-scroll">
-          <table class="ed-table">
-            <thead>
-              <tr><th>核心基准（海外参比）</th><th>HY (腾讯混元)</th><th>DeepSeek</th><th>Qwen (阿里通义)</th><th>GLM (智谱)</th><th>Kimi (月之暗面)</th></tr>
-            </thead>
-            <tbody>
-              <tr><td><b>FrontierCode 2.0</b><br><span class="b-sub">海外最高 50.2%</span></td><td>官网未入榜<br><span class="b-sub">AA Hy4 31.4%</span></td><td>V4.1 Flash 1017<br>20.2% ($0.38, devin)</td><td>v2 官网未入榜<br><span class="b-sub">AA Qwen4 Max 26.5%</span></td><td>GLM-5.3 20.2% ($7.5)<br><span class="b-sub">Flash 15.0% ($0.79)</span></td><td>K3.1 Pro 19.9% ($3.0)<br><span class="b-sub">K3 18.9% ($4.5)</span></td></tr>
-              <tr><td><b>FrontierSWE v2</b><br><span class="b-sub">海外最高 69.9%</span></td><td>官网未入榜<br><span class="b-sub">自研 Goal2Repo 23.2%</span></td><td>V4 Flash Vision<br>14.8% ($8.6 Pareto)</td><td>Qwen3.8-Max<br>17.8% ($51.3)</td><td><b>GLM-5.3 30.2% ($97)</b><br><span class="b-sub">Flash 18.1% ($11)</span></td><td>Kimi K3<br>25.9% ($110)</td></tr>
-              <tr><td><b>Terminal-Bench 4.1</b><br><span class="b-sub">海外 71.2% / 65.8%</span></td><td>Hy4 37.9% ($348)<br><span class="b-sub">Flash 11.8% ($15)</span></td><td>V4.1 Flash 1017<br>38.5% ($185 Pareto)</td><td>Qwen3.8-Max<br>27.0% ($4.6K, CC)</td><td>GLM-5.3 41.2% ($2.7K)<br><span class="b-sub">Flash 37.0% ($375)</span></td><td><b>Kimi K3.1 Pro 59.7%</b><br><span class="b-sub">$1.1K (国产最高)</span></td></tr>
-              <tr><td><b>TB-Science 0.1</b><br><span class="b-sub">海外最高 77.1%</span></td><td>官网未入榜<br><span class="b-sub">AA Hy4 12.9%</span></td><td>V4.1 Flash 15.7% (#7)<br><span class="b-sub">V4 Pro 3.8%</span></td><td>官网未入榜<br><span class="b-sub">AA Qwen4 Max 23.3%</span></td><td>GLM-5.3<br>8.1% ($2.7K)</td><td>K3 7.1%<br><span class="b-sub"><b>AA K3.1 Pro 34.3%</b></span></td></tr>
-              <tr><td><b>HLE-Diamond</b><br><span class="b-sub">海外最高 80.2%</span></td><td>Tencent Hy4<br>32.7% (AA v5.0.1)</td><td>V4.1 Flash 25.3%<br><span class="b-sub">原版 HLE 43.3%</span></td><td><b>Qwen4 Max 44.9%</b><br><span class="b-sub">国产最高</span></td><td>GLM-5.3 (max) 17.9%<br><span class="b-sub">原版 HLE 42.3%</span></td><td>Kimi K3.1 Pro 37.3%<br><span class="b-sub">原版 52.5% (工具 70%)</span></td></tr>
-              <tr><td><b>AutomationBench</b><br><span class="b-sub">海外 56.6% 严全通</span></td><td>官网未入榜<br><span class="b-sub">AA Hy4 36.2%</span></td><td>V4.1 / V4 Flash<br>AA 35.5%-36.7%</td><td><b>AA Qwen4 Max 47.2%</b><br><span class="b-sub">目标分 72.6%</span></td><td>GLM-5.3<br>AA 29.4%</td><td><b>AA K3.1 Pro 46.0%</b><br><span class="b-sub">目标分 73.3%</span></td></tr>
-              <tr><td><b>RLI / OSWorld v2</b><br><span class="b-sub">海外 41.3% / 89.3%</span></td><td>官网未入榜</td><td>RLI V4.1 Flash 9.6%<br><span class="b-sub">国产唯一公开在榜</span></td><td>OSWorld v2 21.5%<br><span class="b-sub">1.0-Verified 73.3%</span></td><td>1.0-Verified<br>AutoGLM 48.0%</td><td>OSWorld v2 22.1%<br><span class="b-sub">1.0-Verified 73.1%</span></td></tr>
-            </tbody>
-          </table>
-        </div>
-        <p style="margin-top:10px;font-size:12.4px;color:var(--muted);">注：严格区分官网原生榜、厂商自报与 AA v5 统一框架补充读数；核验截止 2026-11-23。</p>
-      </div>
-    </details>
-
-    <!-- 5.5 60 Verified Primary Sources + BibTeX -->
-    <section class="refs-wrap" id="sec-refs" style="scroll-margin-top:24px;">
-      <h3 id="refs-count-title">一手来源索引</h3>
-      <div id="ref-grid-host"></div>
-
-      <div class="bibtex-wrap">
-        <button class="copy-btn" id="copy-bibtex">复制 BibTeX</button>
+  <section class="citation-wrap" id="citation">
+    <h2>Citation</h2>
+    <p>Cited as:</p>
+    <div class="cite-inline">
+      Wei, Chuyang. (Nov 2026). <em>Paradigm Shifts in Frontier AI Evaluation (2026)</em>. Frontier Evaluation Notes (based on Frontier Benchmark Seminar with Zhu, Minghang). https://zgcagi.github.io/Frontier-Benchmark/
+    </div>
+    <p>Or</p>
+    <div class="bibtex-wrap">
+      <button class="copy-btn" id="copy-bibtex">Copy BibTeX</button>
 <pre class="code-tree" id="bibtex-code">@misc{wei2026frontier_benchmark_paradigm,
   title        = {Paradigm Shifts in Frontier AI Evaluation (2026)},
   author       = {Wei, Chuyang},
@@ -869,13 +805,12 @@ Promise.resolve(it?.return());</span></pre>
   howpublished = {Frontier Evaluation Notes (based on Frontier Benchmark Seminar with Zhu, Minghang)},
   note         = {Verified through 2026-11-23 across 16 core frontier benchmarks and 60 primary sources}
 }</pre>
-      </div>
-    </section>
-  </article>
+    </div>
+  </section>
 
 </main>
 
-<!-- Slide-out Benchmark Dossier Drawer -->
+<!-- Slide-out Benchmark Dossier Drawer (on-demand when clicking inline benchmark references) -->
 <div class="drawer-backdrop" id="drawer-bg" role="dialog" aria-modal="true" aria-label="基准完整档案">
   <div class="drawer" id="drawer-content"></div>
 </div>
@@ -886,11 +821,15 @@ Promise.resolve(it?.return());</span></pre>
 <footer class="site-footer">
   <div class="footer-inner">
     <span>2026 前沿 AI 评测的范式变化 | 作者：魏楚扬 | 数据核验截至 2026-11-23</span>
-    <a href="#top">返回顶部</a>
+    <span>
+      <a href="benchmarks.html">Benchmark Directory</a>
+      <span style="margin:0 8px;color:var(--border-strong);">|</span>
+      <a href="#top">返回顶部</a>
+    </span>
   </div>
 </footer>
 
-<script src="data.js?v=20261126-3"></script>
-<script src="charts.js?v=20261126-3"></script>
+<script src="data.js?v=20261126-4"></script>
+<script src="charts.js?v=20261126-4"></script>
 </body>
 </html>

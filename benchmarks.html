@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Awesome Frontier Benchmarks (2026) | 16+3 前沿基准目录与核验库</title>
+  <meta name="description" content="2026 前沿 AI 评测独立基准目录平台：覆盖 16 套核心前沿基准与 3 套旧代基线的四维交互检索、五大家族演进泳道、中美 10 榜跟进矩阵与八厂实测核验底表。">
+  <link rel="stylesheet" href="styles.css?v=20261126-4">
+</head>
+<body>
+
+<header class="site-header" id="top">
+  <div class="site-header-inner" style="max-width:var(--wide-w);">
+    <a class="site-brand" href="index.html">Frontier Evaluation Notes</a>
+    <nav class="header-nav" aria-label="目录平台导航">
+      <a href="index.html" class="nav-dir-link">返回长文博客</a>
+      <a href="#sec-explorer">16+3 基准目录</a>
+      <a href="#sec-timeline">演进泳道</a>
+      <a href="#sec-adoption">中美矩阵</a>
+      <a href="#sec-ledgers">核验底表</a>
+    </nav>
+  </div>
+</header>
+
+<main class="page-wide">
+  <header class="dir-header">
+    <h1>Awesome Frontier Benchmarks (2026)</h1>
+    <p>
+      配套《2026 前沿 AI 评测的范式变化》的结构化基准目录与核验工作台。严格锁定 16 套核心前沿基准（代码 3 / 科研 6 / 办公 4 / 桌面与物理 3）与 3 套旧代基线，支持四维筛选、全文检索、列排序及右侧档案抽屉；全部数据核验截至 2026-11-23。
+    </p>
+    <a class="dir-back" href="index.html"><- 阅读全文：2026 前沿 AI 评测的范式变化</a>
+  </header>
+
+  <!-- Live SSOT Overview Bars -->
+  <section class="figure-card full" style="margin-top:0;border-top:none;padding-top:0;">
+    <div class="grid-2" id="dynamic-dist-bars"></div>
+  </section>
+
+  <!-- 1. Interactive 16+3 Master Directory -->
+  <section class="figure-card full" id="sec-explorer">
+    <div class="fig-header">
+      <div>
+        <h4 class="fig-title">16+3 前沿基准交互目录（四维筛选 / 实时检索 / 列排序 / 点击行打开完整档案）</h4>
+        <div class="fig-sub">默认展示 16 套核心前沿样本，可一键切换仅查看 3 套旧代基线对照</div>
+      </div>
+    </div>
+
+    <div class="explorer-toolbar">
+      <div class="filter-group" id="track-filters">
+        <span class="filter-label">赛道：</span>
+        <button class="pill active" data-val="all">全部核心基准 (16)</button>
+        <button class="pill" data-val="code">代码 (3)</button>
+        <button class="pill" data-val="sci">科研 (6)</button>
+        <button class="pill" data-val="off">办公 (4)</button>
+        <button class="pill" data-val="emb">桌面与物理 (3)</button>
+        <button class="pill" data-val="legacy">仅看旧代对照 (3)</button>
+      </div>
+      <div class="filter-group" id="org-filters">
+        <span class="filter-label">阵营：</span>
+        <button class="pill active" data-val="all">全部</button>
+        <button class="pill" data-val="acad">高校联盟</button>
+        <button class="pill" data-val="data">数据/评测机构</button>
+        <button class="pill" data-val="lab">大厂自建</button>
+        <button class="pill" data-val="prod">产品公司</button>
+      </div>
+      <div class="filter-group" id="access-filters">
+        <span class="filter-label">开放：</span>
+        <button class="pill active" data-val="all">全部</button>
+        <button class="pill" data-val="hyb">公私混合</button>
+        <button class="pill" data-val="priv">私有闭源</button>
+        <button class="pill" data-val="open">全开源</button>
+      </div>
+      <div class="filter-group" id="eval-filters">
+        <span class="filter-label">验证：</span>
+        <button class="pill active" data-val="all">全部</button>
+        <button class="pill" data-val="code">代码/精确</button>
+        <button class="pill" data-val="rubric">Rubric/清单</button>
+        <button class="pill" data-val="human">人工验收</button>
+        <button class="pill" data-val="phys">仿真/湿测</button>
+      </div>
+      <input type="text" id="search-box" class="search-input" placeholder="检索基准、Harbor、71%、0700...">
+    </div>
+
+    <div class="hint-bar">
+      <span id="row-count-label">当前展示 16 套基准</span>
+      <span>点击列标题排序；点击任意一行从右侧打开完整档案抽屉</span>
+    </div>
+
+    <div class="table-scroll">
+      <table class="master">
+        <thead>
+          <tr>
+            <th data-sort="name">基准名称与赛道</th>
+            <th data-sort="orgType">主导团队与机构规模</th>
+            <th data-sort="releaseYear">发布与版本演进</th>
+            <th data-sort="countNum">题量规模</th>
+            <th data-sort="access">开放形态</th>
+            <th>验证与计分机制</th>
+            <th>头部实测与口径注记</th>
+            <th>构建启示</th>
+          </tr>
+        </thead>
+        <tbody id="master-tbody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 2. Five-Family Version Timeline -->
+  <figure class="figure-card full" id="sec-timeline">
+    <div class="fig-header">
+      <div>
+        <h4 class="fig-title">五大家族版本演进泳道（2023.10 至 2026.11）</h4>
+        <div class="fig-sub">悬停任意时间节点查看演进原因；代码与脚本类侧重修脚本与主动缩容，实验与物理类侧重补齐 50 题底线与去停表</div>
+      </div>
+    </div>
+    <div id="chart-timeline"></div>
+  </figure>
+
+  <!-- 3. US vs China 10-Benchmark Adoption Matrix -->
+  <figure class="figure-card full" id="sec-adoption">
+    <div class="fig-header">
+      <div>
+        <h4 class="fig-title">10 项前沿新基准中美官测跟进矩阵（2026 夏秋至 2026.11）</h4>
+        <div class="fig-sub">海外三强已实现 10/10 覆盖；点击带档案的行可从右侧展开完整详情</div>
+      </div>
+      <div class="seg-tabs" id="adoption-seg">
+        <button class="seg-btn active" data-val="all">全部 10 项</button>
+        <button class="seg-btn" data-val="gap">国产官测空缺 (7)</button>
+        <button class="seg-btn" data-val="ok">国产已跟进 (3)</button>
+      </div>
+    </div>
+    <div class="table-scroll">
+      <table class="ed-table">
+        <thead>
+          <tr>
+            <th>前沿基准与赛道</th>
+            <th style="text-align:center;">OpenAI<br><span style="font-weight:400;color:var(--faint);">5.6/6 -> 6.2</span></th>
+            <th style="text-align:center;">Anthropic<br><span style="font-weight:400;color:var(--faint);">Opus 5 -> Fable 5.2</span></th>
+            <th style="text-align:center;">Google<br><span style="font-weight:400;color:var(--faint);">Argon -> Neon</span></th>
+            <th style="text-align:center;">国产 3-6 月前<br><span style="font-weight:400;color:var(--faint);">0 / 10</span></th>
+            <th style="text-align:center;">国产当前 (11.16)<br><span style="font-weight:400;color:var(--faint);">3 / 10</span></th>
+            <th>实测代差注记</th>
+          </tr>
+        </thead>
+        <tbody id="adoption-tbody"></tbody>
+      </table>
+    </div>
+  </figure>
+
+  <!-- 4. Verification Ledgers & Fine-Print Quick Check -->
+  <section id="sec-ledgers" style="margin-top:26px;">
+    <details class="deep-dive wide" open>
+      <summary>
+        <span>速查表：读榜前核对 6 组高频高分指标的脚注与评测协议</span>
+        <span class="dd-chevron">展开 / 收起</span>
+      </summary>
+      <div class="dd-body">
+        <div class="table-scroll">
+          <table class="ed-table">
+            <thead>
+              <tr><th>发布表展示读数</th><th>脚注与评测协议真相</th><th>不可直接外推的结论</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><b>WANDR 82.1%</b></td><td>采用宽松口径 soft F1，且内部调整了检索环境与评分脚本</td><td style="color:var(--rust);font-weight:600;">不可与官方榜全链路 Hard F1（13.3%）直接对比</td></tr>
+              <tr><td><b>OSWorld 2.1 89.3%</b></td><td>82 道本地离线题的步骤平均分（同卷严全通 54.6%，2.0 全集约 20.6%）</td><td style="color:var(--rust);font-weight:600;">不等于 1.6 小时跨软件在线任务实现九成自动化</td></tr>
+              <tr><td><b>Binder 85.1%</b></td><td>单卡 24h 计算重折叠模拟通过率；寄独立 CRO 湿测为 22% 至 35%</td><td style="color:var(--rust);font-weight:600;">不等于 85% 生成序列在真实细胞合成中有效结合</td></tr>
+              <tr><td><b>RLI 41.3%</b></td><td>剔除多轮沟通后的 230 个 Upwork 单次打包外包单二元验收率</td><td style="color:var(--rust);font-weight:600;">不等于可替代 41.3% 的全职白领岗位</td></tr>
+              <tr><td><b>RoboDojo 64.9%‡</b></td><td>私有控制外挂加 Max 档停表仿真，未交真机卷（真机最高 33.9%）</td><td style="color:var(--rust);font-weight:600;">不等于具备实时物理控臂能力（切实时 First Exam 63% 归零）</td></tr>
+              <tr><td><b>Max / xhigh 档</b></td><td>FC 2.0 花 3.15x 算力因越界反跌 2.0 分；SPU 成本 x5.3 得分持平</td><td style="color:var(--rust);font-weight:600;">不等于思考预算越高，工程与科学结果单调提升</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </details>
+
+    <details class="deep-dive wide">
+      <summary>
+        <span>核验底表 A：海外三大实验室（Anthropic / OpenAI / Google DeepMind）2026.11 官方主表交集</span>
+        <span class="dd-chevron">展开 / 收起</span>
+      </summary>
+      <div class="dd-body">
+        <div class="table-scroll">
+          <table class="ed-table">
+            <thead>
+              <tr><th>交集层级</th><th>能力维度</th><th>核心评测集</th><th>2026.11 一手公开读数与侧重</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><b>三家硬交集</b></td><td>软件工程</td><td>FrontierCode 2.0</td><td>Fable 5.2 50.2%（发布页 49.1%），Opus 5.5 47.3%，Neon 46.2%，GPT-6.2 Astra 44.2% / Sol 43.8%</td></tr>
+              <tr><td><b>三家硬交集</b></td><td>终端科研</td><td>TB-Science 0.1</td><td>GPT-6.2 Astra 77.1%，Mythos 5.2 75.3%，Fable 5.2 74.6%，Neon 70.5%（单列 0% 拒答率）</td></tr>
+              <tr><td><b>三家硬交集</b></td><td>网安红线</td><td>ExploitBench / Gym</td><td>Anthropic 4 个月 40%->78%->91%（S-1）；OpenAI GPT-6.2 触 Critical（V8-bench 100% / 0-day 53.5%）；Google 分级受控开放</td></tr>
+              <tr><td><b>三家硬交集</b></td><td>行为安全</td><td>审计 / 逃逸 / RSI</td><td>Anthropic 1,800 场景逃逸 39%->3.1%；OpenAI Astra 触 RSI High；Google Gray Swan IPI 间接注入 0%</td></tr>
+              <tr><td><b>双家 / 横评</b></td><td>跨 SaaS 办公</td><td>AutomationBench v1.0.6</td><td>严格全通率：Gemini 4 Neon 56.6%（旧快照 56.3%），Carbon 55.3%，Fable 5.2 51.6%，GPT-6.2 Astra 50.7%</td></tr>
+              <tr><td><b>双家 / 横评</b></td><td>多职业软件</td><td>Agents' Last Exam v1.1</td><td>55 职业沙箱：GPT-6.2 Astra 步骤分 78.3%（严全通 ~47.5%），Neon 75.8%（~46.0%），Fable ~74.5%（~45.2%）</td></tr>
+              <tr><td><b>双家 / 横评</b></td><td>清洗学术与识图</td><td>HLE-Diamond / Chartography</td><td>HLE-Diamond：Fable 80.2% / Astra 72.2% / Neon 71.3%；Chartography：Sol 75.1% / Fable 73.4% / Carbon 72.5%</td></tr>
+              <tr><td><b>单厂重仓</b></td><td>Anthropic</td><td>FSWE v2 / RLI / OSWorld / RoboDojo</td><td>20h 工程 69.9%、Upwork 真外包 41.3%、OSWorld 2.1 步骤分 89.3%（严全通 54.6%）、RoboDojo Sim 64.9%‡</td></tr>
+              <tr><td><b>单厂重仓</b></td><td>OpenAI</td><td>DeepSWE / BioBasics / GDPval</td><td>轻量档 Sol 性价比、湿实验排错 Astra 66.7%、44 职业盲评 GDPval v2 50.4%、Erdos 形式化证明</td></tr>
+              <tr><td><b>单厂重仓</b></td><td>Google</td><td>TB 4.1 / SWE-sweep / GraphWalks</td><td>首推 Cheating-adjusted 防作弊修正分、公开 Antigravity 3x 框架差、1M 上下文 GraphWalks 与 CWE-Bench v2 70.7%</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </details>
+
+    <details class="deep-dive wide">
+      <summary>
+        <span>核验底表 B：国产五厂（HY / DeepSeek / Qwen / GLM / Kimi）核心前沿基准全量核验</span>
+        <span class="dd-chevron">展开 / 收起</span>
+      </summary>
+      <div class="dd-body">
+        <div class="table-scroll">
+          <table class="ed-table">
+            <thead>
+              <tr><th>核心基准（海外参比）</th><th>HY (腾讯混元)</th><th>DeepSeek</th><th>Qwen (阿里通义)</th><th>GLM (智谱)</th><th>Kimi (月之暗面)</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><b>FrontierCode 2.0</b><br><span class="b-sub">海外最高 50.2%</span></td><td>官网未入榜<br><span class="b-sub">AA Hy4 31.4%</span></td><td>V4.1 Flash 1017<br>20.2% ($0.38, devin)</td><td>v2 官网未入榜<br><span class="b-sub">AA Qwen4 Max 26.5%</span></td><td>GLM-5.3 20.2% ($7.5)<br><span class="b-sub">Flash 15.0% ($0.79)</span></td><td>K3.1 Pro 19.9% ($3.0)<br><span class="b-sub">K3 18.9% ($4.5)</span></td></tr>
+              <tr><td><b>FrontierSWE v2</b><br><span class="b-sub">海外最高 69.9%</span></td><td>官网未入榜<br><span class="b-sub">自研 Goal2Repo 23.2%</span></td><td>V4 Flash Vision<br>14.8% ($8.6 Pareto)</td><td>Qwen3.8-Max<br>17.8% ($51.3)</td><td><b>GLM-5.3 30.2% ($97)</b><br><span class="b-sub">Flash 18.1% ($11)</span></td><td>Kimi K3<br>25.9% ($110)</td></tr>
+              <tr><td><b>Terminal-Bench 4.1</b><br><span class="b-sub">海外 71.2% / 65.8%</span></td><td>Hy4 37.9% ($348)<br><span class="b-sub">Flash 11.8% ($15)</span></td><td>V4.1 Flash 1017<br>38.5% ($185 Pareto)</td><td>Qwen3.8-Max<br>27.0% ($4.6K, CC)</td><td>GLM-5.3 41.2% ($2.7K)<br><span class="b-sub">Flash 37.0% ($375)</span></td><td><b>Kimi K3.1 Pro 59.7%</b><br><span class="b-sub">$1.1K (国产最高)</span></td></tr>
+              <tr><td><b>TB-Science 0.1</b><br><span class="b-sub">海外最高 77.1%</span></td><td>官网未入榜<br><span class="b-sub">AA Hy4 12.9%</span></td><td>V4.1 Flash 15.7% (#7)<br><span class="b-sub">V4 Pro 3.8%</span></td><td>官网未入榜<br><span class="b-sub">AA Qwen4 Max 23.3%</span></td><td>GLM-5.3<br>8.1% ($2.7K)</td><td>K3 7.1%<br><span class="b-sub"><b>AA K3.1 Pro 34.3%</b></span></td></tr>
+              <tr><td><b>HLE-Diamond</b><br><span class="b-sub">海外最高 80.2%</span></td><td>Tencent Hy4<br>32.7% (AA v5.0.1)</td><td>V4.1 Flash 25.3%<br><span class="b-sub">原版 HLE 43.3%</span></td><td><b>Qwen4 Max 44.9%</b><br><span class="b-sub">国产最高</span></td><td>GLM-5.3 (max) 17.9%<br><span class="b-sub">原版 HLE 42.3%</span></td><td>Kimi K3.1 Pro 37.3%<br><span class="b-sub">原版 52.5% (工具 70%)</span></td></tr>
+              <tr><td><b>AutomationBench</b><br><span class="b-sub">海外 56.6% 严全通</span></td><td>官网未入榜<br><span class="b-sub">AA Hy4 36.2%</span></td><td>V4.1 / V4 Flash<br>AA 35.5%-36.7%</td><td><b>AA Qwen4 Max 47.2%</b><br><span class="b-sub">目标分 72.6%</span></td><td>GLM-5.3<br>AA 29.4%</td><td><b>AA K3.1 Pro 46.0%</b><br><span class="b-sub">目标分 73.3%</span></td></tr>
+              <tr><td><b>RLI / OSWorld v2</b><br><span class="b-sub">海外 41.3% / 89.3%</span></td><td>官网未入榜</td><td>RLI V4.1 Flash 9.6%<br><span class="b-sub">国产唯一公开在榜</span></td><td>OSWorld v2 21.5%<br><span class="b-sub">1.0-Verified 73.3%</span></td><td>1.0-Verified<br>AutoGLM 48.0%</td><td>OSWorld v2 22.1%<br><span class="b-sub">1.0-Verified 73.1%</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="margin-top:10px;font-size:12.4px;color:var(--muted);">注：严格区分官网原生榜、厂商自报与 AA v5 统一框架补充读数；核验截止 2026-11-23。</p>
+      </div>
+    </details>
+  </section>
+</main>
+
+<!-- Slide-out Benchmark Dossier Drawer -->
+<div class="drawer-backdrop" id="drawer-bg" role="dialog" aria-modal="true" aria-label="基准完整档案">
+  <div class="drawer" id="drawer-content"></div>
+</div>
+
+<div id="svg-tooltip" role="tooltip"></div>
+
+<footer class="site-footer" style="max-width:var(--wide-w);">
+  <div class="footer-inner">
+    <span>Awesome Frontier Benchmarks (2026) | 数据核验截至 2026-11-23</span>
+    <span>
+      <a href="index.html">阅读长文博客</a>
+      <span style="margin:0 8px;color:var(--border-strong);">|</span>
+      <a href="#top">返回顶部</a>
+    </span>
+  </div>
+</footer>
+
+<script src="data.js?v=20261126-4"></script>
+<script src="charts.js?v=20261126-4"></script>
+</body>
+</html>
