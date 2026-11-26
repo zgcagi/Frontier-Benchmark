@@ -112,9 +112,9 @@
 
     // Band highlights
     svg += `<rect x="${toX(50)}" y="${padT - 8}" width="${toX(65) - toX(50)}" height="${rows.length * rowH + 8}" fill="#EBF2F7" opacity="0.55"/>`;
-    svg += `<text x="${toX(57.5)}" y="${padT - 16}" text-anchor="middle" font-size="11.5" font-weight="700" fill="#26547C">海外闭源稳守区 (50–65)</text>`;
+    svg += `<text x="${toX(57.5)}" y="${padT - 16}" text-anchor="middle" font-size="11.5" font-weight="700" fill="#26547C">海外闭源区间 (50–65)</text>`;
     svg += `<rect x="${toX(28)}" y="${padT - 8}" width="${toX(48) - toX(28)}" height="${rows.length * rowH + 8}" fill="#FAEDE8" opacity="0.45"/>`;
-    svg += `<text x="${toX(38)}" y="${padT - 16}" text-anchor="middle" font-size="11.5" font-weight="700" fill="#B84A2E">换榜后国产集中回落区 (30–46)</text>`;
+    svg += `<text x="${toX(38)}" y="${padT - 16}" text-anchor="middle" font-size="11.5" font-weight="700" fill="#B84A2E">换榜后国产区间 (30–46)</text>`;
 
     // Vertical grid
     [25, 30, 35, 40, 45, 50, 55, 60, 65].forEach(t => {
@@ -297,7 +297,7 @@
 
       let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block;font-family:var(--font-sans);">`;
       svg += `<text x="${padL - 12}" y="18" text-anchor="end" font-size="11.5" font-weight="700" fill="#7E776C">模型</text>`;
-      svg += `<text x="${padL}" y="18" font-size="11.5" font-weight="700" fill="#7E776C">TB 4.1 官方解决率（66 题 · 8h 去噪）</text>`;
+      svg += `<text x="${padL}" y="18" font-size="11.5" font-weight="700" fill="#7E776C">TB 4.1 官方解决率（66 题 · 8h 超时）</text>`;
       svg += `<text x="${W - padR + 82}" y="18" text-anchor="end" font-size="11.5" font-weight="700" fill="#7E776C">单轮总成本</text>`;
       svg += `<text x="${W - padR + 102}" y="18" font-size="11.5" font-weight="700" fill="#7E776C">备注 / Harness</text>`;
 
@@ -331,8 +331,8 @@
     const host = $("#chart-office-dual");
     if (!host) return;
     const rows = D.officeDualMetrics[mode] || D.officeDualMetrics.autobench;
-    const partialLbl = mode === "autobench" ? "AA 主榜目标分 (0 违规子目标)" : "步骤平均分 (Rubric Partial)";
-    const strictLbl = mode === "autobench" ? "严格全通率 (100% 达标且 0 违规)" : "严格全通率 (整单零失误)";
+    const partialLbl = mode === "autobench" ? "子目标步骤分 (Partial)" : "步骤平均分 (Partial)";
+    const strictLbl = mode === "autobench" ? "严格全通率 (Strict · 0 违规)" : "严格全通率 (Strict · 整单零失误)";
 
     const W = 900, rowH = 48, padL = 180, padR = 110, padT = 36, padB = 34;
     const H = padT + rows.length * rowH + padB;
@@ -489,7 +489,7 @@
     }
 
     const lbl = $("#row-count-label");
-    if (lbl) lbl.textContent = `当前展示 ${list.length} 套基准（点击任意行展开右侧完整造榜解剖）`;
+    if (lbl) lbl.textContent = `当前展示 ${list.length} 套基准（点击任意行查看右侧详细档案）`;
 
     tbody.innerHTML = list.map(b => {
       const evBadges = b.evalTags.map(t => `<span class="badge ${evInfo[t].cls}">${evInfo[t].label}</span>`).join("");
@@ -532,27 +532,27 @@
         <button class="close-btn" id="drawer-close-btn" aria-label="关闭">×</button>
       </div>
       <div class="d-section">
-        <h4>01 · 题目来源与筛选漏斗</h4>
+        <h4>01 · 题源与筛选流程</h4>
         <p><b>题源：</b>${b.source}</p>
         <p style="margin-top:7px;"><b>筛选与清洗：</b>${b.funnel}</p>
       </div>
       <div class="d-section">
-        <h4>02 · 评测与防作弊验证机制</h4>
-        <p><b>判分逻辑：</b>${b.verifier}</p>
+        <h4>02 · Verifier 与防作弊设计</h4>
+        <p><b>验证逻辑：</b>${b.verifier}</p>
         <p style="margin-top:7px;"><b>防作弊隔离：</b>${b.detail.antichat}</p>
       </div>
       <div class="d-section">
-        <h4>03 · 典型真题与实测踩坑现场</h4>
+        <h4>03 · 典型题目与实测案例</h4>
         <ul>${b.detail.cases.map(c => `<li>${c}</li>`).join("")}</ul>
       </div>
       <div class="d-section">
-        <h4>04 · 头部实测、成本门槛与采用格局</h4>
-        <p><b>实测读数：</b>${b.score}</p>
+        <h4>04 · 代表成绩、成本与采用情况</h4>
+        <p><b>代表成绩：</b>${b.score}</p>
         <p style="margin-top:7px;"><b>成本门槛：</b>${b.cost}</p>
         <p style="margin-top:7px;"><b>行业采用：</b>${b.detail.adoption}</p>
       </div>
       <div class="d-section" style="background:var(--terra-soft);border-color:var(--terra-line);">
-        <h4>★ 核心造榜教训</h4>
+        <h4>★ 核心经验</h4>
         <p style="font-weight:700;color:var(--terra-dark);">${b.lesson}</p>
       </div>
     `;
@@ -584,9 +584,9 @@
     svg += `<rect x="${x50}" y="${padT}" width="${x250 - x50}" height="${H - padT - padB}" fill="#E6F3F0" opacity="0.65"/>`;
     svg += `<rect x="${x250}" y="${padT}" width="${W - padR - x250}" height="${H - padT - padB}" fill="#F4F0E7" opacity="0.7"/>`;
 
-    svg += `<text x="${(padL + x50) / 2}" y="${padT + 18}" text-anchor="middle" font-size="11.5" font-weight="700" fill="#B84A2E">高方差区 (&lt;50 题易拒用)</text>`;
-    svg += `<text x="${(x50 + x250) / 2}" y="${padT + 18}" text-anchor="middle" font-size="12" font-weight="800" fill="#216E5F">工业界黄金题量区 (50–250 道重题)</text>`;
-    svg += `<text x="${(x250 + W - padR) / 2}" y="${padT + 18}" text-anchor="middle" font-size="11.5" font-weight="700" fill="#5F594F">旧式千题库 / 轻量自动化区</text>`;
+    svg += `<text x="${(padL + x50) / 2}" y="${padT + 18}" text-anchor="middle" font-size="11.5" font-weight="700" fill="#B84A2E">高方差区 (&lt;50 题)</text>`;
+    svg += `<text x="${(x50 + x250) / 2}" y="${padT + 18}" text-anchor="middle" font-size="12" font-weight="800" fill="#216E5F">合理题量区间 (50–250 道重题)</text>`;
+    svg += `<text x="${(x250 + W - padR) / 2}" y="${padT + 18}" text-anchor="middle" font-size="11.5" font-weight="700" fill="#5F594F">大题量 / 轻量自动化区</text>`;
 
     svg += `<line x1="${x50}" y1="${padT}" x2="${x50}" y2="${H - padB}" stroke="#B84A2E" stroke-width="1.6" stroke-dasharray="6,4"/>`;
     svg += `<line x1="${x250}" y1="${padT}" x2="${x250}" y2="${H - padB}" stroke="#216E5F" stroke-width="1.6" stroke-dasharray="6,4"/>`;
@@ -608,7 +608,7 @@
       svg += `<line x1="${x}" y1="${H - padB}" x2="${x}" y2="${H - padB + 6}" stroke="#847D72"/>`;
       svg += `<text x="${x}" y="${H - padB + 20}" text-anchor="middle" font-size="11.2" fill="${(n === 50 || n === 250) ? "#1C1A17" : "#7E776C"}" font-weight="${(n === 50 || n === 250) ? "800" : "500"}">${n}</text>`;
     });
-    svg += `<text x="${(padL + W - padR) / 2}" y="${H - 10}" text-anchor="middle" font-size="11.8" font-weight="700" fill="#1C1A17">题目数量规模（对数横轴 · 点击任意节点可打开完整造榜解剖抽屉）</text>`;
+    svg += `<text x="${(padL + W - padR) / 2}" y="${H - 10}" text-anchor="middle" font-size="11.8" font-weight="700" fill="#1C1A17">题目数量规模（对数横轴 · 点击任意节点查看右侧详细档案）</text>`;
 
     svg += `<defs><marker id="arr-sc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,1 L9,5 L0,9 z" fill="#B84A2E"/></marker></defs>`;
     [
@@ -648,7 +648,7 @@
       "#chart-scatter .sc-pt",
       el => {
         const b = D.benchmarks.find(x => x.id === el.dataset.id);
-        return `<b>${b.name}</b> (${b.org})<br>题量：${b.countStr} ｜ 开放：${b.accessLabel}<br>实测：${b.score}<br><span style="color:#E88266;">点击节点打开右侧完整解剖</span>`;
+        return `<b>${b.name}</b> (${b.org})<br>题量：${b.countStr} ｜ 开放：${b.accessLabel}<br>代表成绩：${b.score}<br><span style="color:#E88266;">点击节点查看右侧详细档案</span>`;
       },
       el => openDrawer(el.dataset.id)
     );
@@ -756,19 +756,19 @@
     if (sEl) sEl.textContent = `${score} / 100`;
     if (vEl) {
       if (score >= 90) {
-        vEl.textContent = "工业级主榜水准（具备大厂采用与 RL 复利价值）";
+        vEl.textContent = "工业级标准（适合进入主榜并复用于 RL）";
         vEl.style.color = "#52C4AD";
       } else if (score >= 65) {
-        vEl.textContent = "准前沿可用，但存在明显审计或刷分短板";
+        vEl.textContent = "基本可用，但在审计或防作弊上存在短板";
         vEl.style.color = "#F3B664";
       } else {
-        vEl.textContent = "高风险：极易沦为半年饱和或零采用的研究玩具";
+        vEl.textContent = "风险较高：容易快速饱和或难以被行业采用";
         vEl.style.color = "#E88266";
       }
     }
     if (aEl) {
       if (alerts.length === 0) {
-        aEl.innerHTML = `<div class="alert-item alert-ok">全部 8 项工业级造榜门禁已达标：兼具统计稳健性、防作弊公信力，且可直接复用于高保真 RL 训练环境。</div>`;
+        aEl.innerHTML = `<div class="alert-item alert-ok">8 项检查全部通过：具备统计稳定性、防作弊隔离，并可直接复用于 RL 训练环境。</div>`;
       } else {
         aEl.innerHTML = alerts.slice(0, 4).join("");
       }
