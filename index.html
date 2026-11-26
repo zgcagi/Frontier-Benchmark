@@ -7,115 +7,96 @@
   <meta name="description" content="从 2026 年 10 月 AA v5.0 换榜事件切入，分析 Model×Harness×Environment 评测方程、旧基准错题富集、步骤分与端到端交付的 30 分落差、Eval-as-RL 容器复用，以及 2026 年真实的沙盒作弊与防御案例。">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,700;1,6..72,400&family=Noto+Serif+SC:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-<div id="read-progress" aria-hidden="true"></div>
-
-<!-- Top Navigation Bar -->
-<header class="topbar">
-  <div class="topbar-inner">
-    <a class="brand" href="#top">
-      <span class="brand-dot"></span>
-      <span>Frontier Evaluation Survey</span>
-      <span class="brand-sub">/ Research Essay · 2026.11</span>
-    </a>
-    <nav class="topbar-actions" aria-label="快捷导航">
-      <a class="nav-chip" href="#ch-1">换榜与系统方程</a>
-      <a class="nav-chip" href="#ch-2">旧基准为何失灵</a>
-      <a class="nav-chip" href="#ch-3">步骤分与交付落差</a>
-      <a class="nav-chip" href="#ch-4">RL 与作弊攻防</a>
-      <a class="nav-chip" href="#sec-scorecard">设计自检表</a>
-      <a class="nav-chip primary" href="#sec-explorer">18+3 基准检索台</a>
+<!-- Minimal Site Header -->
+<header class="site-header" id="top">
+  <div class="site-header-inner">
+    <a class="site-brand" href="#top">Frontier Evaluation Survey</a>
+    <nav class="header-nav" aria-label="导航">
+      <a href="#toc">目录</a>
+      <a href="#sec-scorecard">设计自检表</a>
+      <a href="#sec-explorer">18+3 基准</a>
+      <a href="#sec-refs">一手来源</a>
     </nav>
   </div>
 </header>
 
-<!-- Monograph Hero Header (Clean Editorial Entry) -->
-<section class="hero" id="top">
-  <div class="hero-inner">
-    <div class="hero-kicker">Frontier Benchmark Research Essay · 2026.11</div>
-    <h1>Benchmark Is All You Need<span class="qmark">?</span><br>2026 前沿 AI 评测的范式变化、构建成本与验证边界</h1>
-    <p class="hero-subtitle">
+<main class="page">
+
+  <!-- Article Title & Metadata -->
+  <header class="post-header">
+    <h1>Benchmark Is All You Need? — 2026 前沿 AI 评测的范式变化、构建成本与验证边界</h1>
+    <div class="post-meta">
+      <span>2026-11-25</span>
+      <span>·</span>
+      <span>约 18 分钟阅读</span>
+      <span>·</span>
+      <span>数据核验截至 2026-11-23</span>
+      <span>·</span>
+      <span>海外三家 × 国内五家 · 18+3 套基准</span>
+    </div>
+    <p class="post-lead">
       2026 年 10 月 27 日，Artificial Analysis 替换了综合指数里的三项子基准。模型权重没有任何改动，但在 24 小时内，不同厂商的分数走向完全相反。这篇文章从这次换榜切入，按五个具体的工程问题，梳理 2026 年前沿评测发生的变化：为什么榜单测的早已不是纯模型权重，为什么旧基准在高分段会变成错题集合，为什么 80% 的步骤分换不来一次完整交付，以及当评测容器直接拿来做强化学习（RL）后，验证脚本为什么会出 bug、模型又如何在沙盒里钻空子。
     </p>
+  </header>
 
-    <div class="meta-grid">
-      <div class="meta-item">
-        <div class="meta-label">发布与核验日期</div>
-        <div class="meta-val">2026 年 11 月 25 日<br><span style="font-weight:400;color:var(--muted);">数据核验截至 2026.11.23</span></div>
-      </div>
-      <div class="meta-item">
-        <div class="meta-label">调研样本</div>
-        <div class="meta-val">海外三家 × 国内五家<br><span style="font-weight:400;color:var(--muted);">18 套前沿基准 + 3 套旧代对照</span></div>
-      </div>
-      <div class="meta-item">
-        <div class="meta-label">阅读与交互内容</div>
-        <div class="meta-val">长文笔记 · ~18 分钟<br><span style="font-weight:400;color:var(--muted);">8 组交互图表 / 自检表 / 检索台</span></div>
-      </div>
-      <div class="meta-item">
-        <div class="meta-label">一手资料来源</div>
-        <div class="meta-val">Frontier Benchmark Seminar<br><span style="font-weight:400;color:var(--muted);">33 条官网与论文链接</span></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Main 3-Column Editorial Shell -->
-<div class="layout-shell">
-
-  <!-- Left Sticky Table of Contents -->
-  <aside class="toc-rail" aria-label="文章目录">
-    <div class="toc-head">
-      <span>Contents</span>
-      <span id="toc-pct">0%</span>
-    </div>
+  <!-- Collapsible Top Table of Contents (Lilian Weng style) -->
+  <details class="toc-box" id="toc">
+    <summary>目录（Table of Contents）</summary>
     <ul class="toc-list">
-      <li><a class="toc-link" href="#ch-1">一、一夜跌 13 分与系统方程</a></li>
-      <li><a class="toc-link sub" href="#sec-1-1">10 月 27 日的换榜事件</a></li>
-      <li><a class="toc-link sub" href="#sec-1-2">差 40 分与差 6 分的反差</a></li>
-      <li><a class="toc-link sub" href="#sec-1-3">Model × Harness × Environment</a></li>
-
-      <li><a class="toc-link" href="#ch-2">二、旧基准是怎么失灵的？</a></li>
-      <li><a class="toc-link sub" href="#sec-2-1">HLE：对抗筛题与错题富集</a></li>
-      <li><a class="toc-link sub" href="#sec-2-2">单元测试局限与“多想反掉分”</a></li>
-
-      <li><a class="toc-link" href="#ch-3">三、步骤分幻觉与交付落差</a></li>
-      <li><a class="toc-link sub" href="#sec-3-1">办公与桌面的 30 分差距</a></li>
-      <li><a class="toc-link sub" href="#sec-3-2">20 小时任务：止损与物理判断</a></li>
-      <li><a class="toc-link sub" href="#sec-3-3">湿实验与去掉暂停键后的 63% 归零</a></li>
-
-      <li><a class="toc-link" href="#ch-4">四、当评测环境变成 RL 训练场</a></li>
-      <li><a class="toc-link sub" href="#sec-4-1">Harbor 五文件与 FireFlash 实验</a></li>
-      <li><a class="toc-link sub" href="#sec-4-2">谁来审计 Verifier：71% 脚本缺陷</a></li>
-      <li><a class="toc-link sub" href="#sec-4-3">2026 年抓到的真实作弊案例</a></li>
-
-      <li><a class="toc-link" href="#ch-5">五、构建成本、自检表与检索台</a></li>
-      <li><a class="toc-link sub" href="#sec-patterns">50–250 题区间与持续更新</a></li>
-      <li><a class="toc-link sub" href="#sec-scorecard">基准设计自检表</a></li>
-      <li><a class="toc-link sub" href="#sec-explorer">18+3 基准交互检索台</a></li>
-
-      <li><a class="toc-link" href="#ch-appendix">附录：核验表与 33 条来源</a></li>
+      <li>
+        <a class="toc-main" href="#ch-1">一、一夜之间跌了 13 分：排行榜测的到底是模型，还是系统？</a>
+        <ul class="toc-sub">
+          <li><a href="#sec-1-1">1.1 10 月 27 日的换榜事件</a></li>
+          <li><a href="#sec-1-2">1.2 为什么有的赛道差 40 分，有的只差 6 分？</a></li>
+          <li><a href="#sec-1-3">1.3 分数背后的乘数：Model × Harness × Environment</a></li>
+        </ul>
+      </li>
+      <li>
+        <a class="toc-main" href="#ch-2">二、旧基准是怎么失灵的：错题富集与“多想三倍反而掉分”</a>
+        <ul class="toc-sub">
+          <li><a href="#sec-2-1">2.1 对抗筛题的副作用：HLE 为什么有近三成错题？</a></li>
+          <li><a href="#sec-2-2">2.2 单元测试的局限，以及“思考越久反而掉分”</a></li>
+        </ul>
+      </li>
+      <li>
+        <a class="toc-main" href="#ch-3">三、步骤分幻觉：从 80% 中间进度到真实交付的落差</a>
+        <ul class="toc-sub">
+          <li><a href="#sec-3-1">3.1 办公与桌面任务：完成 90% 的步骤，为什么交付还是 0？</a></li>
+          <li><a href="#sec-3-2">3.2 20 小时代码任务的分水岭：不是算力不够，而是会不会 git reset</a></li>
+          <li><a href="#sec-3-3">3.3 当模拟遇上物理现实：湿实验与去掉“时间暂停”后的 63% 归零</a></li>
+        </ul>
+      </li>
+      <li>
+        <a class="toc-main" href="#ch-4">四、当评测环境变成 RL 训练场：谁来审计 Verifier，谁在沙盒里作弊？</a>
+        <ul class="toc-sub">
+          <li><a href="#sec-4-1">4.1 评测与训练共用五文件结构：Harbor 与 FireFlash 实验</a></li>
+          <li><a href="#sec-4-2">4.2 谁来审计 Verifier？当 71% 的确定性脚本自身带 bug</a></li>
+          <li><a href="#sec-4-3">4.3 2026 年抓到的真实作弊案例</a></li>
+        </ul>
+      </li>
+      <li>
+        <a class="toc-main" href="#ch-5">五、基准构建的成本规律、自检表与 18+3 检索台</a>
+        <ul class="toc-sub">
+          <li><a href="#sec-patterns">5.1 为什么现代基准的寿命只有一年左右？</a></li>
+          <li><a href="#sec-scorecard">5.2 基准设计自检表（8 项检查标准）</a></li>
+          <li><a href="#sec-explorer">5.3 18+3 前沿基准检索台</a></li>
+        </ul>
+      </li>
+      <li>
+        <a class="toc-main" href="#ch-appendix">附录：先看脚注、中美八家核验表与 33 条一手来源</a>
+      </li>
     </ul>
-
-    <div class="toc-divider"></div>
-    <div class="toc-tools">
-      <a class="toc-tool-btn" href="#sec-explorer"><span>打开 18+3 基准检索台</span><span>→</span></a>
-      <a class="toc-tool-btn" href="#sec-scorecard"><span>打开基准设计自检表</span><span>→</span></a>
-      <a class="toc-tool-btn" href="#sec-refs"><span>查看 33 条一手链接</span><span>→</span></a>
-    </div>
-  </aside>
-
-  <!-- Main Article Column -->
-  <main class="article-col">
+  </details>
 
     <!-- ====================================================================
          PART 1 · THE OVERNIGHT SWAP & THE SYSTEM EQUATION
          ==================================================================== -->
     <article class="chapter" id="ch-1">
-      <div class="chapter-kicker">Part 01 · The Overnight Swap &amp; The System Equation</div>
       <h2>一、一夜之间跌了 13 分：排行榜测的到底是模型，还是系统？</h2>
       <p class="chapter-lead">
         如果还把 Benchmark 当作静态题库，就很难解释 2026 年 10 月发生的事情：同一批模型权重，在 24 小时内跑出了方向相反的分数变化。静态问答已经测不出前沿模型的上限。现在排行榜上的每一个分数，测的都是三个东西的组合：模型权重、执行框架（Harness），以及运行时的沙盒环境。
@@ -132,8 +113,7 @@
       <figure class="figure-card">
         <div class="fig-header">
           <div>
-            <div class="fig-kicker">Figure 1.1 · The Overnight Swap</div>
-            <h4 class="fig-title">AA Intelligence Index 升级对比（10.26 v4.3.2 → 10.27 v5.0）：同一批模型 24 小时内的分数变化</h4>
+            <h4 class="fig-title">图 1.1：AA Intelligence Index 升级对比（10.26 v4.3.2 → 10.27 v5.0）</h4>
             <div class="fig-sub">四个一级维度权重不变，仅替换 3 项子基准；鼠标悬停任意模型查看具体变化</div>
           </div>
         </div>
@@ -162,9 +142,8 @@
       <figure class="figure-card">
         <div class="fig-header">
           <div>
-            <div class="fig-kicker">Figure 1.2 · The 3–6 Month Adoption Gap</div>
-            <h4 class="fig-title">10 项前沿 Benchmark 中美官方跟进对比（2026 夏秋 → 2026.11）</h4>
-            <div class="fig-sub">海外三家提前 3–6 个月切入（目前已全部覆盖 10/10）；点击右上角可筛选国产未测项与已跟进项</div>
+            <h4 class="fig-title">表 1.1：10 项前沿 Benchmark 中美官方跟进对比（2026 夏秋 → 2026.11）</h4>
+            <div class="fig-sub">海外三家提前 3–6 个月切入（目前已覆盖 10/10）；可筛选国产未测项与已跟进项</div>
           </div>
           <div class="seg-tabs" id="adoption-seg">
             <button class="seg-btn active" data-val="all">全部 10 项</button>
@@ -227,7 +206,6 @@
          PART 2 · HOW OLD BENCHMARKS FAILED
          ==================================================================== -->
     <article class="chapter" id="ch-2">
-      <div class="chapter-kicker">Part 02 · How Old Benchmarks Fail</div>
       <h2>二、旧基准是怎么失灵的：错题富集与“多想三倍反而掉分”</h2>
       <p class="chapter-lead">
         <code>GPQA</code>、原版 <code>HLE</code> 和 <code>SWE-bench Verified</code> 在 2026 年退出主流，不只是因为模型把分数刷到了 90%。Akhtar 等人在 ICML 2026 论文 <em>When AI Benchmarks Plateau</em> 中统计了 60 个主流基准，发现近半数榜单前列模型的分差，已经小于单模型多次采样的随机波动（0.3–1.5 分）。而且，单纯把静态题库藏进私有黑盒并不能延长寿命——只要任务形式不变，合成数据加上 RL 一年内就能刷穿整个分布。更麻烦的是，当一套基准的得分超过 75% 后，剩下做不出来的题里，往往混着大量出题人的笔误和验证脚本的 bug。
@@ -273,10 +251,7 @@
       <!-- Collapsible Deep-Dive: MSW & PostHog -->
       <details class="deep-dive">
         <summary>
-          <div class="dd-left">
-            <span class="dd-tag slate">Case Deep-Dive</span>
-            <span class="dd-title">真题拆解：为什么单测全过仍得 0 分（MSW），以及高思考档为什么越界扣分（PostHog）？</span>
-          </div>
+          <span>真题拆解：为什么单测全过仍得 0 分（MSW），以及高思考档为什么越界扣分（PostHog）？</span>
           <span class="dd-chevron">展开案例 ▾</span>
         </summary>
         <div class="dd-body">
@@ -303,7 +278,6 @@
          PART 3 · THE PARTIAL-SCORE ILLUSION & END-TO-END CLIFFS
          ==================================================================== -->
     <article class="chapter" id="ch-3">
-      <div class="chapter-kicker">Part 03 · Partial Scores vs. Real-World Delivery</div>
       <h2>三、步骤分幻觉：从 80% 中间进度到真实交付的落差</h2>
       <p class="chapter-lead">
         把 2026 年办公自动化、桌面操作、20 小时系统工程、生物湿实验和具身机器人的测试数据放在一起，能看到一个跨领域一致的现象：按中间步骤或仿真代理指标打分，前沿模型往往能拿到 75% 到 89%；一旦要求端到端零失误交付，或者接进真实物理环境，通过率就会整体下跌 22 到 63 个百分点。
@@ -323,9 +297,8 @@
       <figure class="figure-card">
         <div class="fig-header">
           <div>
-            <div class="fig-kicker">Figure 3.1 · Partial vs. Strict Metrics</div>
-            <h4 class="fig-title">办公基准的双指标落差：同一套测试题，步骤分（Partial）与严格全通率（Strict）相差 22–34 个百分点</h4>
-            <div class="fig-sub">可切换查看 AutomationBench-AA（657 私有题）与 ALE v1.1（55 职业专业软件）；悬停条形查看具体分差</div>
+            <h4 class="fig-title">图 3.1：办公基准双指标对比 — 步骤分（Partial）与严格全通率（Strict）相差 22–34 个百分点</h4>
+            <div class="fig-sub">可切换查看 AutomationBench-AA（657 私有题）与 ALE v1.1（55 职业专业软件）</div>
           </div>
           <div class="seg-tabs" id="office-seg">
             <button class="seg-btn active" data-val="autobench">AutomationBench-AA (286 配置对齐)</button>
@@ -359,9 +332,8 @@
       <figure class="figure-card">
         <div class="fig-header">
           <div>
-            <div class="fig-kicker">Figure 3.2 · 20-Hour Engineering Pareto vs. Open-Container Parity</div>
-            <h4 class="fig-title">代码基准实测：20 小时开放工程相差 40 分，开源容器 TB 4.1 已追至 6 分以内</h4>
-            <div class="fig-sub">可切换查看 FrontierSWE v2（单题对数成本 × 解决率）与 Terminal-Bench 4.1 官方榜；悬停节点查看耗时与 Harness</div>
+            <h4 class="fig-title">图 3.2：代码基准实测 — 20 小时开放工程相差 40 分，开源容器 TB 4.1 已追至 6 分以内</h4>
+            <div class="fig-sub">可切换查看 FrontierSWE v2（单题对数成本 × 解决率）与 Terminal-Bench 4.1 官方榜</div>
           </div>
           <div class="seg-tabs" id="code-seg">
             <button class="seg-btn active" data-val="fswe">FrontierSWE v2 (20h Pareto)</button>
@@ -410,9 +382,8 @@
       <figure class="figure-card">
         <div class="fig-header">
           <div>
-            <div class="fig-kicker">Figure 3.3 · From 2D Images to Realtime Physics</div>
-            <h4 class="fig-title">从 2D 读图接近饱和、桌面全通腰斩、3D 仿真分化，到去掉“时间暂停”后 63% 任务归零</h4>
-            <div class="fig-sub">四套递进基准横向对比，展示多模态行动模型从屏幕走向连续物理时钟的边界；悬停柱状查看说明</div>
+            <h4 class="fig-title">图 3.3：从 2D 读图、桌面操作、3D 暂停仿真，到实时物理时钟下 63% 任务归零</h4>
+            <div class="fig-sub">四套递进基准横向对比；悬停柱状查看测试条件说明</div>
           </div>
         </div>
         <div id="chart-embodied-cliff"></div>
@@ -425,11 +396,8 @@
       <!-- Deep Dive: RoboDojo ‡ Three Premises & 3 Lab Routes -->
       <details class="deep-dive">
         <summary>
-          <div class="dd-left">
-            <span class="dd-tag plum">Fine-Print &amp; Strategy</span>
-            <span class="dd-title">展开查看：RoboDojo 64.9%‡ 的三项前提，以及三家实验室应对“0.1Hz 慢思考 vs 50Hz 实时控制”的不同路线</span>
-          </div>
-          <span class="dd-chevron">展开拆解 ▾</span>
+          <span>补充说明：RoboDojo 64.9%‡ 的三项前提，以及三家实验室应对“0.1Hz vs 50Hz”的不同路线</span>
+          <span class="dd-chevron">展开 ▾</span>
         </summary>
         <div class="dd-body">
           <p>
@@ -449,7 +417,6 @@
          PART 4 · WHEN EVALS BECOME RL ENVIRONMENTS: AUDITING & CHEATING
          ==================================================================== -->
     <article class="chapter" id="ch-4">
-      <div class="chapter-kicker">Part 04 · Eval-as-RL, Verifier Audits &amp; Reward Hacking</div>
       <h2>四、当评测环境变成 RL 训练场：谁来审计 Verifier，谁在沙盒里作弊？</h2>
       <p class="chapter-lead">
         长周期沙盒不只是用来排名的，它也直接推动了递归自我改进（RSI）。部署 Claude Code 后，Anthropic 内部工程师人均合并代码量（Merged PRs）从维持四年的 <code>1.0×</code> 基线升至 2026 年 Q2 的 <strong>8.0×</strong>（超过 90% 的生产代码有 Claude 参与，METR 独立审计测得约 <strong>1.9×</strong> 端到端研发加速）。但并不是随便抓一批开源任务就能跑 RL。强化学习非常擅长找漏洞：如果一套基准有 10% 的验证脚本存在缺陷，接进 RL 训练后，模型学到的往往不是解决问题，而是如何绕过 Verifier。
@@ -494,28 +461,27 @@
       <figure class="figure-card">
         <div class="fig-header">
           <div>
-            <div class="fig-kicker">Figure 4.1 · White-Box Verifier Audit</div>
-            <h4 class="fig-title">确定性验证脚本同样需要审计：BLE 白盒复核 AutomationBench 公开集 100 题结果</h4>
-            <div class="fig-sub">即使完全不用 LLM Judge、直接查数据库状态，如果缺少双向断言和边界审核，验证代码本身也会带来 71% 的缺陷率</div>
+            <h4 class="fig-title">图 4.1：BLE 白盒审计 AutomationBench 公开集 100 个确定性验证脚本结果</h4>
+            <div class="fig-sub">即使完全不用 LLM Judge、直接查数据库状态，缺少双向断言和边界审核仍会导致 71% 的脚本缺陷率</div>
           </div>
         </div>
         <div class="stack-bar" role="img" aria-label="19题合格，10题存疑，71题确认缺陷">
-          <div class="stack-seg" style="width:19%;background:var(--teal);">19 合格</div>
-          <div class="stack-seg" style="width:10%;background:#B7AFA2;color:#1C1A17;">10 存疑</div>
-          <div class="stack-seg" style="width:71%;background:var(--terra);">71 题确认存在脚本缺陷（71%）</div>
+          <div class="stack-seg" style="width:19%;background:var(--sage);">19 合格</div>
+          <div class="stack-seg" style="width:10%;background:#CBD5E1;color:var(--ink);">10 存疑</div>
+          <div class="stack-seg" style="width:71%;background:var(--rust);">71 题确认存在脚本缺陷（71%）</div>
         </div>
-        <div class="grid-3" style="margin:0;">
-          <div class="info-card" style="--c-top:var(--terra);">
+        <div class="grid-3">
+          <div class="info-card">
             <div class="ic-k">假阳性 · 28 题</div>
             <h4>关键字段算错仍判满分</h4>
             <p>脚本只检查目标表是否新增了记录，没核对核心业务字段。结果会计借贷方向写反、或发票金额少算 $1,000，依然能拿满分。</p>
           </div>
-          <div class="info-card" style="--c-top:var(--amber);">
+          <div class="info-card">
             <div class="ic-k">假阴性 · 18 题</div>
             <h4>合法实现因未声明规则判 0</h4>
             <p>题干没规定新表列名或排序方式，验证脚本却硬编码了固定的字段名，导致完全正确的实现被判 0 分。</p>
           </div>
-          <div class="info-card" style="--c-top:var(--plum);">
+          <div class="info-card">
             <div class="ic-k">单向断言漏洞 · 9 题</div>
             <h4>改状态标记或删行就能绕过</h4>
             <p>检查写得太浅：没调发信接口、只把草稿状态硬改成 <code>SENT</code> 就能拿满分；或者直接删除整行报错数据绕过负面检查。</p>
@@ -564,11 +530,8 @@
       <!-- Deep Dive: SGLang 20h Verifier Engineering -->
       <details class="deep-dive">
         <summary>
-          <div class="dd-left">
-            <span class="dd-tag slate">Verifier Engineering</span>
-            <span class="dd-title">防作弊 Verifier 怎么写？拆解 FrontierSWE v2「SGLang 单卡 B200 提速任务」的三道自动检查</span>
-          </div>
-          <span class="dd-chevron">展开拆解 ▾</span>
+          <span>Verifier 写法拆解：FrontierSWE v2「SGLang 单卡 B200 提速任务」的三道自动检查</span>
+          <span class="dd-chevron">展开 ▾</span>
         </summary>
         <div class="dd-body">
           <p>
@@ -585,7 +548,6 @@
          PART 5 · BENCHMARK ECONOMICS, DIAGNOSTIC SCORECARD & MASTER EXPLORER
          ==================================================================== -->
     <article class="chapter" id="ch-5">
-      <div class="chapter-kicker">Part 05 · Benchmark Economics, Design Checklist &amp; 18+3 Explorer</div>
       <h2>五、基准构建的成本规律、自检表与 18+3 检索台</h2>
       <p class="chapter-lead">
         把前四章的工程问题放回成本和商业视角，2026 年的前沿基准已经不再是随论文发布的静态数据集。它更像一套寿命只有 10 到 18 个月、需要持续发版和维护的软件产品。在进入下面的交互自检表和 18+3 检索台之前，先看全部样本背后最清晰的三条规律。
@@ -607,14 +569,13 @@
       <figure class="figure-card full">
         <div class="fig-header">
           <div>
-            <div class="fig-kicker">Figure 5.1 · Quantitative Patterns Across Frontier Benchmarks</div>
-            <h4 class="fig-title">前沿基准共性图谱：题量分布散点 · 五大家族版本演进 · 机构分布与筛选通过率</h4>
-            <div class="fig-sub">点击右上角切换三组视图；在散点图中点击任意节点，可以打开右侧的基准详细档案</div>
+            <h4 class="fig-title">图 5.1：前沿基准共性图谱 — 题量分布、版本演进与筛题通过率</h4>
+            <div class="fig-sub">切换右上角查看三组视图；在散点图中点击任意节点可打开右侧详细档案</div>
           </div>
           <div class="seg-tabs" id="pattern-seg">
             <button class="seg-btn active" data-val="scatter">① 题量 × 复杂度散点</button>
             <button class="seg-btn" data-val="timeline">② 2023–2026 版本演进</button>
-            <button class="seg-btn" data-val="funnel">③ 机构分布与 3%–8% 筛题率</button>
+            <button class="seg-btn" data-val="funnel">③ 机构分布与筛题率</button>
           </div>
         </div>
 
@@ -627,58 +588,58 @@
         </div>
 
         <div class="pattern-pane" id="pane-funnel" style="display:none;">
-          <div class="grid-2" style="margin:0;max-width:100%;">
-            <div class="info-card" style="--c-top:var(--slate);">
+          <div class="grid-2">
+            <div class="info-card">
               <div class="ic-k">主导机构与开放形式</div>
               <h4>高校提供开源底座，商业机构掌握 63% 的私有测试集</h4>
-              <div style="font-size:11.8px;font-weight:700;color:var(--muted);margin-top:10px;">主导机构占比</div>
-              <div class="stack-bar" style="height:28px;margin:6px 0 12px;font-size:11.5px;">
-                <div class="stack-seg" style="width:35%;background:var(--slate);">高校联盟 35%</div>
-                <div class="stack-seg" style="width:35%;background:var(--terra);">数据/评测机构 35%</div>
-                <div class="stack-seg" style="width:15%;background:var(--amber);">产品公司 15%</div>
-                <div class="stack-seg" style="width:15%;background:var(--teal);">大厂 15%</div>
+              <div style="font-size:12px;font-weight:600;color:var(--muted);margin-top:10px;">主导机构占比</div>
+              <div class="stack-bar" style="height:24px;margin:6px 0 12px;font-size:11.2px;">
+                <div class="stack-seg" style="width:35%;background:var(--accent);">高校联盟 35%</div>
+                <div class="stack-seg" style="width:35%;background:var(--rust);">数据/评测机构 35%</div>
+                <div class="stack-seg" style="width:15%;background:#6B7280;">产品 15%</div>
+                <div class="stack-seg" style="width:15%;background:var(--sage);">大厂 15%</div>
               </div>
-              <div style="font-size:11.8px;font-weight:700;color:var(--muted);">题库开放形式（公私占比）</div>
-              <div class="stack-bar" style="height:28px;margin:6px 0 12px;font-size:11.5px;">
-                <div class="stack-seg" style="width:63%;background:var(--terra);">私有 / 需申请主集 (~63%)</div>
-                <div class="stack-seg" style="width:37%;background:var(--slate);">全开源 (~37%)</div>
+              <div style="font-size:12px;font-weight:600;color:var(--muted);">题库开放形式（公私占比）</div>
+              <div class="stack-bar" style="height:24px;margin:6px 0 12px;font-size:11.2px;">
+                <div class="stack-seg" style="width:63%;background:#374151;">私有 / 需申请主集 (~63%)</div>
+                <div class="stack-seg" style="width:37%;background:#9CA3AF;color:#FFFFFF;">全开源 (~37%)</div>
               </div>
               <p><strong>分工与取舍：</strong>高校联盟提供 Harbor 容器、VM 快照和 RealEval 真机规范，但全开源题库容易被查出脚本 bug，也常因缺少私有集而难进大厂主表；商业机构花 $14 万–$50 万买真单、改私仓，换来防污染能力，代价是纯黑盒测试难以接受外部代码审计。</p>
             </div>
 
-            <div class="info-card" style="--c-top:var(--terra);">
+            <div class="info-card">
               <div class="ic-k">五轮筛选漏斗</div>
               <h4>3.5%–8.1% 录用率，通常需要 3–6 个月多轮排错</h4>
               <div class="funnel-row">
                 <div><b style="font-size:12.4px;">HLE → Diamond</b><br><span class="b-sub">Scale × CAIS</span></div>
-                <div class="funnel-rate" style="background:var(--terra);">3.6%</div>
+                <div class="funnel-rate">3.6%</div>
                 <div>
-                  <div style="display:flex;justify-content:space-between;font-size:11.8px;"><span>70,000 投稿 → 2,500 定稿</span><b style="color:var(--terra);">后洗 29% 错题</b></div>
-                  <div class="bar-track"><div class="bar-fill" style="width:12%;background:var(--terra);"></div></div>
+                  <div style="display:flex;justify-content:space-between;font-size:11.8px;"><span>70,000 投稿 → 2,500 定稿</span><span style="color:var(--rust);font-weight:600;">后洗 29% 错题</span></div>
+                  <div class="bar-track"><div class="bar-fill" style="width:12%;background:var(--rust);"></div></div>
                 </div>
               </div>
               <div class="funnel-row">
                 <div><b style="font-size:12.4px;">TB-Science 0.1</b><br><span class="b-sub">Stanford / Laude</span></div>
-                <div class="funnel-rate" style="background:var(--slate);">7.6%</div>
+                <div class="funnel-rate">7.6%</div>
                 <div>
-                  <div style="display:flex;justify-content:space-between;font-size:11.8px;"><span>920 提案 → 386 PR → 70 题</span><b style="color:var(--slate);">参考解 5/5 全过</b></div>
-                  <div class="bar-track"><div class="bar-fill" style="width:22%;background:var(--slate);"></div></div>
+                  <div style="display:flex;justify-content:space-between;font-size:11.8px;"><span>920 提案 → 386 PR → 70 题</span><span style="color:var(--muted);">参考解 5/5 全过</span></div>
+                  <div class="bar-track"><div class="bar-fill" style="width:22%;"></div></div>
                 </div>
               </div>
               <div class="funnel-row">
                 <div><b style="font-size:12.4px;">ALE v1.1</b><br><span class="b-sub">UC Berkeley RDI</span></div>
-                <div class="funnel-rate" style="background:var(--teal);">8.1%</div>
+                <div class="funnel-rate">8.1%</div>
                 <div>
-                  <div style="display:flex;justify-content:space-between;font-size:11.8px;"><span>1,500+ 专家题 → 锁 122 题</span><b style="color:var(--teal);">剔除 30 坏题</b></div>
-                  <div class="bar-track"><div class="bar-fill" style="width:24%;background:var(--teal);"></div></div>
+                  <div style="display:flex;justify-content:space-between;font-size:11.8px;"><span>1,500+ 专家题 → 锁 122 题</span><span style="color:var(--muted);">剔除 30 坏题</span></div>
+                  <div class="bar-track"><div class="bar-fill" style="width:24%;background:var(--sage);"></div></div>
                 </div>
               </div>
               <div class="funnel-row">
                 <div><b style="font-size:12.4px;">OSWorld 1→2.1</b><br><span class="b-sub">港大 XLang Lab</span></div>
-                <div class="funnel-rate" style="background:var(--amber);">48× 时长</div>
+                <div class="funnel-rate">48× 时长</div>
                 <div>
-                  <div style="display:flex;justify-content:space-between;font-size:11.8px;"><span>369 小题 → 108 道 1.6h 长任务</span><b style="color:var(--amber);">真人录轨排错</b></div>
-                  <div class="bar-track"><div class="bar-fill" style="width:36%;background:var(--amber);"></div></div>
+                  <div style="display:flex;justify-content:space-between;font-size:11.8px;"><span>369 小题 → 108 道 1.6h 长任务</span><span style="color:var(--muted);">真人录轨排错</span></div>
+                  <div class="bar-track"><div class="bar-fill" style="width:36%;background:#4B5563;"></div></div>
                 </div>
               </div>
             </div>
@@ -686,46 +647,36 @@
         </div>
       </figure>
 
-      <!-- WIDGET 5.2: Interactive Benchmark Health Diagnostic Scorecard -->
-      <section class="figure-card full" id="sec-scorecard" style="scroll-margin-top:72px;">
+      <!-- WIDGET 5.2: Flat Benchmark Design Checklist -->
+      <section class="figure-card" id="sec-scorecard" style="scroll-margin-top:24px;">
         <div class="fig-header">
           <div>
-            <div class="fig-kicker">5.2 Interactive Tool A · Benchmark Design Checklist</div>
-            <h4 class="fig-title">基准设计自检表：把 18 套基准的踩坑教训总结为 8 项检查标准</h4>
-            <div class="fig-sub">勾选或取消左侧条目，右侧会实时计算健康分并提示对应的失效风险；也支持一键切换三种常见方案预设</div>
+            <h4 class="fig-title">5.2 基准设计自检表（8 项检查标准）</h4>
+            <div class="fig-sub">把 18 套基准的历史教训整理为 8 条可勾选项；取消任意项可查看对应的常见失效风险</div>
           </div>
         </div>
-        <div class="diag-grid">
-          <div id="checklist-wrap"></div>
-          <div class="score-panel">
-            <div>
-              <div style="font-family:var(--font-mono);font-size:10.8px;letter-spacing:0.12em;color:#E88266;margin-bottom:6px;">BENCHMARK DESIGN CHECKLIST</div>
-              <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;">
-                <div class="score-ring" id="diag-score">100 / 100</div>
-                <div id="diag-verdict" style="font-size:13.8px;font-weight:700;color:#52C4AD;">工业级主榜水准</div>
-              </div>
-              <p style="font-size:12.6px;color:#B8C0CF;margin:10px 0 0;line-height:1.6;">
-                一套新基准能不能进入主流发布表，通常取决于三个维度里的最短板：统计稳定性、防作弊隔离，以及可承受的复测成本。
-              </p>
-              <div class="alert-list" id="diag-alerts"></div>
-            </div>
-            <div style="margin-top:18px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.12);display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:12px;color:#9EA7B8;">
-              <span>预设对照：</span>
-              <button class="preset-btn" data-preset="gold">完整工业标准</button>
-              <button class="preset-btn" data-preset="asb">ASB 0.1 问题版</button>
-              <button class="preset-btn" data-preset="old">2024 旧静态题库</button>
-            </div>
+        <div class="diag-summary">
+          <div class="diag-score-group">
+            <span class="score-ring" id="diag-score">100 / 100</span>
+            <span id="diag-verdict">工业级标准（适合进入主榜并复用于 RL）</span>
+          </div>
+          <div class="preset-group">
+            <span>预设：</span>
+            <button class="preset-btn" data-preset="gold">完整标准</button>
+            <button class="preset-btn" data-preset="asb">ASB 0.1 问题版</button>
+            <button class="preset-btn" data-preset="old">2024 静态题库</button>
           </div>
         </div>
+        <div id="checklist-wrap"></div>
+        <div class="alert-list" id="diag-alerts"></div>
       </section>
 
-      <!-- WIDGET 5.3: Full 18+3 Interactive Benchmark Master Explorer -->
-      <section class="figure-card full" id="sec-explorer" style="scroll-margin-top:72px;">
+      <!-- WIDGET 5.3: Full 18+3 Interactive Benchmark Explorer -->
+      <section class="figure-card full" id="sec-explorer" style="scroll-margin-top:24px;">
         <div class="fig-header">
           <div>
-            <div class="fig-kicker">5.3 Interactive Tool B · 18 + 3 Benchmark Explorer</div>
-            <h4 class="fig-title">18+3 前沿基准检索台（按维度筛选 · 实时搜索 · 列排序 · 点击行查看详细档案）</h4>
-            <div class="fig-sub">正文没有逐一展开的基准（如 BioMysteryBench、TB-Science、BioBasicsBench、Chartography、AA-Briefcase 等），都可以在这里筛选，并<strong>点击任意一行</strong>打开右侧抽屉，查看题源、筛选流程、防作弊设计、成本和具体案例</div>
+            <h4 class="fig-title">5.3 18+3 前沿基准检索台</h4>
+            <div class="fig-sub">正文未逐一展开的基准均可按维度筛选或搜索；点击列标题排序，<strong>点击任意一行</strong>查看右侧详细档案</div>
           </div>
         </div>
 
@@ -806,15 +757,11 @@
          APPENDIX · FULL VERIFICATION TABLES, FINE PRINT, 33 PRIMARY SOURCES
          ==================================================================== -->
     <article class="chapter" id="ch-appendix">
-      <div class="chapter-kicker">Appendix · Verification Tables, Fine-Print Guide &amp; Primary Sources</div>
       <h2>附录：先看脚注、中美八家核验表与 33 条一手来源</h2>
 
       <details class="deep-dive wide">
         <summary>
-          <div class="dd-left">
-            <span class="dd-tag">Fine Print Table</span>
-            <span class="dd-title">看分数之前先看脚注：2026 旗舰发布表中 6 组常见高分指标的真实测试条件</span>
-          </div>
+          <span>看分数之前先看脚注：2026 旗舰发布表中 6 组常见高分指标的真实测试条件</span>
           <span class="dd-chevron">展开对照表 ▾</span>
         </summary>
         <div class="dd-body">
@@ -824,12 +771,12 @@
                 <tr><th>发布表展示分数</th><th>脚注与真实测试条件</th><th>不能直接推导出的结论</th></tr>
               </thead>
               <tbody>
-                <tr><td><b>WANDR 82.1%</b></td><td>采用宽松口径 relaxed score（soft F1），且内部调整了搜索环境与评分设置</td><td style="color:var(--terra-dark);font-weight:600;">不能和官方榜严格的全链路 Hard F1（13.3%）直接对比</td></tr>
-                <tr><td><b>OSWorld 2.1 89.3%</b></td><td>82 道本地题 offline / Partial 步骤平均分（同一套题的 Strict 全通率是 54.6%，2.0 完整集约 20.6%）</td><td style="color:var(--terra-dark);font-weight:600;">≠ 1.6 小时跨软件桌面流程已经实现近九成端到端自动化</td></tr>
-                <tr><td><b>Binder design 85.1%</b></td><td>Mythos 5.2 在 15 靶点 × 单卡 H200 24h 下设计的 30 条候选序列的电脑重折叠（AlphaFold/Boltz）通过率；寄往独立 CRO 湿实验的真实命中率为 22%–35%</td><td style="color:var(--terra-dark);font-weight:600;">≠ 85.1% 的 AI 生成序列在真实细胞合成里具备结合活性</td></tr>
-                <tr><td><b>RLI 41.3%</b></td><td>去掉需要多轮沟通的订单后，230 个一次性打包 Upwork 外包单的二元验收率（230 单全私有，外部无法审计）</td><td style="color:var(--terra-dark);font-weight:600;">≠ 41.3% 的全职白领岗位已经可以被模型直接替代</td></tr>
-                <tr><td><b>RoboDojo Sim 64.9%‡</b></td><td>内部私有 Harness + Max 档 Step-blocking 暂停重力仿真，未测 RealEval 真机（官方真机最高 33.9%）</td><td style="color:var(--terra-dark);font-weight:600;">≠ 具备实时物理真机操控能力（去掉暂停后 First Exam 63.0% 核心题三家全 0 分）</td></tr>
-                <tr><td><b>Max vs. xhigh effort</b></td><td>拉高推理档位大幅提高单题费用，但在 FC 2.0 因越界删接口反跌 2.0 分，在 SPU 成本 ×5.3 而得分不变（另有 CVE Rediscovery 只测已知漏洞且不要求可运行利用）</td><td style="color:var(--terra-dark);font-weight:600;">≠ 推理预算越高、思维链越长，工程交付质量就一定单调上升（也不等于具备未知 0-day 挖掘能力）</td></tr>
+                <tr><td><b>WANDR 82.1%</b></td><td>采用宽松口径 relaxed score（soft F1），且内部调整了搜索环境与评分设置</td><td style="color:var(--rust);font-weight:500;">不能和官方榜严格的全链路 Hard F1（13.3%）直接对比</td></tr>
+                <tr><td><b>OSWorld 2.1 89.3%</b></td><td>82 道本地题 offline / Partial 步骤平均分（同一套题的 Strict 全通率是 54.6%，2.0 完整集约 20.6%）</td><td style="color:var(--rust);font-weight:500;">≠ 1.6 小时跨软件桌面流程已经实现近九成端到端自动化</td></tr>
+                <tr><td><b>Binder design 85.1%</b></td><td>Mythos 5.2 在 15 靶点 × 单卡 H200 24h 下设计的 30 条候选序列的电脑重折叠（AlphaFold/Boltz）通过率；寄往独立 CRO 湿实验的真实命中率为 22%–35%</td><td style="color:var(--rust);font-weight:500;">≠ 85.1% 的 AI 生成序列在真实细胞合成里具备结合活性</td></tr>
+                <tr><td><b>RLI 41.3%</b></td><td>去掉需要多轮沟通的订单后，230 个一次性打包 Upwork 外包单的二元验收率（230 单全私有，外部无法审计）</td><td style="color:var(--rust);font-weight:500;">≠ 41.3% 的全职白领岗位已经可以被模型直接替代</td></tr>
+                <tr><td><b>RoboDojo Sim 64.9%‡</b></td><td>内部私有 Harness + Max 档 Step-blocking 暂停重力仿真，未测 RealEval 真机（官方真机最高 33.9%）</td><td style="color:var(--rust);font-weight:500;">≠ 具备实时物理真机操控能力（去掉暂停后 First Exam 63.0% 核心题三家全 0 分）</td></tr>
+                <tr><td><b>Max vs. xhigh effort</b></td><td>拉高推理档位大幅提高单题费用，但在 FC 2.0 因越界删接口反跌 2.0 分，在 SPU 成本 ×5.3 而得分不变（另有 CVE Rediscovery 只测已知漏洞且不要求可运行利用）</td><td style="color:var(--rust);font-weight:500;">≠ 推理预算越高、思维链越长，工程交付质量就一定单调上升（也不等于具备未知 0-day 挖掘能力）</td></tr>
               </tbody>
             </table>
           </div>
@@ -838,10 +785,7 @@
 
       <details class="deep-dive wide">
         <summary>
-          <div class="dd-left">
-            <span class="dd-tag slate">Appendix A</span>
-            <span class="dd-title">海外三家实验室（Anthropic / OpenAI / Google DeepMind）2026.11 官方主表核验</span>
-          </div>
+          <span>附录 A：海外三家实验室（Anthropic / OpenAI / Google DeepMind）2026.11 官方主表核验</span>
           <span class="dd-chevron">展开底表 ▾</span>
         </summary>
         <div class="dd-body">
@@ -869,10 +813,7 @@
 
       <details class="deep-dive wide">
         <summary>
-          <div class="dd-left">
-            <span class="dd-tag teal">Appendix B</span>
-            <span class="dd-title">国内五家（HY / DeepSeek / Qwen / GLM / Kimi）核心前沿基准核验表</span>
-          </div>
+          <span>附录 B：国内五家（HY / DeepSeek / Qwen / GLM / Kimi）核心前沿基准核验表</span>
           <span class="dd-chevron">展开底表 ▾</span>
         </summary>
         <div class="dd-body">
@@ -896,9 +837,9 @@
         </div>
       </details>
 
-      <div id="sec-refs" style="scroll-margin-top:78px;margin-top:28px;">
-        <h3 style="font-family:var(--font-serif);font-size:21px;margin:0 0 10px;">一手来源索引（33 条核验链接）</h3>
-        <div class="ref-grid">
+      <div class="refs-wrap" id="sec-refs" style="scroll-margin-top:24px;">
+        <h3>一手来源索引（33 条核验链接）</h3>
+        <div>
           <div class="ref-group">
             <h4>01 · 综合榜单、审计数据库与实验室官方披露</h4>
             <ul>
@@ -961,8 +902,7 @@
       </div>
     </article>
 
-  </main>
-</div>
+</main>
 
 <!-- Slide-out Benchmark Dossier Drawer -->
 <div class="drawer-backdrop" id="drawer-bg" role="dialog" aria-modal="true" aria-label="基准详细档案">
@@ -975,12 +915,12 @@
 <footer class="site-footer">
   <div class="footer-inner">
     <div>
-      <strong>Frontier Evaluation Survey · 2026.11</strong><br>
-      <span>基于 Frontier Benchmark Seminar 73 页调研与 18+3 套基准数据整理 · 支持离线阅读与静态站点部署</span>
+      <strong>Frontier Evaluation Survey</strong> · 2026-11<br>
+      <span>基于 Frontier Benchmark Seminar 73 页调研与 18+3 套基准数据整理</span>
     </div>
     <div style="text-align:right;">
-      <span>数据核验截至：2026-11-23</span><br>
-      <a href="#top" style="color:var(--terra);text-decoration:none;font-weight:600;">返回顶部 ↑</a>
+      <span>数据核验截至 2026-11-23</span><br>
+      <a href="#top">返回顶部 ↑</a>
     </div>
   </div>
 </footer>
