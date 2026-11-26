@@ -5,16 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>2026 前沿 AI 评测的范式变化</title>
   <meta name="description" content="Zhongguancun Academy 前沿评测调研：从 AA v5.0 换榜与 OpenAI、Anthropic 新重心切入，从代码仓库走向物理世界拆解五大领域 9 个代表案例，给出 16 套基准独立参数全景与跨领域构建指南，并讨论 Benchmark RSI。">
-  <link rel="stylesheet" href="styles.css?v=20261126-7">
+  <link rel="stylesheet" href="styles.css?v=20261126-8">
 </head>
 <body>
 
-<!-- Minimal Site Header (Lil'Log style) -->
+<!-- Sticky Translucent Header + Hardware-Accelerated Reading Progress Bar -->
 <header class="site-header" id="top">
   <div class="site-header-inner">
     <a class="site-brand" href="#top">Frontier Evaluation Notes</a>
     <nav class="header-nav" aria-label="导航">
-      <a href="#toc">目录</a>
+      <a href="#part-1">旧榜与转向</a>
       <a href="#part-2">前沿实测</a>
       <a href="#part-3">构建指南</a>
       <a href="#part-4">Benchmark RSI</a>
@@ -22,6 +22,7 @@
       <a class="nav-dir-link" href="benchmarks.html">Benchmark Directory</a>
     </nav>
   </div>
+  <div class="read-progress" id="read-progress" aria-hidden="true"></div>
 </header>
 
 <main class="page">
@@ -80,11 +81,10 @@
           <li><a href="#sec-4-2">4.2 Model x Harness x Environment 共同进化</a></li>
         </ul>
       </li>
-      <li>
-        <a class="toc-main" href="#references">References</a>
-      </li>
-      <li>
-        <a class="toc-main" href="#citation">Citation</a>
+      <li class="toc-foot">
+        <a href="#references">References (60)</a>
+        <a href="#citation">Citation / BibTeX</a>
+        <a class="toc-dir-cta" href="benchmarks.html">前往 16+3 交互基准目录 -></a>
       </li>
     </ul>
   </details>
@@ -128,8 +128,8 @@
           <div class="fig-sub">官方最新总榜原图（2026.11.26）：前 10 名全部被海外闭源模型占据（50 至 65 分），国产主力集中在 32 至 47 区间</div>
         </div>
       </div>
-      <div class="fig-img-wrap">
-        <img src="assets/aa_intelligence_index.png" alt="Artificial Analysis Intelligence Index v5.0.2 官方当前榜单排名原图" loading="lazy">
+      <div class="fig-img-wrap media-wide">
+        <img src="assets/aa_intelligence_index.webp" width="2464" height="880" decoding="async" fetchpriority="high" alt="Artificial Analysis Intelligence Index v5.0.2 官方当前榜单排名原图">
       </div>
       <div class="fig-caption">
         <span>原图来源：Artificial Analysis Intelligence Index v5.0.2 官方榜（2026.11.26）。Claude Fable 5.2 居首（65），GPT-6.2 Astra（62）与 Gemini 4 Neon（62）紧随其后；国产最高为 Kimi K3.1 Pro（47）与 Qwen4 Max（43）。</span>
@@ -169,13 +169,17 @@
           <div class="fig-sub">左图为 Epoch AI 六类旧榜 1 至 2 年冲顶曲线；右图为 Anthropic SEC Form S-1 披露的自主协作者真实工作流</div>
         </div>
       </div>
-      <div class="fig-img-grid">
+      <div class="fig-img-grid ratio-13">
         <div class="fig-img-wrap">
-          <img src="assets/epoch_6domain_saturation.png" alt="Epoch AI 六类旧基准饱和曲线" loading="lazy">
+          <div class="fig-img-stage">
+            <img src="assets/epoch_6domain_saturation.webp" width="2200" height="1356" decoding="async" alt="Epoch AI 六类旧基准饱和曲线" loading="lazy">
+          </div>
           <div class="fig-img-cap">左：MMLU、AIME、GPQA、ARC-AGI-2、SWE-V 与 TB 2.0 全在 1 至 2 年内冲进 80%-100% 饱和区。</div>
         </div>
         <div class="fig-img-wrap">
-          <img src="assets/anthropic_s1_virtual_collaborators.jpg" alt="Anthropic SEC S-1 Chatbots 到 Virtual Collaborators 演进原图" loading="lazy">
+          <div class="fig-img-stage">
+            <img src="assets/anthropic_s1_virtual_collaborators.webp" width="1872" height="964" decoding="async" alt="Anthropic SEC S-1 Chatbots 到 Virtual Collaborators 演进原图" loading="lazy">
+          </div>
           <div class="fig-img-cap">右：Anthropic S-1 原图，展示 Claude 连续运行 38 分钟核对 14,302 笔交易流水、写 MD&amp;A 并生成 12 页 CFO 汇报。</div>
         </div>
       </div>
@@ -240,8 +244,8 @@
           <div class="fig-sub">从公开 Lite/Verified 到 9 语言 Multilingual、商业私仓 Pro 与脱离 GitHub 手写的 DeepSWE，每次抬高题库门槛都在约一年内逼近饱和区</div>
         </div>
       </div>
-      <div class="fig-img-wrap">
-        <img src="assets/cases/s21_swe_saturation.png" alt="SWE-bench 五代基准演进与饱和曲线" loading="lazy">
+      <div class="fig-img-wrap media-std">
+        <img src="assets/cases/s21_swe_saturation.webp" width="1632" height="1176" decoding="async" alt="SWE-bench 五代基准演进与饱和曲线" loading="lazy">
       </div>
       <div class="fig-caption">
         <span>数据来源：Epoch AI、SWE-bench Multilingual 官方榜、Scale SWE-bench Pro 与 DeepSWE 追踪记录。</span>
@@ -322,8 +326,8 @@ Promise.resolve(it?.return());</span></pre>
           <div class="fig-sub">Cognition 官方全量 JSON 实测：Fable 5.2 与 Neon 拉高思考档均因越界修改反降分；底部三家国产点为 devin-cli 代测口径</div>
         </div>
       </div>
-      <div class="fig-img-wrap">
-        <img src="assets/cases/s21_fc2_pareto.png" alt="FrontierCode 2.0 思考预算与 Scope Creep 反降分曲线" loading="lazy">
+      <div class="fig-img-wrap media-std">
+        <img src="assets/cases/s21_fc2_pareto.webp" width="1800" height="1152" decoding="async" alt="FrontierCode 2.0 思考预算与 Scope Creep 反降分曲线" loading="lazy">
       </div>
       <div class="fig-caption">
         <span>数据来源：cognition.com/frontiercode 官方 data.json（132 道私有题，35 模型配置）。</span>
@@ -484,8 +488,8 @@ Promise.resolve(it?.return());</span></pre>
           <div class="fig-sub">左图：同一 Claude Fable 5.2 权重换用公共简装框架直接降 18.9 分；右图：Vals AI 统一实测下单题花费相差 17.7 倍；底部为首发 70 题五大学科构成</div>
         </div>
       </div>
-      <div class="fig-img-wrap">
-        <img src="assets/cases/s22_tb_science_harness_cost.png" alt="TB-Science 0.1 同模型换 Mini-SWE-agent 掉 18.9 分，以及 Vals AI 实测单题成本差 18 倍对比图" loading="lazy">
+      <div class="fig-img-wrap media-std">
+        <img src="assets/cases/s22_tb_science_harness_cost.webp" width="2200" height="1490" decoding="async" alt="TB-Science 0.1 同模型换 Mini-SWE-agent 掉 18.9 分，以及 Vals AI 实测单题成本差 18 倍对比图" loading="lazy">
       </div>
       <div style="margin-top:16px;padding-top:12px;border-top:1px solid var(--border);">
         <div style="font-size:12.8px;font-weight:650;color:var(--ink);margin-bottom:6px;">首发 70 题学科分布（920 份提案 -> 386 个 PR -> 7.6% 录用率，现已按月扩至 96 题）</div>
@@ -528,8 +532,8 @@ Promise.resolve(it?.return());</span></pre>
           <div class="fig-sub">对比电脑重折叠模拟（85.1%）、前排优选湿测（49.0%）、1,320 条全量盲寄湿测（22% 到 35%）与人类加传统工具历史基线（10% 到 15%）</div>
         </div>
       </div>
-      <div class="fig-img-wrap">
-        <img src="assets/cases/s22_binder_sim_vs_wetlab.png" alt="De novo binder design 电脑模拟得分 85.1% 对比外包湿实验 Twist Bioscience 与 Adaptyv Bio 实测成功率 22% 到 35%" loading="lazy">
+      <div class="fig-img-wrap media-std">
+        <img src="assets/cases/s22_binder_sim_vs_wetlab.webp" width="2200" height="1176" decoding="async" alt="De novo binder design 电脑模拟得分 85.1% 对比外包湿实验 Twist Bioscience 与 Adaptyv Bio 实测成功率 22% 到 35%" loading="lazy">
       </div>
       <div class="fig-caption">
         <span>数据来源：Anthropic System Card &amp; Claude Science Binder Report（2026.08 与 2026.11.09）；盲测合作方 Twist Bioscience 与 Adaptyv Bio。</span>
@@ -913,8 +917,8 @@ assert db.get_row(protected_id) == snapshot</span></pre>
           <div class="fig-sub">均取自一线工程、医学与化工常见图型，禁用 Python 裁剪放大工具，检验对数插值、双纵轴对齐、删失标记与等高线边界判读</div>
         </div>
       </div>
-      <div class="fig-img-wrap">
-        <img src="assets/cases/s24_chartography_4types.png" alt="Chartography 四类高难行业原生图表与模型高频失分点示意" loading="lazy">
+      <div class="fig-img-wrap media-quad">
+        <img src="assets/cases/s24_chartography_4types.webp" width="2200" height="1665" decoding="async" alt="Chartography 四类高难行业原生图表与模型高频失分点示意" loading="lazy">
       </div>
       <div class="fig-caption">
         <span>参考来源：Surge AI, Chartography: A Benchmark for Professional Chart Understanding（arXiv:2608.10677，CC BY 4.0，2026.08）。</span>
@@ -1107,12 +1111,12 @@ ERP 导出漏选一列 -> Calc 汇总公式引用偏列 -> Writer 嵌错表
         </div>
       </div>
       <div style="display:flex;flex-direction:column;gap:14px;">
-        <div class="fig-img-wrap">
-          <img src="assets/cases/s25_robodojo_tasks.png" alt="RoboDojo 42 Simulation Tasks across 5 Dimensions and 18 Real-World Tasks across 3 Embodiments" loading="lazy">
-          <div class="fig-img-cap">a. 42 项 Isaac Sim 五维仿真题、域随机化对照与 18 项三构型真机题库（ARX X5 / Piper / Piper X）。</div>
+        <div class="fig-img-wrap media-tall">
+          <img src="assets/cases/s25_robodojo_tasks.webp" width="1502" height="1417" decoding="async" alt="RoboDojo 42 Simulation Tasks across 5 Dimensions and 18 Real-World Tasks across 3 Embodiments" loading="lazy">
+          <div class="fig-img-cap">a. 42 项 Isaac Sim 五维仿真题、域随机化对照与 18 项三构型真机题库（ARX X5 / Piper / Piper X；点击可放大查看全部 42 项细节）。</div>
         </div>
-        <div class="fig-img-wrap">
-          <img src="assets/cases/s25_realeval.png" alt="RoboDojo RealEval 1.5m Standardized LED Lightbox and 3D-Printed Camera and Arm Fixtures" loading="lazy">
+        <div class="fig-img-wrap media-strip">
+          <img src="assets/cases/s25_realeval.webp" width="1507" height="485" decoding="async" alt="RoboDojo RealEval 1.5m Standardized LED Lightbox and 3D-Printed Camera and Arm Fixtures" loading="lazy">
           <div class="fig-img-cap">b. RealEval 可复现真机实测台：1.5m 恒定 LED 灯箱、三路相机标定位姿与远程排队终端。</div>
         </div>
       </div>
@@ -1149,7 +1153,7 @@ ERP 导出漏选一列 -> Calc 汇总公式引用偏列 -> Writer 嵌错表
           <div id="chart-phys-sim"></div>
         </div>
         <div class="dual-subpanel">
-          <div class="dual-subpanel-title">Panel B | First Exam 停表与实时时钟 <span>456 核心题 / 35 套仿真</span></div>
+          <div class="dual-subpanel-title">Panel B | First Exam 实时时钟 <span>456 核心题 / 35 仿真</span></div>
           <div id="chart-first-exam"></div>
         </div>
       </div>
@@ -1465,6 +1469,9 @@ ERP 导出漏选一列 -> Calc 汇总公式引用偏列 -> Writer 嵌错表
 <!-- Floating SVG Tooltip -->
 <div id="svg-tooltip" role="tooltip"></div>
 
+<!-- Floating Back-to-Top Button -->
+<button type="button" id="back-to-top" aria-label="返回顶部">↑ 顶部</button>
+
 <footer class="site-footer">
   <div class="footer-inner">
     <span>2026 前沿 AI 评测的范式变化 | Zhongguancun Academy | 2026-11-26</span>
@@ -1476,7 +1483,7 @@ ERP 导出漏选一列 -> Calc 汇总公式引用偏列 -> Writer 嵌错表
   </div>
 </footer>
 
-<script src="data.js?v=20261126-7"></script>
-<script src="charts.js?v=20261126-7"></script>
+<script src="data.js?v=20261126-8"></script>
+<script src="charts.js?v=20261126-8"></script>
 </body>
 </html>

@@ -11,7 +11,7 @@
   const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
 
   /* ------------------------------------------------------------------------
-     0. TOOLTIP ENGINE
+     0. GPU-COMPOSITED TOOLTIP ENGINE (translate3d: zero layout thrash)
      ------------------------------------------------------------------------ */
   const tip = $("#svg-tooltip");
   function bindTooltips(selector, getHtml, onClick) {
@@ -19,24 +19,23 @@
       el.addEventListener("mouseenter", () => {
         if (!tip) return;
         tip.innerHTML = getHtml(el);
-        tip.style.display = "block";
+        tip.classList.add("visible");
       });
       el.addEventListener("mousemove", e => {
         if (!tip) return;
-        const x = Math.min(window.innerWidth - 340, e.clientX + 14);
-        const y = Math.min(window.innerHeight - 130, Math.max(12, e.clientY - 12));
-        tip.style.left = x + "px";
-        tip.style.top = y + "px";
+        const x = Math.min(window.innerWidth - 336, e.clientX + 14);
+        const y = Math.min(window.innerHeight - 134, Math.max(12, e.clientY - 12));
+        tip.style.transform = `translate3d(${x}px, ${y}px, 0)`;
       });
       el.addEventListener("mouseleave", () => {
-        if (tip) tip.style.display = "none";
+        if (tip) tip.classList.remove("visible");
       });
       if (onClick) el.addEventListener("click", () => onClick(el));
     });
   }
 
   /* ------------------------------------------------------------------------
-     1. FOOTNOTE TOGGLES + BIBTEX COPY + INLINE BENCHMARK DRAWER LINKS
+     1. FOOTNOTE TOGGLES + BIBTEX COPY + LIGHTBOX + 60FPS READING PROGRESS
      ------------------------------------------------------------------------ */
   function initUIHelpers() {
     $$(".sn-ref").forEach(ref => {
@@ -65,6 +64,109 @@
         });
       });
     }
+
+    initScrollEnhancements();
+    initImageLightbox();
+  }
+
+  function initScrollEnhancements() {
+    const bar = $("#read-progress");
+    const topBtn = $("#back-to-top");
+    let ticking = false;
+
+    const updateScroll = () => {
+      const scrollY = window.scrollY || document.documentElement.scrollTop || 0;
+      const docH = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      if (bar) {
+        const pct = Math.min(1, Math.max(0, scrollY / docH));
+        bar.style.transform = `scaleX(${pct.toFixed(4)})`;
+      }
+      if (topBtn) {
+        topBtn.classList.toggle("visible", scrollY > 560);
+      }
+      ticking = false;
+    };
+
+    window.addEventListener("scroll", () => {
+      if (!ticking) {
+        ticking = true;
+        window.requestAnimationFrame(updateScroll);
+      }
+    }, { passive: true });
+    updateScroll();
+
+    if (topBtn) {
+      topBtn.addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+    }
+
+    // Active section highlight in sticky nav via IntersectionObserver (zero scroll jank)
+    const navLinks = $$('.header-nav a[href^="#"]');
+    const targets = navLinks
+      .map(a => ({ a, el: document.querySelector(a.getAttribute("href")) }))
+      .filter(x => x.el);
+
+    if (targets.length && "IntersectionObserver" in window) {
+      const io = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const id = "#" + entry.target.id;
+            navLinks.forEach(link => link.classList.toggle("is-active", link.getAttribute("href") === id));
+          }
+        });
+      }, { rootMargin: "-18% 0px -68% 0px", threshold: 0 });
+      targets.forEach(t => io.observe(t.el));
+    }
+  }
+
+  let lbEl = null;
+  function closeLightbox() {
+    if (!lbEl || !lbEl.classList.contains("open")) return;
+    lbEl.classList.remove("open");
+    document.body.style.overflow = "";
+  }
+
+  function initImageLightbox() {
+    const imgs = $$(".fig-img-wrap img");
+    if (!imgs.length) return;
+
+    lbEl = document.createElement("div");
+    lbEl.className = "lightbox-backdrop";
+    lbEl.setAttribute("role", "dialog");
+    lbEl.setAttribute("aria-modal", "true");
+    lbEl.setAttribute("aria-label", "查看大图");
+    lbEl.innerHTML = `
+      <div class="lightbox-frame">
+        <img class="lightbox-img" src="" alt="">
+        <div class="lightbox-bar">
+          <div class="lightbox-cap"></div>
+          <button type="button" class="lightbox-close">关闭 (Esc)</button>
+        </div>
+      </div>`;
+    document.body.appendChild(lbEl);
+
+    const lbImg = $(".lightbox-img", lbEl);
+    const lbCap = $(".lightbox-cap", lbEl);
+    $(".lightbox-close", lbEl).addEventListener("click", closeLightbox);
+    lbEl.addEventListener("click", e => {
+      if (e.target === lbEl) closeLightbox();
+    });
+
+    imgs.forEach(img => {
+      const wrap = img.closest(".fig-img-wrap");
+      if (wrap) wrap.classList.add("is-zoomable");
+      img.addEventListener("click", () => {
+        lbImg.src = img.currentSrc || img.src;
+        lbImg.alt = img.alt || "";
+        const fig = img.closest("figure");
+        const titleEl = fig ? $(".fig-title", fig) : null;
+        const capEl = wrap ? $(".fig-img-cap", wrap) : null;
+        lbCap.textContent = (capEl && capEl.textContent.trim()) || (titleEl && titleEl.textContent.trim()) || img.alt || "";
+        lbEl.classList.add("open");
+        document.body.style.overflow = "hidden";
+      });
+    });
   }
 
   /* ------------------------------------------------------------------------
@@ -992,12 +1094,14 @@
       </div>
     `;
     bg.classList.add("open");
+    document.body.style.overflow = "hidden";
     $("#drawer-close-btn").addEventListener("click", closeDrawer);
   }
 
   function closeDrawer() {
     const bg = $("#drawer-bg");
     if (bg) bg.classList.remove("open");
+    document.body.style.overflow = "";
   }
 
   /* ------------------------------------------------------------------------
@@ -1103,7 +1207,10 @@
       });
     }
     document.addEventListener("keydown", e => {
-      if (e.key === "Escape") closeDrawer();
+      if (e.key === "Escape") {
+        closeLightbox();
+        closeDrawer();
+      }
     });
   });
 })();
