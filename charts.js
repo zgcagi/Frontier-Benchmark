@@ -151,17 +151,17 @@
     if (!host || !D.releaseShift) return;
     const { retired, rows } = D.releaseShift;
 
-    const W = 940, rowH = 34;
+    const W = 980, rowH = 34;
     const topBannerH = 62;
     const tblHeadY = topBannerH + 46;
     const H = tblHeadY + rows.length * rowH + 34;
 
     const colTrack = 12;
-    const colName = 104;
-    const colFable = 365;
-    const colGpt = 530;
-    const colGemini = 695;
-    const colTag = 835;
+    const colName = 148;
+    const colFable = 420;
+    const colGpt = 576;
+    const colGemini = 732;
+    const colTag = 900;
 
     let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block;font-family:var(--font-sans);">`;
 
@@ -188,7 +188,7 @@
 
     // Table Headers
     svg += `<line x1="8" y1="${tblHeadY - 18}" x2="${W - 8}" y2="${tblHeadY - 18}" stroke="#1A1A1A" stroke-width="1.3"/>`;
-    svg += `<text x="${colTrack}" y="${tblHeadY - 4}" font-size="11" font-weight="650" fill="#666666">所属赛道</text>`;
+    svg += `<text x="${colTrack}" y="${tblHeadY - 4}" font-size="11" font-weight="650" fill="#666666">所属领域</text>`;
     svg += `<text x="${colName}" y="${tblHeadY - 4}" font-size="11" font-weight="650" fill="#1A1A1A">2026 前沿基准</text>`;
     svg += `<text x="${colFable}" y="${tblHeadY - 4}" text-anchor="middle" font-size="11.2" font-weight="700" fill="#A84A32">Anthropic Fable 5.2 (11.09)</text>`;
     svg += `<text x="${colGpt}" y="${tblHeadY - 4}" text-anchor="middle" font-size="11.2" font-weight="700" fill="#2D6A5B">OpenAI GPT-6.2 (11.17)</text>`;
@@ -714,11 +714,11 @@
     if (!host) return;
     const core = D.benchmarks.filter(b => b.track !== "legacy");
     const groups = [
-      { key: "code", label: "代码工程",       bg: "#F5F8FC", bar: "#1F4E79" },
-      { key: "sci",  label: "科研任务",       bg: "#F3F8F6", bar: "#2D6A5B" },
-      { key: "off",  label: "办公与职业任务", bg: "#FBF7F1", bar: "#8C6239" },
-      { key: "cua",  label: "CUA 任务",       bg: "#F5F6F9", bar: "#4B5563" },
-      { key: "phys", label: "物理交互",       bg: "#FCF4F1", bar: "#A84A32" }
+      { key: "code", label: "代码工程",           bg: "#F5F8FC", bar: "#1F4E79" },
+      { key: "sci",  label: "科学研究",           bg: "#F3F8F6", bar: "#2D6A5B" },
+      { key: "off",  label: "办公业务",           bg: "#FBF7F1", bar: "#8C6239" },
+      { key: "cua",  label: "Computer-Use Agent", bg: "#F5F6F9", bar: "#4B5563" },
+      { key: "phys", label: "物理交互",           bg: "#FCF4F1", bar: "#A84A32" }
     ];
 
     const W = 980, padL = 224, padR = 294, padT = 56, padB = 34, rowH = 27, groupGap = 8;

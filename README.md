@@ -22,16 +22,16 @@
 1. **一、旧 Benchmark 失效与新一代评测特征**：从 AA v5.0 隔夜换榜与官方总榜原图切入，梳理旧榜饱和后 OpenAI 与 Anthropic 的新重心，配齐 Epoch 饱和曲线、Anthropic S-1 原图与闭源三强 11 月主表实录，归纳新基准的四项核心特征。
 2. **二、从代码仓库走向物理世界**：按从最容易自动验证的代码沙盒一路外扩到三维物理世界的脉络，拆解 9 个代表性案例：
    - **2.1 代码工程**：`FrontierCode 2.0`、`FrontierSWE v2`（含 SWE-bench 五代饱和图与思考预算对照）
-   - **2.2 科研任务**：`TB-Science 0.1`、`De novo binder design`
-   - **2.3 办公与职业任务**：`AutomationBench v1.0.6`、`AA-Briefcase v1.1`、`Remote Labor Index`
-   - **2.4 CUA 任务**：`Chartography` 与 `OSWorld 2.1`
+   - **2.2 科学研究**：`TB-Science 0.1`、`De novo binder design`
+   - **2.3 办公业务**：`AutomationBench v1.0.6`、`AA-Briefcase v1.1`、`Remote Labor Index`
+   - **2.4 Computer-Use Agent**：`Chartography` 与 `OSWorld 2.1`
    - **2.5 物理交互**：`RoboDojo` 与 `Embodied First Exam`
 3. **三、如何搭建有价值的 Benchmark**：将 16 套前沿基准各自独立的题量、团队、造题与跑榜成本、开放策略按五色领域底板并列呈现（不混算均值），提炼跨领域共性规律与五步落地行动指南。
 4. **四、Benchmark RSI**：结合 `FireFlash` 与 `PostTrainBench` 分析评测环境向 Agentic RL 训练场延伸，并以 `Model x Harness x Environment` 共同进化收束。
 5. **References & Citation**：60 条连续编号 `[1]`–`[60]` 核验一手来源与标准学术 BibTeX 引用块。
 
 ### 2. 独立基准目录平台（`benchmarks.html`）
-- **16+3 交互目录**：按五大赛道（代码工程 3 / 科研任务 6 / 办公与职业任务 4 / CUA 任务 2 / 物理交互 1 + 旧代对照 3）、阵营、开放形态、验证机制四维筛选，支持实时检索、列排序及右侧档案抽屉；
+- **16+3 交互目录**：按五大领域（代码工程 3 / 科学研究 6 / 办公业务 4 / Computer-Use Agent 2 / 物理交互 1 + 旧代对照 3）、阵营、开放形态、验证机制四维筛选，支持实时检索、列排序及右侧档案抽屉；
 - **五大家族演进泳道**（2023.10 至 2026.11）；
 - **10 项前沿新基准中美官测跟进矩阵**；
 - **读榜小字速查表与中美八厂核验底表**。

@@ -1,7 +1,7 @@
 /* ==========================================================================
    2026 FRONTIER AI EVALUATION SURVEY | SINGLE-SOURCE VERIFIED DATASET
-   Data Cutoff: 2026-11-23 | Strictly aligned with Seminar PPTX P63-P64
-   Core Sample: 16 Frontier Benchmarks (3 Code / 6 Science / 4 Office / 3 Embodied)
+   Data Cutoff: 2026-11-26 | Strictly aligned with Seminar PPTX P63-P64
+   Core Sample: 16 Frontier Benchmarks (3 Code / 6 Science / 4 Office / 2 CUA / 1 Physical)
                 + 3 Legacy Baselines
    Zero em-dash, zero middle-dot, zero fluff tokens.
    ========================================================================== */
@@ -32,12 +32,12 @@ window.REPORT_DATA = {
       { track: "代码工程", name: "FrontierCode 2.0", fable: "p:50.2%", gpt: "p:44.2%", gemini: "p:46.2%", tag: "三家硬交集", note: "私有 PR 合入质量 + 501 条维护者红线；三家 11 月主表全主推" },
       { track: "代码工程", name: "FrontierSWE v2 (20h)", fable: "p:69.9%", gpt: "r:65.5%", gemini: "r:62.4%", tag: "20h 开放工程", note: "无标准补丁长程系统工程；Anthropic 主推，三家均有同框架实测" },
       { track: "代码工程", name: "Terminal-Bench 4.1", fable: "r:65.8%", gpt: "r:62.1%", gemini: "p:64.5%", tag: "开源容器底座", note: "Google 首推防作弊修正分；Harbor 双容器规范跨赛道复用" },
-      { track: "科研任务", name: "TB-Science 0.1", fable: "p:74.6%", gpt: "p:77.1%", gemini: "p:70.5%", tag: "三家硬交集", note: "海外三强唯一共同主推的命令行科学计算基准" },
-      { track: "科研任务", name: "HLE-Diamond", fable: "p:80.2%", gpt: "p:72.2%", gemini: "p:71.3%", tag: "清洗后主推", note: "原版 HLE 审出 29%-46% 错标后，三家齐换清洗版 Diamond" },
-      { track: "科研任务", name: "湿实验专项 (Binder / BioBasics)", fable: "p:14/15 靶点", gpt: "p:66.7% 排错", gemini: "n:未披露", tag: "干湿实验自建", note: "Anthropic 24h 蛋白设计寄 CRO 湿测；OpenAI x Ligo 测未发表脏底片" },
-      { track: "办公与职业", name: "AutomationBench (严格全通)", fable: "p:51.6%", gpt: "r:50.7%", gemini: "p:56.6%", tag: "47 SaaS 终态", note: "Anthropic 与 Google 双主推；按全部子目标 100% 达成严算" },
-      { track: "办公与职业", name: "AA-Briefcase / RLI 真外包", fable: "p:66.1% / 41.3%", gpt: "p:GDPval / 20.8%", gemini: "r:ALE 75.8%", tag: "商业交付验收", note: "转向企业网盘双轨验收与真实付费 Upwork 外包二元付款" },
-      { track: "CUA 任务", name: "OSWorld 2.1 (步骤 / 严通)", fable: "p:89.3 / 54.6%", gpt: "p:79.5 / 44.0%", gemini: "r:80.4 / 45.8%", tag: "1.6h 桌面操控", note: "由 2 分钟单软件短指令拉长 48 倍至跨软件长流程；另收 Chartography 2D 识图" },
+      { track: "科学研究", name: "TB-Science 0.1", fable: "p:74.6%", gpt: "p:77.1%", gemini: "p:70.5%", tag: "三家硬交集", note: "海外三强唯一共同主推的命令行科学计算基准" },
+      { track: "科学研究", name: "HLE-Diamond", fable: "p:80.2%", gpt: "p:72.2%", gemini: "p:71.3%", tag: "清洗后主推", note: "原版 HLE 审出 29%-46% 错标后，三家齐换清洗版 Diamond" },
+      { track: "科学研究", name: "湿实验专项 (Binder / BioBasics)", fable: "p:14/15 靶点", gpt: "p:66.7% 排错", gemini: "n:未披露", tag: "干湿实验自建", note: "Anthropic 24h 蛋白设计寄 CRO 湿测；OpenAI x Ligo 测未发表脏底片" },
+      { track: "办公业务", name: "AutomationBench (严格全通)", fable: "p:51.6%", gpt: "r:50.7%", gemini: "p:56.6%", tag: "47 SaaS 终态", note: "Anthropic 与 Google 双主推；按全部子目标 100% 达成严算" },
+      { track: "办公业务", name: "AA-Briefcase / RLI 真外包", fable: "p:66.1% / 41.3%", gpt: "p:GDPval / 20.8%", gemini: "r:ALE 75.8%", tag: "商业交付验收", note: "转向企业网盘双轨验收与真实付费 Upwork 外包二元付款" },
+      { track: "Computer-Use Agent", name: "OSWorld 2.1 (步骤 / 严通)", fable: "p:89.3 / 54.6%", gpt: "p:79.5 / 44.0%", gemini: "r:80.4 / 45.8%", tag: "1.6h 桌面操控", note: "由 2 分钟单软件短指令拉长 48 倍至跨软件长流程；另收 Chartography 2D 识图" },
       { track: "物理交互", name: "RoboDojo Sim / 安全红线", fable: "p:64.9%‡ / 91%", gpt: "p:29.8% / Crit", gemini: "p:双系统 / IPI 0%", tag: "物理与网安", note: "具身仿真与 ExploitBench / 行为安全审计成为 11 月新重点" }
     ]
   },
@@ -62,7 +62,7 @@ window.REPORT_DATA = {
     { model: "GPT-6 Astra", score: 65.5, cost: 1030, costLabel: "$1,030/题", hours: "15.2h", cn: false, note: "成本是 Carbon 的 16.6 倍，得分仅高 4.3 分" },
     { model: "Gemini 4 Neon", score: 62.4, cost: 96, costLabel: "$96/题", hours: "13.8h", cn: false, note: "与 GLM-5.3 单题同价，解决率高出一倍" },
     { model: "Gemini 4 Carbon", score: 61.2, cost: 62, costLabel: "$62/题", hours: "12.6h", cn: false, note: "中档主力高性价比参考线" },
-    { model: "Claude Haiku 5.5 (小模型)", score: 43.8, cost: 21, costLabel: "$21/题", hours: "11.4h", cn: false, note: "小模型跑赢高价国产旗舰，反证短中程瓶颈不在参数量" },
+    { model: "Claude Haiku 5.5 (小模型)", score: 43.8, cost: 21, costLabel: "$21/题", hours: "11.4h", cn: false, note: "小模型跑赢高价国产旗舰，说明短中程瓶颈不在参数量" },
     { model: "GLM-5.3 (开源最高)", score: 30.2, cost: 97, costLabel: "$97/题", hours: "17.1h", cn: true, note: "运行时间更长、花费同价，解决率仍不到海外一半" },
     { model: "Kimi K3", score: 25.9, cost: 110, costLabel: "$110/题", hours: "18.5h", cn: true, note: "0 分任务同样消耗 18h+，缺少有效回滚策略" },
     { model: "Qwen3.8-Max", score: 17.8, cost: 51, costLabel: "$51/题", hours: "17.8h", cn: true, note: "首交拖至 18.8h，偏向局部打补丁" },
@@ -202,7 +202,7 @@ window.REPORT_DATA = {
       capability: "真实 Linux 终端下的环境配置、排障与系统迁移",
       source: "100+ 贡献者共建的 Linux 命令行工程任务（COBOL 迁 Python、内核编译、Git+Nginx 静默 404 排障）",
       funnel: "单题 >3h 严审：oracle 5/5 必过、no-op 必败 -> TB 3.0 起上线前派对抗 Agent 攻题 -> 主动缩容至 66 道硬题 + 8h 去噪",
-      verifier: "开源 Harbor 五件套双容器底座：交卷后挂载隐藏 tests/，检验活系统终态，并引入 Cheating-adjusted 轨迹扣分",
+      verifier: "开源 Harbor 五件套双容器底座：提交后挂载隐藏 tests/，检验活系统终态，并引入 Cheating-adjusted 轨迹扣分",
       score: "Copilot Fusion 71.2%；Opus 5.5 / Fable 5.2 65.8%；Kimi K3.1 Pro 59.7%（仅差 6.1 分）",
       cost: "TB 4.0 官榜总计 $116K（Fable $16.5K vs DeepSeek $0.2K 差 80 倍）；4.1 靠容器产物归档实现 $0 离线重评",
       lesson: "把评测当作持续迭代的开源软件维护：主动缩容、红队攻题、产物归档零成本重评。",
@@ -212,12 +212,12 @@ window.REPORT_DATA = {
           "TB 2.0 仅将超时放宽 3-5 倍，同权重 GPT-5.2 即提升 6-15 分，证明旧限时混入了大量编译装包噪声。",
           "榜单执法：清退私改超时并嵌答案的 OB-1、将 tests/ 打进镜像的 Pilot 与运行期 curl 拉答案的 ForgeCode。"
         ],
-        anticheat: "按题控网 + 交卷后挂载 tests/ + 入库前强制 Cheat Trials 红队攻题 + 全量轨迹上传。",
+        anticheat: "按题控网 + 提交后挂载 tests/ + 入库前强制 Cheat Trials 红队攻题 + 全量轨迹上传。",
         adoption: "中美共同主战场；解耦开源的 Harbor 五件套已成为跨赛道容器标准。"
       }
     },
     {
-      id: "hle", name: "HLE -> HLE-Diamond", track: "sci", trackLabel: "科研任务",
+      id: "hle", name: "HLE -> HLE-Diamond", track: "sci", trackLabel: "科学研究",
       org: "Scale AI x CAIS (500+ 机构)", orgType: "data", orgLabel: "数据/评测机构", orgScale: "500+ 机构 / 1,000 学者",
       release: "2025.01 -> 2026.09", releaseYear: 2026.7, evolution: "征题(24.09)->原版(2500题)->Verified/Rolling->Diamond(1000题)",
       countStr: "2,500 -> 1,000 题", countNum: 1000, inGoldenZone: false, access: "hyb", accessLabel: "公私混合",
@@ -240,7 +240,7 @@ window.REPORT_DATA = {
       }
     },
     {
-      id: "biomy", name: "BioMysteryBench", track: "sci", trackLabel: "科研任务",
+      id: "biomy", name: "BioMysteryBench", track: "sci", trackLabel: "科学研究",
       org: "Anthropic + 领域专家", orgType: "lab", orgLabel: "大厂自建", orgScale: "1 家大厂 + 生物专家",
       release: "2026.04 -> 2026.10 退役", releaseYear: 2026.3, evolution: "99题 -> 定稿90题 -> 半年饱和退役转交 Vals AI",
       countStr: "99 -> 90 题 (5公)", countNum: 90, inGoldenZone: true, access: "hyb", accessLabel: "公私混合 (5公)",
@@ -263,7 +263,7 @@ window.REPORT_DATA = {
       }
     },
     {
-      id: "tbs", name: "TB-Science 0.1", track: "sci", trackLabel: "科研任务",
+      id: "tbs", name: "TB-Science 0.1", track: "sci", trackLabel: "科学研究",
       org: "Stanford / Laude 等 10+ 机构", orgType: "acad", orgLabel: "高校联盟", orgScale: "10+ 机构科学家众包",
       release: "2026.08 -> 2026.11 扩题", releaseYear: 2026.6, evolution: "70题首发 -> 按月合 PR 扩至 96 题",
       countStr: "920 -> 70(96) 题", countNum: 70, inGoldenZone: true, access: "open", accessLabel: "全开源 (+Harbor)",
@@ -280,12 +280,12 @@ window.REPORT_DATA = {
         cases: [
           "17 年冰川卫星 GeoTIFF 算高程变化、9 年水文 R 全局优化 15 参数、强放热反应釜安全温控、Lorenz-96 混沌反推干扰项。"
         ],
-        anticheat: "答题容器全程断网防查论文；标准解 CI 5/5 通过排除数值波动。",
+        anticheat: "执行容器全程断网防查论文；标准解 CI 5/5 通过排除数值波动。",
         adoption: "海外三大厂官方发布主表硬交集 + AA v5.0 科学推理核心权重。"
       }
     },
     {
-      id: "asb", name: "ASB 0.1 -> TwinLab-Bench", track: "sci", trackLabel: "科研任务",
+      id: "asb", name: "ASB 0.1 -> TwinLab-Bench", track: "sci", trackLabel: "科学研究",
       org: "西北大学 -> 浙大等高校团队", orgType: "acad", orgLabel: "高校联盟", orgScale: "单校 -> 多校补位",
       release: "2026.10 -> 2026.11", releaseYear: 2026.85, evolution: "ASB 0.1 (6题 / 0%采用) -> 38天后 TwinLab 补齐 52 题",
       countStr: "6 -> 52 题", countNum: 52, inGoldenZone: true, access: "open", accessLabel: "全开源",
@@ -308,7 +308,7 @@ window.REPORT_DATA = {
       }
     },
     {
-      id: "biobasics", name: "BioBasicsBench", track: "sci", trackLabel: "科研任务",
+      id: "biobasics", name: "BioBasicsBench", track: "sci", trackLabel: "科学研究",
       org: "OpenAI x Ligo Biosciences", orgType: "lab", orgLabel: "大厂自建", orgScale: "2 家联合 + 3 博士盲审",
       release: "2026.11", releaseYear: 2026.85, evolution: "100 题 100% 内部未发表底片首发",
       countStr: "100 题", countNum: 100, inGoldenZone: true, access: "priv", accessLabel: "私有闭源",
@@ -331,7 +331,7 @@ window.REPORT_DATA = {
       }
     },
     {
-      id: "binder", name: "De novo binder design (24h)", track: "sci", trackLabel: "科研任务",
+      id: "binder", name: "De novo binder design (24h)", track: "sci", trackLabel: "科学研究",
       org: "Anthropic x Twist / Adaptyv", orgType: "lab", orgLabel: "大厂自建", orgScale: "1 家大厂 + 2 家商业 CRO",
       release: "2026.08 -> 2026.11", releaseYear: 2026.86, evolution: "26.08 试点 -> 26.11 15 靶点 x 1,320 序列湿测",
       countStr: "15 靶点 (1,320序列)", countNum: 15, inGoldenZone: false, access: "hyb", accessLabel: "公私混合",
@@ -353,7 +353,7 @@ window.REPORT_DATA = {
       }
     },
     {
-      id: "autobench", name: "AutomationBench v1.0.6", track: "off", trackLabel: "办公与职业任务",
+      id: "autobench", name: "AutomationBench v1.0.6", track: "off", trackLabel: "办公业务",
       org: "Zapier (后联合 AA)", orgType: "prod", orgLabel: "产品公司", orgScale: "1 家产品公司 + AA 对齐",
       release: "2026.04 -> 2026.11", releaseYear: 2026.5, evolution: "26.04 上线 -> v1.0.6 -> BLE 审计检出公开集 71% 缺陷",
       countStr: "100 公 + 657 私", countNum: 657, inGoldenZone: false, access: "hyb", accessLabel: "公私混合",
@@ -375,7 +375,7 @@ window.REPORT_DATA = {
       }
     },
     {
-      id: "ale", name: "Agents' Last Exam v1.1", track: "off", trackLabel: "办公与职业任务",
+      id: "ale", name: "Agents' Last Exam v1.1", track: "off", trackLabel: "办公业务",
       org: "UC Berkeley RDI x Snorkel (40+)", orgType: "acad", orgLabel: "高校联盟", orgScale: "40+ 机构 / 300+ 专家",
       release: "2026.05 -> 2026.10", releaseYear: 2026.75, evolution: "v1.0(26.05) -> v1.1(删30不稳题锁122题并藏私有测)",
       countStr: "1,500+ -> 122 活跃题", countNum: 122, inGoldenZone: true, access: "hyb", accessLabel: "公私混合 (藏测)",
@@ -397,7 +397,7 @@ window.REPORT_DATA = {
       }
     },
     {
-      id: "briefcase", name: "AA-Briefcase v1.1", track: "off", trackLabel: "办公与职业任务",
+      id: "briefcase", name: "AA-Briefcase v1.1", track: "off", trackLabel: "办公业务",
       org: "Artificial Analysis + 行业专家", orgType: "data", orgLabel: "数据/评测机构", orgScale: "1 家评测机构 + 行业专家",
       release: "2026.06 -> 2026.11", releaseYear: 2026.45, evolution: "v1.0(26.06) -> v1.1(纳入 AA v5.0 核心权重)",
       countStr: "4 企业 / 91 题", countNum: 91, inGoldenZone: true, access: "priv", accessLabel: "私有闭源",
@@ -419,7 +419,7 @@ window.REPORT_DATA = {
       }
     },
     {
-      id: "rli", name: "Remote Labor Index (RLI)", track: "off", trackLabel: "办公与职业任务",
+      id: "rli", name: "Remote Labor Index (RLI)", track: "off", trackLabel: "办公业务",
       org: "Scale AI x CAIS", orgType: "data", orgLabel: "数据/评测机构", orgScale: "2 家机构 + 23 工种真人专家",
       release: "2025.10 -> 2026.11", releaseYear: 2026.1, evolution: "25.10 首发(2.5%) -> 26.11 追踪至 41.3%",
       countStr: "10 公 + 230 私", countNum: 240, inGoldenZone: true, access: "hyb", accessLabel: "公私混合 (10公)",
@@ -441,7 +441,7 @@ window.REPORT_DATA = {
       }
     },
     {
-      id: "charto", name: "Chartography", track: "cua", trackLabel: "CUA 任务",
+      id: "charto", name: "Chartography", track: "cua", trackLabel: "Computer-Use Agent",
       org: "Surge AI + 12 行业行家", orgType: "data", orgLabel: "数据/评测机构", orgScale: "1 家数据公司 + 12 行业专家",
       release: "2026.07 -> 2026.08", releaseYear: 2026.6, evolution: "26.07 首榜(45%) -> 26.08 论文开源 -> 26.11 三强破 72%",
       countStr: "100 专业真图", countNum: 100, inGoldenZone: true, access: "open", accessLabel: "全开源 (CC BY)",
@@ -463,7 +463,7 @@ window.REPORT_DATA = {
       }
     },
     {
-      id: "osworld", name: "OSWorld 2.1", track: "cua", trackLabel: "CUA 任务",
+      id: "osworld", name: "OSWorld 2.1", track: "cua", trackLabel: "Computer-Use Agent",
       org: "港大 XLang x CMU 等 12+ 机构", orgType: "acad", orgLabel: "高校联盟", orgScale: "12+ 高校与研究机构",
       release: "2024.04 -> 2026.06", releaseYear: 2026.5, evolution: "1.0(369小题)->Verified(25.07)->2.0(108长流程)->2.1(修脚本)",
       countStr: "369 -> 108 题 (82本地)", countNum: 108, inGoldenZone: true, access: "open", accessLabel: "全开源",
@@ -492,10 +492,10 @@ window.REPORT_DATA = {
       countStr: "60 题 / 456 核心", countNum: 60, inGoldenZone: true, access: "open", accessLabel: "全开源 (+Harbor)",
       evalTags: ["phys"], evalShort: "Isaac Sim 仿真 + RealEval 真机实测台 + 实时时钟对照",
       capability: "零微调通用大模型直控三维双臂与实时物理反馈",
-      source: "RoboDojo 5 维 24 技能 42 仿真 + 1.5m 恒定 LED 棚 18 真机；First Exam 基于 Harbor 统合 35 套仿真 47 本体",
+      source: "RoboDojo 5 维 24 技能 42 仿真 + 1.5m 恒定 LED 台 18 真机；First Exam 基于 Harbor 统合 35 套仿真 47 本体",
       funnel: "11.14 审计清退向 Prompt 注入解题指南的 SOLVE*(75%)/Q0*(68.9%)；First Exam 对 456 核心题剥离仿真停表特权",
       verifier: "读取三路相机画面输出双臂 6-DoF 位姿；First Exam 严格对照回合制停表与真实物理时钟连续流逝",
-      score: "Fable 5.2 Sim‡ 64.9% 达 Astra (29.8%) 2.18 倍，但均未交真机卷（真机最高 33.9%）；切实时时钟后 63.0% (287/456 题) 三家全 0 分",
+      score: "Fable 5.2 Sim‡ 64.9% 达 Astra (29.8%) 2.18 倍，但均未提交真机成绩（真机最高 33.9%）；切实时时钟后 63.0% (287/456 题) 三家全 0 分",
       cost: "Token + Isaac Sim GPU 渲染双消耗 $1,200-$5,500+；需 8xRTX 4090 并发",
       lesson: "读具身分数必须核对 ‡ 脚注（私有外挂、停表冻结重力、未测真机）；0.1Hz 慢思考无法应对 10-50Hz 实时物理。",
       url: "https://robodojo-benchmark.com/",
@@ -615,7 +615,7 @@ window.REPORT_DATA = {
     {
       cat: "01 | 综合榜单、独立审计机构与实验室官方披露",
       items: [
-        { title: "Artificial Analysis Intelligence Index (v5.0.1)", url: "https://artificialanalysis.ai/evaluations/artificial-analysis-intelligence-index" },
+        { title: "Artificial Analysis Intelligence Index (v5.0.2)", url: "https://artificialanalysis.ai/evaluations/artificial-analysis-intelligence-index" },
         { title: "Artificial Analysis Methodology & Versioning", url: "https://artificialanalysis.ai/methodology/intelligence-benchmarking" },
         { title: "Epoch AI Benchmarks Hub", url: "https://epoch.ai/benchmarks" },
         { title: "Epoch AI Benchmark Reviews (29 Audits Included List)", url: "https://epoch.ai/data/benchmark-reviews-documentation/included-benchmarks" },
