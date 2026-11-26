@@ -1,6 +1,6 @@
 /* ==========================================================================
-   FRONTIER EVALUATION SURVEY · MINIMALIST SVG CHARTS & INTERACTIONS
-   Zero external dependencies · Calm 2–3 tone academic palette
+   2026 FRONTIER AI EVALUATION SURVEY | CHARTS, MECHANISM DIAGRAMS & EXPLORER
+   Zero external dependencies | Pure SVG + Vanilla ES6 | SSOT dynamic stats
    ========================================================================== */
 
 (function () {
@@ -9,20 +9,6 @@
 
   const $ = (sel, ctx = document) => ctx.querySelector(sel);
   const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
-
-  // Calm academic palette
-  const C = {
-    ink: "#1A1A1A",
-    muted: "#666666",
-    faint: "#8A8A8A",
-    grid: "#E5E7EB",
-    track: "#F3F4F6",
-    blue: "#1F4E79",
-    blueLight: "#B8CCE0",
-    rust: "#A84A32",
-    sage: "#3D6B5E",
-    grayBar: "#CBD5E1"
-  };
 
   /* ------------------------------------------------------------------------
      0. TOOLTIP ENGINE
@@ -37,7 +23,7 @@
       });
       el.addEventListener("mousemove", e => {
         if (!tip) return;
-        const x = Math.min(window.innerWidth - 336, e.clientX + 14);
+        const x = Math.min(window.innerWidth - 340, e.clientX + 14);
         const y = Math.min(window.innerHeight - 130, Math.max(12, e.clientY - 12));
         tip.style.left = x + "px";
         tip.style.top = y + "px";
@@ -45,21 +31,25 @@
       el.addEventListener("mouseleave", () => {
         if (tip) tip.style.display = "none";
       });
-      if (onClick) {
-        el.addEventListener("click", () => onClick(el));
-      }
+      if (onClick) el.addEventListener("click", () => onClick(el));
     });
   }
 
   /* ------------------------------------------------------------------------
-     1. INLINE FOOTNOTES & COPY BIBTEX
+     1. FOOTNOTE TOGGLES + BIBTEX COPY + INLINE BENCHMARK DRAWER LINKS
      ------------------------------------------------------------------------ */
-  function initReadingChrome() {
+  function initUIHelpers() {
     $$(".sn-ref").forEach(ref => {
       ref.addEventListener("click", () => {
-        const targetId = ref.dataset.sn;
-        const note = document.getElementById(targetId);
+        const note = document.getElementById(ref.dataset.sn);
         if (note) note.classList.toggle("open");
+      });
+    });
+
+    $$("a.bench-ref[data-bid]").forEach(a => {
+      a.addEventListener("click", e => {
+        e.preventDefault();
+        openDrawer(a.dataset.bid);
       });
     });
 
@@ -70,82 +60,82 @@
         if (!code) return;
         navigator.clipboard.writeText(code.textContent.trim()).then(() => {
           const old = copyBtn.textContent;
-          copyBtn.textContent = "已复制";
-          setTimeout(() => (copyBtn.textContent = old), 1600);
+          copyBtn.textContent = "已复制 BibTeX";
+          setTimeout(() => (copyBtn.textContent = old), 1800);
         });
       });
     }
   }
 
   /* ------------------------------------------------------------------------
-     2. CHART #1 · AA v4.3.2 (10.26) -> v5.0 (10.27) OVERNIGHT SWAP
+     2. FIGURE 1 | AA OVERNIGHT SWAP DUMBBELL (Strictly 10.26 -> 10.27, 6 models)
      ------------------------------------------------------------------------ */
   function renderAAOvernight() {
     const host = $("#chart-aa-overnight");
     if (!host) return;
     const rows = D.aaOvernight;
-    const W = 860, rowH = 40, padL = 178, padR = 88, padT = 32, padB = 42;
+    const W = 860, rowH = 42, padL = 168, padR = 110, padT = 40, padB = 38;
     const H = padT + rows.length * rowH + padB;
-    const xMin = 20, xMax = 65;
+    const xMin = 24, xMax = 64;
     const toX = v => padL + ((v - xMin) / (xMax - xMin)) * (W - padL - padR);
 
     let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block;font-family:var(--font-sans);">`;
+    svg += `<rect x="${toX(50)}" y="${padT - 6}" width="${toX(64) - toX(50)}" height="${rows.length * rowH + 6}" fill="#F0F5FA"/>`;
+    svg += `<text x="${toX(57)}" y="${padT - 13}" text-anchor="middle" font-size="11" font-weight="600" fill="#1F4E79">海外闭源稳定区间 (50-64)</text>`;
+    svg += `<rect x="${toX(28)}" y="${padT - 6}" width="${toX(48) - toX(28)}" height="${rows.length * rowH + 6}" fill="#FDF3F0"/>`;
+    svg += `<text x="${toX(38)}" y="${padT - 13}" text-anchor="middle" font-size="11" font-weight="600" fill="#A84A32">国产 24h 回落区间 (32-46)</text>`;
 
-    // Vertical gridlines
-    [25, 30, 35, 40, 45, 50, 55, 60, 65].forEach(t => {
+    [25, 30, 35, 40, 45, 50, 55, 60].forEach(t => {
       const x = toX(t);
-      svg += `<line x1="${x}" y1="${padT - 6}" x2="${x}" y2="${H - padB}" stroke="${C.grid}" stroke-dasharray="2,3"/>`;
-      svg += `<text x="${x}" y="${H - padB + 16}" text-anchor="middle" font-size="11" fill="${C.faint}">${t}</text>`;
+      svg += `<line x1="${x}" y1="${padT - 4}" x2="${x}" y2="${H - padB}" stroke="#E5E7EB" stroke-dasharray="3,3"/>`;
+      svg += `<text x="${x}" y="${H - padB + 17}" text-anchor="middle" font-size="11" fill="#8A8A8A">${t}</text>`;
     });
 
     svg += `<defs>
-      <marker id="arr-down" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto"><path d="M0,1 L9,5 L0,9 z" fill="${C.rust}"/></marker>
-      <marker id="arr-up" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto"><path d="M0,1 L9,5 L0,9 z" fill="${C.sage}"/></marker>
+      <marker id="arr-down" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,1 L9,5 L0,9 z" fill="#A84A32"/></marker>
+      <marker id="arr-up" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,1 L9,5 L0,9 z" fill="#2D6A5B"/></marker>
     </defs>`;
 
     rows.forEach((r, i) => {
       const y = padT + i * rowH + rowH / 2;
-      const x4 = toX(r.v4);
-      const x5 = toX(r.v5);
+      const x4 = toX(r.v4), x5 = toX(r.v5);
       const isUp = r.v5 >= r.v4;
-      const col = r.group === "us" ? C.blue : C.rust;
-      const lineCol = isUp ? C.sage : (r.group === "cn" ? C.rust : "#8FA7BE");
+      const col = r.group === "us" ? "#1F4E79" : "#A84A32";
+      const lineCol = isUp ? "#2D6A5B" : (r.group === "cn" ? "#A84A32" : "#6E8EA8");
 
-      if (i === 3) {
-        svg += `<line x1="8" y1="${padT + i * rowH}" x2="${W - 8}" y2="${padT + i * rowH}" stroke="#D1D5DB" stroke-dasharray="4,4"/>`;
-      } else if (i > 0) {
-        svg += `<line x1="8" y1="${padT + i * rowH}" x2="${W - 8}" y2="${padT + i * rowH}" stroke="#F3F4F6"/>`;
+      if (i > 0) {
+        svg += `<line x1="8" y1="${padT + i * rowH}" x2="${W - 8}" y2="${padT + i * rowH}" stroke="${i === 3 ? "#D1D5DB" : "#F2F4F7"}" ${i === 3 ? 'stroke-dasharray="5,4" stroke-width="1.2"' : ""}/>`;
       }
 
-      svg += `<g class="aa-row" data-tip="<b>${r.model}</b><br>10.26 (v4.3.2)：<b>${r.v4}</b> → 10.27 (v5.0)：<b>${r.v5}</b> (${r.delta})<br>${r.note}" style="cursor:pointer;">`;
+      svg += `<g class="aa-row" data-tip="<b>${r.model}</b><br>10.26 (v4.3.2): <b>${r.v4}</b> -> 10.27 (v5.0): <b>${r.v5}</b> (${r.delta})<br>${r.note}" style="cursor:pointer;">`;
       svg += `<rect x="0" y="${padT + i * rowH}" width="${W}" height="${rowH}" fill="transparent"/>`;
-      svg += `<text x="${padL - 14}" y="${y + 4}" text-anchor="end" font-size="12.5" font-weight="600" fill="${C.ink}">${r.model}</text>`;
+      svg += `<text x="${padL - 12}" y="${y + 4}" text-anchor="end" font-size="12.5" font-weight="600" fill="${col}">${r.model}</text>`;
 
-      const offset = isUp ? -6.5 : 6.5;
+      const offset = isUp ? -7 : 7;
       if (Math.abs(x5 - x4) > 10) {
-        svg += `<line x1="${x4}" y1="${y}" x2="${x5 + offset}" y2="${y}" stroke="${lineCol}" stroke-width="2" marker-end="url(#${isUp ? "arr-up" : "arr-down"})"/>`;
+        svg += `<line x1="${x4}" y1="${y}" x2="${x5 + offset}" y2="${y}" stroke="${lineCol}" stroke-width="2.4" marker-end="url(#${isUp ? "arr-up" : "arr-down"})"/>`;
       } else {
-        svg += `<line x1="${x4}" y1="${y}" x2="${x5}" y2="${y}" stroke="${lineCol}" stroke-width="2"/>`;
+        svg += `<line x1="${x4}" y1="${y}" x2="${x5}" y2="${y}" stroke="${lineCol}" stroke-width="2.2"/>`;
       }
 
-      svg += `<circle cx="${x4}" cy="${y}" r="4.5" fill="#FFFFFF" stroke="#9CA3AF" stroke-width="1.8"/>`;
-      svg += `<text x="${x4 + (isUp ? -10 : 10)}" y="${y - 8}" text-anchor="middle" font-size="10.5" fill="${C.faint}">${r.v4}</text>`;
+      svg += `<circle cx="${x4}" cy="${y}" r="5" fill="#FFFFFF" stroke="#8A8A8A" stroke-width="1.8"/>`;
+      svg += `<text x="${x4 + (isUp ? -11 : 11)}" y="${y - 8}" text-anchor="middle" font-size="10.4" fill="#666666">${r.v4}</text>`;
+      svg += `<circle cx="${x5}" cy="${y}" r="6" fill="${col}" stroke="#FFFFFF" stroke-width="1.8"/>`;
+      svg += `<text x="${x5}" y="${y + 17}" text-anchor="middle" font-size="11.2" font-weight="700" fill="${col}">${r.v5}</text>`;
 
-      svg += `<circle cx="${x5}" cy="${y}" r="5.5" fill="${col}" stroke="#FFFFFF" stroke-width="1.5"/>`;
-      svg += `<text x="${x5}" y="${y + 16}" text-anchor="middle" font-size="11" font-weight="600" fill="${col}">${r.v5}</text>`;
-
-      const deltaCol = isUp ? C.sage : (r.group === "cn" ? C.rust : C.muted);
-      svg += `<text x="${W - 14}" y="${y + 4}" text-anchor="end" font-family="var(--font-mono)" font-size="12" font-weight="600" fill="${deltaCol}">${r.delta} 分</text>`;
+      const pillBg = isUp ? "#EDF6F4" : (r.group === "cn" ? "#FDF3F0" : "#F3F4F6");
+      const pillFg = isUp ? "#2D6A5B" : (r.group === "cn" ? "#A84A32" : "#666666");
+      svg += `<rect x="${W - padR + 14}" y="${y - 11}" width="82" height="22" rx="4" fill="${pillBg}"/>`;
+      svg += `<text x="${W - padR + 55}" y="${y + 4}" text-anchor="middle" font-size="11.6" font-weight="600" fill="${pillFg}">${r.delta} 分</text>`;
       svg += `</g>`;
     });
 
-    // Clean bottom legend
-    svg += `<circle cx="${padL}" cy="${H - 8}" r="4.5" fill="#FFFFFF" stroke="#9CA3AF" stroke-width="1.8"/>`;
-    svg += `<text x="${padL + 10}" y="${H - 4}" font-size="11.2" fill="${C.muted}">10.26 v4.3.2</text>`;
-    svg += `<circle cx="${padL + 115}" cy="${H - 8}" r="5" fill="${C.blue}"/>`;
-    svg += `<text x="${padL + 125}" y="${H - 4}" font-size="11.2" fill="${C.muted}">10.27 v5.0（海外）</text>`;
-    svg += `<circle cx="${padL + 265}" cy="${H - 8}" r="5" fill="${C.rust}"/>`;
-    svg += `<text x="${padL + 275}" y="${H - 4}" font-size="11.2" fill="${C.muted}">10.27 v5.0（国产）</text>`;
+    svg += `<circle cx="${padL}" cy="${H - 8}" r="4.5" fill="#FFFFFF" stroke="#8A8A8A" stroke-width="1.8"/>`;
+    svg += `<text x="${padL + 10}" y="${H - 4}" font-size="11" fill="#666666">10.26 旧版 v4.3.2</text>`;
+    svg += `<circle cx="${padL + 145}" cy="${H - 8}" r="5" fill="#1F4E79"/>`;
+    svg += `<text x="${padL + 155}" y="${H - 4}" font-size="11" fill="#666666">10.27 新版 v5.0 (海外)</text>`;
+    svg += `<circle cx="${padL + 315}" cy="${H - 8}" r="5" fill="#A84A32"/>`;
+    svg += `<text x="${padL + 325}" y="${H - 4}" font-size="11" fill="#666666">10.27 新版 v5.0 (国产)</text>`;
     svg += `</svg>`;
 
     host.innerHTML = svg;
@@ -153,7 +143,482 @@
   }
 
   /* ------------------------------------------------------------------------
-     3. CHART #2 · 10-BENCHMARK US vs CHINA ADOPTION MATRIX
+     3. FIGURE 2 | CODING COST PARETO & TB 4.1 SWITCHER
+     ------------------------------------------------------------------------ */
+  function renderCodeChart(mode = "fswe") {
+    const host = $("#chart-code-pareto");
+    if (!host) return;
+
+    if (mode === "fswe") {
+      const data = D.fsweLeaderboard;
+      const W = 860, H = 390, padL = 62, padR = 36, padT = 44, padB = 50;
+      const xMin = Math.log10(6), xMax = Math.log10(1500);
+      const toX = c => padL + ((Math.log10(c) - xMin) / (xMax - xMin)) * (W - padL - padR);
+      const toY = s => padT + ((78 - s) / 78) * (H - padT - padB);
+
+      let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block;font-family:var(--font-sans);">`;
+
+      const bx1 = toX(82), bx2 = toX(125);
+      svg += `<rect x="${bx1}" y="${padT}" width="${bx2 - bx1}" height="${H - padT - padB}" fill="#FAF5EE"/>`;
+      svg += `<text x="${(bx1 + bx2) / 2}" y="${padT - 18}" text-anchor="middle" font-size="10.8" font-weight="600" fill="#8C6239">同价区 (~$100)</text>`;
+      svg += `<text x="${(bx1 + bx2) / 2}" y="${padT - 5}" text-anchor="middle" font-size="10.2" fill="#8C6239">62% vs 30%</text>`;
+
+      [0, 15, 30, 45, 60, 75].forEach(s => {
+        const y = toY(s);
+        svg += `<line x1="${padL}" y1="${y}" x2="${W - padR}" y2="${y}" stroke="#E5E7EB" stroke-dasharray="3,3"/>`;
+        svg += `<text x="${padL - 8}" y="${y + 4}" text-anchor="end" font-size="11" fill="#8A8A8A">${s}%</text>`;
+      });
+
+      [10, 20, 50, 100, 200, 500, 1000].forEach(c => {
+        const x = toX(c);
+        svg += `<line x1="${x}" y1="${padT}" x2="${x}" y2="${H - padB}" stroke="#F2F4F7"/>`;
+        svg += `<text x="${x}" y="${H - padB + 18}" text-anchor="middle" font-size="11" fill="#8A8A8A">$${c}</text>`;
+      });
+      svg += `<text x="${(padL + W - padR) / 2}" y="${H - 8}" text-anchor="middle" font-size="11.5" font-weight="600" fill="#333333">FrontierSWE v2 单题平均 Token 成本（对数刻度 / 20h 预算）</text>`;
+      svg += `<text x="16" y="${(padT + H - padB) / 2}" text-anchor="middle" transform="rotate(-90 16 ${(padT + H - padB) / 2})" font-size="11.5" font-weight="600" fill="#333333">mean@5 解决率 (%)</text>`;
+
+      const paretoIds = ["DeepSeek V4 Flash Vision", "Claude Haiku 5.5 (小模型)", "Gemini 4 Carbon", "Gemini 4 Neon", "Claude Fable 5.2"];
+      const pts = paretoIds.map(n => data.find(d => d.model === n)).filter(Boolean);
+      const pathD = pts.map((p, idx) => `${idx === 0 ? "M" : "L"}${toX(p.cost).toFixed(1)},${toY(p.score).toFixed(1)}`).join(" ");
+      svg += `<path d="${pathD}" fill="none" stroke="#2D6A5B" stroke-width="1.8" stroke-dasharray="5,4"/>`;
+      svg += `<text x="${toX(14)}" y="${toY(53)}" font-size="10.8" font-weight="600" fill="#2D6A5B">性能-成本 Pareto 前沿</text>`;
+
+      const off = {
+        "Claude Fable 5.2": [11, 4],
+        "GPT-6 Astra": [-11, 4],
+        "Gemini 4 Neon": [11, 15],
+        "Gemini 4 Carbon": [-11, -8],
+        "Claude Haiku 5.5 (小模型)": [11, 5],
+        "GLM-5.3 (开源最高)": [11, -5],
+        "Kimi K3": [11, 11],
+        "Qwen3.8-Max": [-11, 4],
+        "DeepSeek V4 Flash Vision": [11, 4]
+      };
+
+      data.forEach(d => {
+        const x = toX(d.cost), y = toY(d.score);
+        const col = d.cn ? "#A84A32" : "#1F4E79";
+        const [dx, dy] = off[d.model] || [10, 4];
+        const anchor = dx < 0 ? "end" : "start";
+        svg += `<g class="code-pt" data-tip="<b>${d.model}</b><br>解决率: <b>${d.score}%</b> | 单题成本: <b>${d.costLabel}</b> | 均耗时: <b>${d.hours}</b><br>${d.note}" style="cursor:pointer;">`;
+        svg += `<circle cx="${x}" cy="${y}" r="6.5" fill="${col}" stroke="#FFFFFF" stroke-width="2"/>`;
+        svg += `<text x="${x + dx}" y="${y + dy}" text-anchor="${anchor}" font-size="11.2" font-weight="600" fill="${col}">${d.model} (${d.score}%)</text>`;
+        svg += `</g>`;
+      });
+
+      svg += `</svg>`;
+      host.innerHTML = svg;
+      bindTooltips("#chart-code-pareto .code-pt", el => el.dataset.tip);
+    } else {
+      const data = D.tb41Leaderboard;
+      const W = 860, rowH = 35, padL = 172, padR = 230, padT = 28, padB = 18;
+      const H = padT + data.length * rowH + padB;
+      const toW = s => (s / 80) * (W - padL - padR);
+
+      let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block;font-family:var(--font-sans);">`;
+      svg += `<text x="${padL - 10}" y="16" text-anchor="end" font-size="11" font-weight="600" fill="#666666">模型</text>`;
+      svg += `<text x="${padL}" y="16" font-size="11" font-weight="600" fill="#666666">TB 4.1 解决率 (66 题 / 8h 去噪)</text>`;
+      svg += `<text x="${W - padR + 70}" y="16" text-anchor="end" font-size="11" font-weight="600" fill="#666666">单轮成本</text>`;
+      svg += `<text x="${W - padR + 86}" y="16" font-size="11" font-weight="600" fill="#666666">框架 / 备注</text>`;
+
+      data.forEach((d, i) => {
+        const y = padT + i * rowH + 6;
+        const barW = toW(d.score);
+        const col = d.cn ? "#2D6A5B" : "#1F4E79";
+        const costCol = d.cost >= 10 ? "#A84A32" : (d.cost <= 0.4 ? "#2D6A5B" : "#666666");
+
+        svg += `<g class="tb-pt" data-tip="<b>${d.model}</b><br>TB 4.1: <b>${d.score}%</b> | 成本: <b>${d.costLabel}</b><br>${d.harness}" style="cursor:pointer;">`;
+        svg += `<rect x="0" y="${y - 4}" width="${W}" height="${rowH - 2}" fill="transparent"/>`;
+        svg += `<text x="${padL - 10}" y="${y + 14}" text-anchor="end" font-size="12" font-weight="${d.cn ? "650" : "500"}" fill="${d.cn ? "#2D6A5B" : "#1A1A1A"}">${d.model}</text>`;
+        svg += `<rect x="${padL}" y="${y + 3}" width="${W - padL - padR}" height="14" rx="3" fill="#F2F4F7"/>`;
+        svg += `<rect x="${padL}" y="${y + 3}" width="${barW}" height="14" rx="3" fill="${col}"/>`;
+        svg += `<text x="${padL + barW + 7}" y="${y + 14}" font-size="11.5" font-weight="600" fill="${col}">${d.score}%</text>`;
+        svg += `<text x="${W - padR + 70}" y="${y + 14}" text-anchor="end" font-size="11.5" font-weight="600" fill="${costCol}">${d.costLabel}</text>`;
+        svg += `<text x="${W - padR + 86}" y="${y + 14}" font-size="10.8" fill="#666666">${d.harness}</text>`;
+        svg += `</g>`;
+      });
+
+      svg += `</svg>`;
+      host.innerHTML = svg;
+      bindTooltips("#chart-code-pareto .tb-pt", el => el.dataset.tip);
+    }
+  }
+
+  /* ------------------------------------------------------------------------
+     4. FIGURE 3 | OFFICE DUAL-METRIC GAP (Fixed ALE legend!)
+     ------------------------------------------------------------------------ */
+  function renderOfficeDual(mode = "autobench") {
+    const host = $("#chart-office-dual");
+    if (!host) return;
+    const rows = D.officeDualMetrics[mode] || D.officeDualMetrics.autobench;
+    const hasCN = rows.some(r => r.cn);
+    const partialLbl = mode === "autobench" ? "AA 主榜目标分 (0 违规子目标)" : "步骤平均分 (Rubric Partial)";
+    const strictLbl = mode === "autobench" ? "严格全通率 (100% 达标且 0 违规)" : "严格全通率 (整单零失误)";
+
+    const W = 860, rowH = 46, padL = 168, padR = 102, padT = 34, padB = 30;
+    const H = padT + rows.length * rowH + padB;
+    const toX = v => padL + (v / 95) * (W - padL - padR);
+
+    let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block;font-family:var(--font-sans);">`;
+    [0, 20, 40, 60, 80].forEach(t => {
+      const x = toX(t);
+      svg += `<line x1="${x}" y1="${padT}" x2="${x}" y2="${H - padB}" stroke="#E5E7EB" stroke-dasharray="3,3"/>`;
+      svg += `<text x="${x}" y="${H - padB + 16}" text-anchor="middle" font-size="10.8" fill="#8A8A8A">${t}%</text>`;
+    });
+
+    rows.forEach((r, i) => {
+      const y = padT + i * rowH + 6;
+      const gap = (r.partial - r.strict).toFixed(1);
+      const xp = toX(r.partial), xs = toX(r.strict);
+      svg += `<g class="off-pt" data-tip="<b>${r.model}</b><br>${partialLbl}: <b>${r.partial}%</b><br>${strictLbl}: <b>${r.strict}%</b><br>双口径差距: <b>-${gap} 个百分点</b>" style="cursor:pointer;">`;
+      svg += `<text x="${padL - 10}" y="${y + 19}" text-anchor="end" font-size="12.2" font-weight="600" fill="${r.cn ? "#2D6A5B" : "#1A1A1A"}">${r.model}</text>`;
+      svg += `<rect x="${padL}" y="${y + 3}" width="${xp - padL}" height="11" rx="2.5" fill="#CBD5E1"/>`;
+      svg += `<text x="${xp + 6}" y="${y + 12}" font-size="11" font-weight="600" fill="#475569">${r.partial}%</text>`;
+      svg += `<rect x="${padL}" y="${y + 17}" width="${xs - padL}" height="11" rx="2.5" fill="${r.cn ? "#2D6A5B" : "#1F4E79"}"/>`;
+      svg += `<text x="${xs + 6}" y="${y + 26}" font-size="11" font-weight="700" fill="${r.cn ? "#2D6A5B" : "#1F4E79"}">${r.strict}%</text>`;
+      svg += `<rect x="${W - padR + 12}" y="${y + 6}" width="78" height="20" rx="4" fill="#FDF3F0"/>`;
+      svg += `<text x="${W - padR + 51}" y="${y + 20}" text-anchor="middle" font-size="11" font-weight="600" fill="#A84A32">-${gap} pt</text>`;
+      svg += `</g>`;
+    });
+
+    svg += `<rect x="${padL}" y="8" width="12" height="10" rx="2" fill="#CBD5E1"/>`;
+    svg += `<text x="${padL + 17}" y="17" font-size="11" fill="#666666">${partialLbl}</text>`;
+    svg += `<rect x="${padL + 228}" y="8" width="12" height="10" rx="2" fill="#1F4E79"/>`;
+    svg += `<text x="${padL + 245}" y="17" font-size="11" fill="#666666">${strictLbl}${hasCN ? "（青色为国产模型）" : ""}</text>`;
+    svg += `</svg>`;
+
+    host.innerHTML = svg;
+    bindTooltips("#chart-office-dual .off-pt", el => el.dataset.tip);
+  }
+
+  /* ------------------------------------------------------------------------
+     5. FIGURE 4 | EMBODIED TWO-PANEL SPLIT (Strictly Separated Physical Units)
+     ------------------------------------------------------------------------ */
+  function renderEmbodiedSplit() {
+    const hostA = $("#chart-embodied-acc");
+    const hostB = $("#chart-first-exam");
+
+    if (hostA) {
+      const stages = D.embodiedAccuracy;
+      const W = 540, H = 300, padL = 42, padR = 12, padT = 36, padB = 60;
+      const groupW = (W - padL - padR) / stages.length;
+      const toY = v => padT + ((100 - v) / 100) * (H - padT - padB);
+
+      let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block;font-family:var(--font-sans);">`;
+      [0, 25, 50, 75, 100].forEach(t => {
+        const y = toY(t);
+        svg += `<line x1="${padL}" y1="${y}" x2="${W - padR}" y2="${y}" stroke="#E5E7EB" stroke-dasharray="3,3"/>`;
+        svg += `<text x="${padL - 6}" y="${y + 4}" text-anchor="end" font-size="10.2" fill="#8A8A8A">${t}%</text>`;
+      });
+
+      const leg = [["Anthropic (Fable 5.2)", "#A84A32"], ["OpenAI (Sol / Astra)", "#1F4E79"], ["Google (Carbon)", "#2D6A5B"]];
+      leg.forEach(([lbl, col], i) => {
+        const lx = padL + i * 160;
+        svg += `<rect x="${lx}" y="9" width="10" height="10" rx="2" fill="${col}"/>`;
+        svg += `<text x="${lx + 14}" y="18" font-size="10.4" font-weight="600" fill="#333333">${lbl}</text>`;
+      });
+
+      stages.forEach((st, idx) => {
+        const gx = padL + idx * groupW + groupW / 2;
+        const bw = 21, gap = 6;
+        const startX = gx - (3 * bw + 2 * gap) / 2;
+        const items = [
+          { ...st.anthropic, col: "#A84A32" },
+          { ...st.openai, col: "#1F4E79" },
+          { ...st.google, col: "#2D6A5B" }
+        ];
+        items.forEach(it => {
+          const j = items.indexOf(it);
+          const bx = startX + j * (bw + gap);
+          if (it.val === null) {
+            svg += `<text x="${bx + bw / 2}" y="${toY(0) - 8}" text-anchor="middle" font-size="9.5" fill="#8A8A8A">未报</text>`;
+            return;
+          }
+          const y = toY(it.val), h = toY(0) - y;
+          svg += `<g class="emb-a-pt" data-tip="<b>${st.stage.replace("\n", " | ")}</b><br>${it.model}: <b>${it.val}%</b><br>${st.note}" style="cursor:pointer;">`;
+          svg += `<rect x="${bx}" y="${y}" width="${bw}" height="${h}" rx="3" fill="${it.col}"/>`;
+          svg += `<text x="${bx + bw / 2}" y="${y - 5}" text-anchor="middle" font-size="9.1" font-weight="600" fill="${it.col}">${it.val}${it.dagger ? "‡" : ""}</text>`;
+          svg += `</g>`;
+        });
+
+        st.stage.split("\n").forEach((ln, li) => {
+          svg += `<text x="${gx}" y="${H - padB + 19 + li * 14}" text-anchor="middle" font-size="${li === 0 ? "10.8" : "9.8"}" font-weight="${li === 0 ? "650" : "400"}" fill="${li === 0 ? "#1A1A1A" : "#666666"}">${ln}</text>`;
+        });
+      });
+
+      svg += `</svg>`;
+      hostA.innerHTML = svg;
+      bindTooltips("#chart-embodied-acc .emb-a-pt", el => el.dataset.tip);
+    }
+
+    if (hostB) {
+      const f = D.firstExamCliff;
+      const W = 340, H = 300;
+      let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block;font-family:var(--font-sans);">`;
+
+      svg += `<text x="10" y="22" font-size="11" font-weight="650" fill="#1F4E79">1. 允许仿真暂停重力 (Turn-based 最高准确率)</text>`;
+      svg += `<rect x="10" y="34" width="320" height="24" rx="4" fill="#E5E7EB"/>`;
+      svg += `<rect x="10" y="34" width="${(f.turnBasedBest.val / 100) * 320}" height="24" rx="4" fill="#1F4E79" class="emb-b-pt" data-tip="<b>Turn-based 停表模式</b><br>${f.turnBasedBest.note}" style="cursor:pointer;"/>`;
+      svg += `<text x="${10 + (f.turnBasedBest.val / 100) * 320 + 8}" y="51" font-size="12" font-weight="700" fill="#1F4E79">34.0% (GPT-6 Astra)</text>`;
+      svg += `<text x="10" y="76" font-size="10.4" fill="#666666">开源最高 9.0%；每步允许停表思考 10-18 秒</text>`;
+
+      svg += `<line x1="10" y1="95" x2="330" y2="95" stroke="#D1D5DB" stroke-dasharray="4,3"/>`;
+
+      svg += `<text x="10" y="117" font-size="11" font-weight="650" fill="#A84A32">2. 取消暂停键切回连续物理时钟 (456 题结局拆解)</text>`;
+      const zeroW = (f.realtimeZeroPct / 100) * 320;
+      const nonZeroW = 320 - zeroW;
+      svg += `<g class="emb-b-pt" data-tip="<b>Realtime 连续物理时钟 (456 核心题)</b><br>${f.note}" style="cursor:pointer;">`;
+      svg += `<rect x="10" y="128" width="${zeroW}" height="42" rx="4" fill="#A84A32"/>`;
+      svg += `<text x="${10 + zeroW / 2}" y="147" text-anchor="middle" font-size="12.5" font-weight="700" fill="#FFFFFF">63.0% 全员 0 分</text>`;
+      svg += `<text x="${10 + zeroW / 2}" y="162" text-anchor="middle" font-size="10" fill="#FDE8E1">287 / 456 题三家全零</text>`;
+      svg += `<rect x="${10 + zeroW + 4}" y="128" width="${nonZeroW - 4}" height="42" rx="4" fill="#64748B"/>`;
+      svg += `<text x="${10 + zeroW + 4 + (nonZeroW - 4) / 2}" y="147" text-anchor="middle" font-size="11.6" font-weight="600" fill="#FFFFFF">37.0%</text>`;
+      svg += `<text x="${10 + zeroW + 4 + (nonZeroW - 4) / 2}" y="162" text-anchor="middle" font-size="9.8" fill="#E2E8F0">至少一家非零</text>`;
+      svg += `</g>`;
+
+      svg += `<rect x="10" y="190" width="320" height="94" rx="5" fill="#FFFFFF" stroke="#E5E7EB"/>`;
+      svg += `<text x="22" y="212" font-size="11.2" font-weight="650" fill="#1A1A1A">延迟对比 (实测物理时间尺度)</text>`;
+      svg += `<text x="22" y="232" font-size="10.8" fill="#333333">- 慢思考大模型决策周期：约 10-18 秒/步 (~0.1 Hz)</text>`;
+      svg += `<text x="22" y="250" font-size="10.8" fill="#333333">- 倾倒水杯落地：0.4 秒 | 滑动目标移出：1.2 秒</text>`;
+      svg += `<text x="22" y="270" font-size="10.8" font-weight="600" fill="#A84A32">- 实时物理控制需要高频低延迟策略与高层规划协同</text>`;
+      svg += `</svg>`;
+      hostB.innerHTML = svg;
+      bindTooltips("#chart-first-exam .emb-b-pt", el => el.dataset.tip);
+    }
+  }
+
+  /* ------------------------------------------------------------------------
+     6. DIAGRAM 1 | HARBOR DUAL-CONTAINER + 0700 + RED-TEAM ARCHITECTURE (Part 3)
+     ------------------------------------------------------------------------ */
+  function renderDiagramHarbor() {
+    const host = $("#diagram-harbor");
+    if (!host) return;
+    const svg = `<svg viewBox="0 0 880 278" style="width:100%;height:auto;display:block;font-family:var(--font-sans);">
+      <defs>
+        <marker id="hb-arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,1 L9,5 L0,9 z" fill="#333333"/></marker>
+      </defs>
+
+      <!-- Step 1: Blue Zone -->
+      <rect x="8" y="14" width="222" height="190" rx="6" fill="#F0F5FA" stroke="#1F4E79" stroke-width="1.3"/>
+      <rect x="8" y="14" width="222" height="28" rx="6" fill="#1F4E79"/>
+      <text x="119" y="32" text-anchor="middle" font-size="11.6" font-weight="600" fill="#FFFFFF">Step 1 | 蓝区执行容器</text>
+      <text x="20" y="60" font-size="11.2" font-weight="650" fill="#1A1A1A">Agent 可见文件：</text>
+      <text x="20" y="78" font-size="10.8" font-family="var(--font-mono)" fill="#1F4E79">|- instruction.md</text>
+      <text x="20" y="94" font-size="10.8" font-family="var(--font-mono)" fill="#1F4E79">|- task.toml (超时/GPU)</text>
+      <text x="20" y="110" font-size="10.8" font-family="var(--font-mono)" fill="#1F4E79">|- environment/Dockerfile</text>
+      <line x1="20" y1="124" x2="218" y2="124" stroke="#CBD5E1"/>
+      <text x="20" y="142" font-size="11" fill="#333333">- 机内彻底移除 solution/ 与 tests/</text>
+      <text x="20" y="160" font-size="11" fill="#333333">- 按题断公网或设域名白名单</text>
+      <text x="20" y="178" font-size="11" fill="#333333">- submit 仅存保底快照防早退</text>
+      <text x="20" y="194" font-size="10.4" fill="#666666">(阻断外网检索与原仓偷抄)</text>
+
+      <line x1="230" y1="109" x2="256" y2="109" stroke="#333333" stroke-width="1.6" marker-end="url(#hb-arr)"/>
+
+      <!-- Step 2: Air-gap -->
+      <rect x="262" y="38" width="136" height="142" rx="6" fill="#FDF3F0" stroke="#A84A32" stroke-width="1.3" stroke-dasharray="4,3"/>
+      <text x="330" y="62" text-anchor="middle" font-size="11.6" font-weight="700" fill="#A84A32">Step 2 | 停机清场</text>
+      <text x="330" y="84" text-anchor="middle" font-size="10.8" fill="#333333">到点立即销毁执行机</text>
+      <text x="330" y="102" text-anchor="middle" font-size="10.8" font-weight="600" fill="#A84A32">清零 /tmp 与后台进程</text>
+      <line x1="276" y1="118" x2="384" y2="118" stroke="#EACBC2"/>
+      <text x="330" y="138" text-anchor="middle" font-size="10.8" fill="#333333">仅导出干净工作区产物</text>
+      <text x="330" y="156" text-anchor="middle" font-size="10.2" fill="#666666">永久归档 -> $0 离线重评</text>
+
+      <line x1="398" y1="109" x2="424" y2="109" stroke="#333333" stroke-width="1.6" marker-end="url(#hb-arr)"/>
+
+      <!-- Step 3: Red Zone -->
+      <rect x="430" y="14" width="228" height="190" rx="6" fill="#FAF5EE" stroke="#8C6239" stroke-width="1.3"/>
+      <rect x="430" y="14" width="228" height="28" rx="6" fill="#8C6239"/>
+      <text x="544" y="32" text-anchor="middle" font-size="11.6" font-weight="600" fill="#FFFFFF">Step 3 | 红区全新验证容器</text>
+      <text x="442" y="60" font-size="11.2" font-weight="650" fill="#1A1A1A">提交后挂载隐藏目录：</text>
+      <text x="442" y="78" font-size="10.8" font-family="var(--font-mono)" fill="#A84A32">|- /root/tests/ (chmod 0700)</text>
+      <text x="442" y="94" font-size="10.8" font-family="var(--font-mono)" fill="#A84A32">|- solution/solve.sh (5/5 必过)</text>
+      <line x1="442" y1="108" x2="646" y2="108" stroke="#E5D4BE"/>
+      <text x="442" y="126" font-size="11" fill="#333333">- 切普通 agent 账号降权跑待测码</text>
+      <text x="442" y="144" font-size="11" fill="#333333">- 封禁宿主机 root socket 越权读盘</text>
+      <text x="442" y="162" font-size="11" fill="#333333">- 测试输入随机加盐 / 改写文件名</text>
+      <text x="442" y="180" font-size="11" fill="#333333">- 双向断言：查改对 + 查未授权删改</text>
+      <text x="442" y="196" font-size="10.4" fill="#666666">(拦截 161KB 查表字典与改 pytest)</text>
+
+      <line x1="658" y1="109" x2="684" y2="109" stroke="#333333" stroke-width="1.6" marker-end="url(#hb-arr)"/>
+
+      <!-- Step 4: Trace Audit -->
+      <rect x="690" y="14" width="182" height="190" rx="6" fill="#F8F9FA" stroke="#1A1A1A" stroke-width="1.3"/>
+      <rect x="690" y="14" width="182" height="28" rx="6" fill="#1A1A1A"/>
+      <text x="781" y="32" text-anchor="middle" font-size="11.6" font-weight="600" fill="#FFFFFF">Step 4 | 轨迹审查</text>
+      <text x="702" y="64" font-size="11" fill="#333333">- 自动化 Scanner 查全量</text>
+      <text x="710" y="80" font-size="11" fill="#333333">执行日志与审计轨迹</text>
+      <text x="702" y="102" font-size="11" fill="#333333">- 捕获回放 .gold、搜原 PR</text>
+      <text x="710" y="118" font-size="11" fill="#333333">或下载现成权重即清零</text>
+      <rect x="702" y="142" width="158" height="44" rx="4" fill="#EDF6F4" stroke="#2D6A5B"/>
+      <text x="781" y="161" text-anchor="middle" font-size="11.2" font-weight="650" fill="#2D6A5B">输出可信分数</text>
+      <text x="781" y="177" text-anchor="middle" font-size="10.4" fill="#2D6A5B">与干净 RL Reward</text>
+
+      <!-- Bottom Pre-Launch Gate -->
+      <rect x="8" y="218" width="864" height="46" rx="5" fill="#F8F9FA" stroke="#D1D5DB"/>
+      <text x="22" y="238" font-size="11.2" font-weight="650" fill="#A84A32">入库前置门禁 | Cheat Trials 红队攻题 (TB 3.0+ / FC 2.0 标配)：</text>
+      <text x="22" y="254" font-size="11" fill="#333333">每道新题上线前先派奉命找漏洞的对抗 Agent 尝试攻破，被攻破则打回补强，防止带漏洞环境污染评测结果与后续 RL 训练。</text>
+    </svg>`;
+    host.innerHTML = svg;
+  }
+
+  /* ------------------------------------------------------------------------
+     7. DIAGRAM 2 | MODEL x HARNESS x ENVIRONMENT CO-EVOLUTION (PPT P08 Aligned)
+     ------------------------------------------------------------------------ */
+  function renderDiagramCoevolution() {
+    const host = $("#diagram-coevolution");
+    if (!host) return;
+    const svg = `<svg viewBox="0 0 880 286" style="width:100%;height:auto;display:block;font-family:var(--font-sans);">
+      <defs>
+        <marker id="co-arr-b" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,1 L9,5 L0,9 z" fill="#1F4E79"/></marker>
+        <marker id="co-arr-g" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,1 L9,5 L0,9 z" fill="#2D6A5B"/></marker>
+        <marker id="co-arr-r" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,1 L9,5 L0,9 z" fill="#A84A32"/></marker>
+      </defs>
+
+      <!-- Top External Driver: Real Demand -->
+      <rect x="180" y="10" width="520" height="46" rx="6" fill="#FDF3F0" stroke="#A84A32" stroke-width="1.3"/>
+      <text x="440" y="29" text-anchor="middle" font-size="11.8" font-weight="700" fill="#A84A32">核心驱动力：主动挖掘真实研发与业务需求（防止系统在旧题里空转）</text>
+      <text x="440" y="47" text-anchor="middle" font-size="10.8" fill="#5C281A">旧榜被击穿只是被动触发，人类新场景与真需求才是 Env 持续演进的源头</text>
+
+      <line x1="440" y1="56" x2="440" y2="86" stroke="#A84A32" stroke-width="1.8" marker-end="url(#co-arr-r)"/>
+
+      <!-- Center Top: Environment -->
+      <rect x="260" y="92" width="360" height="68" rx="6" fill="#EDF6F4" stroke="#2D6A5B" stroke-width="1.5"/>
+      <text x="440" y="114" text-anchor="middle" font-size="13" font-weight="700" fill="#2D6A5B">Environment | 可验证防作弊沙盒环境</text>
+      <text x="440" y="134" text-anchor="middle" font-size="11" fill="#333333">真实脏场景 + Harbor 物理隔离 + 双向断言 / 物理实测</text>
+      <text x="440" y="150" text-anchor="middle" font-size="10.4" fill="#666666">同时承担「外部基准评测」与「内部长程 RL 训练场」双重角色</text>
+
+      <!-- Bottom Left: Model -->
+      <rect x="30" y="198" width="270" height="72" rx="6" fill="#F0F5FA" stroke="#1F4E79" stroke-width="1.4"/>
+      <text x="165" y="220" text-anchor="middle" font-size="12.6" font-weight="700" fill="#1F4E79">Model | 模型权重迭代</text>
+      <text x="165" y="240" text-anchor="middle" font-size="11" fill="#333333">吸收高信噪比 RL 奖励，内化工程边界、</text>
+      <text x="165" y="256" text-anchor="middle" font-size="11" fill="#333333">自造测试与无效路径回滚习惯 (FireFlash +10.4 分)</text>
+
+      <!-- Bottom Right: Harness -->
+      <rect x="580" y="198" width="270" height="72" rx="6" fill="#FAF5EE" stroke="#8C6239" stroke-width="1.4"/>
+      <text x="715" y="220" text-anchor="middle" font-size="12.6" font-weight="700" fill="#8C6239">Harness | 执行框架迭代</text>
+      <text x="715" y="240" text-anchor="middle" font-size="11" fill="#333333">依据失败轨迹定向修补工具、上下文压缩与</text>
+      <text x="715" y="256" text-anchor="middle" font-size="11" fill="#333333">快照回滚机制 (训练与评测对齐即涨 +4.4 分)</text>
+
+      <!-- Arrows: Env -> Model, Env -> Harness -->
+      <path d="M 260,126 L 165,126 L 165,192" fill="none" stroke="#2D6A5B" stroke-width="1.8" marker-end="url(#co-arr-g)"/>
+      <rect x="64" y="136" width="156" height="22" rx="4" fill="#FFFFFF" stroke="#C3DFD8"/>
+      <text x="142" y="151" text-anchor="middle" font-size="10.6" font-weight="600" fill="#2D6A5B">2. 输出干净 RL 奖励反哺</text>
+
+      <path d="M 620,126 L 715,126 L 715,192" fill="none" stroke="#A84A32" stroke-width="1.8" marker-end="url(#co-arr-r)"/>
+      <rect x="660" y="136" width="156" height="22" rx="4" fill="#FFFFFF" stroke="#EACBC2"/>
+      <text x="738" y="151" text-anchor="middle" font-size="10.6" font-weight="600" fill="#A84A32">3. 失败轨迹回传补短板</text>
+
+      <!-- Bidirectional Model <-> Harness -->
+      <line x1="306" y1="226" x2="574" y2="226" stroke="#1F4E79" stroke-width="1.8" marker-end="url(#co-arr-b)"/>
+      <line x1="574" y1="246" x2="306" y2="246" stroke="#1F4E79" stroke-width="1.8" marker-end="url(#co-arr-b)"/>
+      <rect x="348" y="218" width="184" height="36" rx="4" fill="#FFFFFF" stroke="#CBD5E1"/>
+      <text x="440" y="234" text-anchor="middle" font-size="10.8" font-weight="700" fill="#1F4E79">4. 耦合演进 (RSI 在路上)</text>
+      <text x="440" y="249" text-anchor="middle" font-size="10" fill="#666666">参与自身代码与下一代环境构建</text>
+    </svg>`;
+    host.innerHTML = svg;
+  }
+
+  /* ------------------------------------------------------------------------
+     8. DYNAMIC STATS COMPUTED DIRECTLY FROM 16 CORE BENCHMARKS (SSOT!)
+     ------------------------------------------------------------------------ */
+  function renderDynamicStats() {
+    const core = D.benchmarks.filter(b => b.track !== "legacy");
+    const total = core.length; // strictly 16
+    const byOrg = { acad: 0, data: 0, lab: 0, prod: 0 };
+    const byAcc = { hyb: 0, priv: 0, open: 0 };
+    let goldenCount = 0;
+
+    core.forEach(b => {
+      if (byOrg[b.orgType] !== undefined) byOrg[b.orgType]++;
+      if (byAcc[b.access] !== undefined) byAcc[b.access]++;
+      if (b.inGoldenZone) goldenCount++;
+    });
+
+    const pct = n => Math.round((n / total) * 100);
+    const pAcad = pct(byOrg.acad), pData = pct(byOrg.data), pLab = pct(byOrg.lab), pProd = 100 - pAcad - pData - pLab;
+    const pHyb = pct(byAcc.hyb), pPriv = pct(byAcc.priv), pOpen = 100 - pHyb - pPriv;
+    const privDefense = byAcc.hyb + byAcc.priv;
+
+    const host = $("#dynamic-dist-bars");
+    if (host) {
+      host.innerHTML = `
+        <div class="info-card">
+          <div class="ic-k">动态统计 | 主导团队阵营 (N = ${total})</div>
+          <h4>高校搭公共底座，数据机构与一线专家造垂直主榜</h4>
+          <div class="stack-bar">
+            <div class="stack-seg" style="width:${pAcad}%;background:#1F4E79;" title="高校联盟 ${pAcad}% (${byOrg.acad}/${total})">高校 ${pAcad}% (${byOrg.acad})</div>
+            <div class="stack-seg" style="width:${pData}%;background:#A84A32;" title="数据/评测机构 ${pData}% (${byOrg.data}/${total})">数据机构 ${pData}% (${byOrg.data})</div>
+            <div class="stack-seg" style="width:${pLab}%;background:#2D6A5B;" title="大厂自建 ${pLab}% (${byOrg.lab}/${total})">大厂 ${pLab}%</div>
+            <div class="stack-seg" style="width:${pProd}%;background:#8C6239;" title="产品公司 ${pProd}% (${byOrg.prod}/${total})">产品 ${pProd}%</div>
+          </div>
+          <p>公共沙盒底座多出自 8-40+ 机构高校联盟（TB / OSWorld / RoboDojo / ALE）；垂直高难基准多由 1-3 家核心方外挂 20-1,000 位一线专家众包构建。</p>
+        </div>
+        <div class="info-card">
+          <div class="ic-k">动态统计 | 题库开放形态 (N = ${total})</div>
+          <h4>${pHyb}% 公私混合成最大主流，合计 ${pct(privDefense)}% 含私有防线</h4>
+          <div class="stack-bar">
+            <div class="stack-seg" style="width:${pHyb}%;background:#8C6239;" title="公私混合 ${pHyb}% (${byAcc.hyb}/${total})">公私混合 ${pHyb}% (${byAcc.hyb})</div>
+            <div class="stack-seg" style="width:${pPriv}%;background:#A84A32;" title="私有闭源 ${pPriv}% (${byAcc.priv}/${total})">纯私有 ${pPriv}% (${byAcc.priv})</div>
+            <div class="stack-seg" style="width:${pOpen}%;background:#2D6A5B;" title="全开源 ${pOpen}% (${byAcc.open}/${total})">全开源 ${pOpen}% (${byAcc.open})</div>
+          </div>
+          <p>高校并非全开源（UC Berkeley ALE 已藏私有测试集），商业机构也并非全闭源（Surge AI Chartography 以 CC BY 4.0 全开源）；题量方面 <strong>${pct(goldenCount)}% (${goldenCount}/${total})</strong> 收敛于 50-250 题。</p>
+        </div>
+      `;
+    }
+  }
+
+  /* ------------------------------------------------------------------------
+     9. FIVE-FAMILY TIMELINE SWIMLANES
+     ------------------------------------------------------------------------ */
+  function renderTimelineSVG() {
+    const host = $("#chart-timeline");
+    if (!host) return;
+    const W = 980, H = 330, padL = 176, padR = 72, padT = 34, padB = 36;
+    const tMin = 2023.75, tMax = 2027.02;
+    const toX = t => padL + ((t - tMin) / (tMax - tMin)) * (W - padL - padR);
+    const lanes = D.timelineLanes;
+
+    let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block;font-family:var(--font-sans);">`;
+    const x26 = toX(2026.0);
+    svg += `<rect x="${x26}" y="${padT - 6}" width="${W - padR - x26 + 22}" height="${H - padT - padB + 10}" fill="#FDF3F0" opacity="0.65"/>`;
+    svg += `<text x="${(x26 + W - padR + 22) / 2}" y="${padT - 12}" text-anchor="middle" font-size="10.8" font-weight="650" fill="#A84A32">2026 集中换代与清洗窗口</text>`;
+
+    [2024.0, 2024.5, 2025.0, 2025.5, 2026.0, 2026.5, 2026.92].forEach(t => {
+      const x = toX(t);
+      const yr = Math.floor(t), mo = Math.round((t - yr) * 12) + 1;
+      const lbl = `${yr}.${String(Math.min(12, mo)).padStart(2, "0")}`;
+      svg += `<line x1="${x}" y1="${padT}" x2="${x}" y2="${H - padB}" stroke="#E5E7EB" stroke-dasharray="3,3"/>`;
+      svg += `<text x="${x}" y="${H - 13}" text-anchor="middle" font-size="10.5" fill="#8A8A8A">${lbl}</text>`;
+    });
+
+    const laneH = (H - padT - padB) / lanes.length;
+    lanes.forEach((ln, idx) => {
+      const y = padT + laneH * idx + laneH / 2;
+      svg += `<text x="8" y="${y - 2}" font-size="11.6" font-weight="650" fill="#1A1A1A">${ln.name}</text>`;
+      svg += `<text x="8" y="${y + 12}" font-size="9.8" fill="#8A8A8A">${ln.sub}</text>`;
+      const firstX = toX(ln.nodes[0].t), lastX = toX(ln.nodes[ln.nodes.length - 1].t);
+      svg += `<line x1="${firstX}" y1="${y}" x2="${lastX}" y2="${y}" stroke="#D1D5DB" stroke-width="2.4" stroke-linecap="round"/>`;
+      ln.nodes.forEach((nd, ni) => {
+        const x = toX(nd.t);
+        let dx = 0, yOff = (ni % 2 === 0) ? -13 : 20;
+        if (nd.lbl.includes("RoboDojo")) { dx = -34; yOff = -13; }
+        if (nd.lbl.includes("ASB 0.1")) { dx = -38; yOff = 20; }
+        if (nd.lbl.includes("First Exam")) { dx = 22; yOff = -13; }
+        if (nd.lbl.includes("TwinLab")) { dx = 36; yOff = 20; }
+        svg += `<g class="tl-pt" data-tip="<b>${nd.lbl}</b><br>${nd.tip}" style="cursor:pointer;">`;
+        svg += `<circle cx="${x}" cy="${y}" r="5.5" fill="${nd.col}" stroke="#FFFFFF" stroke-width="1.8"/>`;
+        svg += `<text x="${x + dx}" y="${y + yOff}" text-anchor="middle" font-size="9.9" font-weight="600" fill="${nd.col}">${nd.lbl}</text>`;
+        svg += `</g>`;
+      });
+    });
+
+    svg += `</svg>`;
+    host.innerHTML = svg;
+    bindTooltips("#chart-timeline .tl-pt", el => el.dataset.tip);
+  }
+
+  /* ------------------------------------------------------------------------
+     10. ADOPTION MATRIX + 16+3 EXPLORER TABLE + DRAWER (BUG-FREE LEGACY FILTER)
      ------------------------------------------------------------------------ */
   function renderAdoptionMatrix(filter = "all") {
     const tbody = $("#adoption-tbody");
@@ -169,249 +634,19 @@
       return true;
     });
     tbody.innerHTML = rows.map(r => `
-      <tr>
-        <td><b>${r.name}</b><span class="b-sub">${r.track} · ${r.tag}</span></td>
-        ${fmtCell(r.oai)}
-        ${fmtCell(r.ant)}
-        ${fmtCell(r.goo)}
-        ${fmtCell(r.cnOld)}
-        ${fmtCell(r.cnNow)}
-        <td style="font-size:12.2px;color:var(--muted);">${r.gapNote}</td>
+      <tr ${r.bid ? `data-bid="${r.bid}" style="cursor:pointer;"` : ""}>
+        <td><b>${r.name}</b><span class="b-sub">${r.track} / ${r.tag}</span></td>
+        ${fmtCell(r.oai)}${fmtCell(r.ant)}${fmtCell(r.goo)}${fmtCell(r.cnOld)}${fmtCell(r.cnNow)}
+        <td style="font-size:12px;color:var(--muted);">${r.gapNote}</td>
       </tr>
     `).join("");
+
+    $$("#adoption-tbody tr[data-bid]").forEach(tr => {
+      tr.addEventListener("click", () => openDrawer(tr.dataset.bid));
+    });
   }
 
-  /* ------------------------------------------------------------------------
-     4. CHART #3 · CODING COST PARETO & LEADERBOARD (FSWE v2 / TB 4.1)
-     ------------------------------------------------------------------------ */
-  function renderCodeChart(mode = "fswe") {
-    const host = $("#chart-code-pareto");
-    if (!host) return;
-
-    if (mode === "fswe") {
-      const data = D.fsweLeaderboard;
-      const W = 880, H = 390, padL = 62, padR = 36, padT = 36, padB = 52;
-      const xMin = Math.log10(6), xMax = Math.log10(1500);
-      const toX = c => padL + ((Math.log10(c) - xMin) / (xMax - xMin)) * (W - padL - padR);
-      const toY = s => padT + ((78 - s) / 78) * (H - padT - padB);
-
-      let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block;font-family:var(--font-sans);">`;
-
-      // Subtle ~$100 band
-      const bx1 = toX(82), bx2 = toX(125);
-      svg += `<rect x="${bx1}" y="${padT}" width="${bx2 - bx1}" height="${H - padT - padB}" fill="#F8F9FA"/>`;
-      svg += `<line x1="${bx1}" y1="${padT}" x2="${bx1}" y2="${H - padB}" stroke="#E5E7EB" stroke-dasharray="3,3"/>`;
-      svg += `<line x1="${bx2}" y1="${padT}" x2="${bx2}" y2="${H - padB}" stroke="#E5E7EB" stroke-dasharray="3,3"/>`;
-      svg += `<text x="${(bx1 + bx2) / 2}" y="${padT - 10}" text-anchor="middle" font-size="10.8" fill="${C.muted}">~$100 同成本带 (62% vs 30%)</text>`;
-
-      [0, 15, 30, 45, 60, 75].forEach(s => {
-        const y = toY(s);
-        svg += `<line x1="${padL}" y1="${y}" x2="${W - padR}" y2="${y}" stroke="${C.grid}" stroke-dasharray="2,3"/>`;
-        svg += `<text x="${padL - 10}" y="${y + 4}" text-anchor="end" font-size="11" fill="${C.faint}">${s}%</text>`;
-      });
-
-      [10, 20, 50, 100, 200, 500, 1000].forEach(c => {
-        const x = toX(c);
-        svg += `<line x1="${x}" y1="${padT}" x2="${x}" y2="${H - padB}" stroke="#F3F4F6"/>`;
-        svg += `<text x="${x}" y="${H - padB + 18}" text-anchor="middle" font-size="11" fill="${C.faint}">$${c}</text>`;
-      });
-      svg += `<text x="${(padL + W - padR) / 2}" y="${H - 10}" text-anchor="middle" font-size="11.5" font-weight="600" fill="${C.muted}">单题平均 Token 成本（对数刻度 · 20 小时上限）</text>`;
-      svg += `<text x="16" y="${(padT + H - padB) / 2}" text-anchor="middle" transform="rotate(-90 16 ${(padT + H - padB) / 2})" font-size="11.5" font-weight="600" fill="${C.muted}">mean@5 解决率 (%)</text>`;
-
-      const paretoIds = ["DeepSeek V4 Flash Vision", "Claude Haiku 5.5 (小模型)", "Gemini 4 Carbon", "Gemini 4 Neon", "Claude Fable 5.2"];
-      const pts = paretoIds.map(n => data.find(d => d.model === n)).filter(Boolean);
-      const pathD = pts.map((p, idx) => `${idx === 0 ? "M" : "L"}${toX(p.cost).toFixed(1)},${toY(p.score).toFixed(1)}`).join(" ");
-      svg += `<path d="${pathD}" fill="none" stroke="#9CA3AF" stroke-width="1.5" stroke-dasharray="5,4"/>`;
-      svg += `<text x="${toX(14)}" y="${toY(53)}" font-size="10.8" fill="${C.muted}">Pareto 前沿</text>`;
-
-      const off = {
-        "Claude Fable 5.2": [11, 4],
-        "GPT-6 Astra": [-11, 4],
-        "Gemini 4 Neon": [11, 15],
-        "Gemini 4 Carbon": [-11, -7],
-        "Claude Haiku 5.5 (小模型)": [11, 4],
-        "GLM-5.3 (最强开源)": [11, -5],
-        "Kimi K3": [11, 11],
-        "Qwen3.8-Max": [-11, 4],
-        "DeepSeek V4 Flash Vision": [11, 4]
-      };
-
-      data.forEach(d => {
-        const x = toX(d.cost), y = toY(d.score);
-        const col = d.cn ? C.rust : C.blue;
-        const [dx, dy] = off[d.model] || [10, 4];
-        const anchor = dx < 0 ? "end" : "start";
-        svg += `<g class="code-pt" data-tip="<b>${d.model}</b><br>解决率：<b>${d.score}%</b> ｜ 单题成本：<b>${d.costLabel}</b> ｜ 均耗时：<b>${d.hours}</b><br>${d.note}" style="cursor:pointer;">`;
-        svg += `<circle cx="${x}" cy="${y}" r="6" fill="${col}" stroke="#FFFFFF" stroke-width="1.8"/>`;
-        svg += `<text x="${x + dx}" y="${y + dy}" text-anchor="${anchor}" font-size="11.2" font-weight="600" fill="${col}">${d.model} (${d.score}%)</text>`;
-        svg += `</g>`;
-      });
-
-      svg += `</svg>`;
-      host.innerHTML = svg;
-      bindTooltips("#chart-code-pareto .code-pt", el => el.dataset.tip);
-    } else {
-      const data = D.tb41Leaderboard;
-      const W = 880, rowH = 34, padL = 176, padR = 230, padT = 28, padB = 16;
-      const H = padT + data.length * rowH + padB;
-      const maxS = 80;
-      const toW = s => (s / maxS) * (W - padL - padR);
-
-      let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block;font-family:var(--font-sans);">`;
-      svg += `<text x="${padL - 12}" y="16" text-anchor="end" font-size="11" font-weight="600" fill="${C.faint}">模型</text>`;
-      svg += `<text x="${padL}" y="16" font-size="11" font-weight="600" fill="${C.faint}">TB 4.1 官方解决率（66 题 · 8h 超时）</text>`;
-      svg += `<text x="${W - padR + 74}" y="16" text-anchor="end" font-size="11" font-weight="600" fill="${C.faint}">单轮成本</text>`;
-      svg += `<text x="${W - padR + 94}" y="16" font-size="11" font-weight="600" fill="${C.faint}">Harness / 说明</text>`;
-
-      data.forEach((d, i) => {
-        const y = padT + i * rowH + 5;
-        const barW = toW(d.score);
-        const col = d.cn ? C.rust : C.blue;
-
-        svg += `<g class="tb-pt" data-tip="<b>${d.model}</b><br>TB 4.1 解决率：<b>${d.score}%</b> ｜ 跑一轮成本：<b>${d.costLabel}</b><br>Harness：${d.harness}" style="cursor:pointer;">`;
-        svg += `<rect x="0" y="${y - 4}" width="${W}" height="${rowH - 2}" fill="transparent"/>`;
-        svg += `<text x="${padL - 12}" y="${y + 14}" text-anchor="end" font-size="12.2" font-weight="${d.cn ? "600" : "500"}" fill="${d.cn ? C.rust : C.ink}">${d.model}</text>`;
-        svg += `<rect x="${padL}" y="${y + 4}" width="${W - padL - padR}" height="13" rx="2" fill="${C.track}"/>`;
-        svg += `<rect x="${padL}" y="${y + 4}" width="${barW}" height="13" rx="2" fill="${col}"/>`;
-        svg += `<text x="${padL + barW + 7}" y="${y + 14}" font-family="var(--font-mono)" font-size="11.5" font-weight="600" fill="${col}">${d.score}%</text>`;
-        svg += `<text x="${W - padR + 74}" y="${y + 14}" text-anchor="end" font-family="var(--font-mono)" font-size="11.5" fill="${C.muted}">${d.costLabel}</text>`;
-        svg += `<text x="${W - padR + 94}" y="${y + 14}" font-size="11.2" fill="${C.faint}">${d.harness}</text>`;
-        svg += `</g>`;
-      });
-
-      svg += `</svg>`;
-      host.innerHTML = svg;
-      bindTooltips("#chart-code-pareto .tb-pt", el => el.dataset.tip);
-    }
-  }
-
-  /* ------------------------------------------------------------------------
-     5. CHART #4 · OFFICE DUAL-METRIC GAP (AutomationBench-AA & ALE v1.1)
-     ------------------------------------------------------------------------ */
-  function renderOfficeDual(mode = "autobench") {
-    const host = $("#chart-office-dual");
-    if (!host) return;
-    const rows = D.officeDualMetrics[mode] || D.officeDualMetrics.autobench;
-    const partialLbl = mode === "autobench" ? "子目标步骤分 (Partial)" : "步骤平均分 (Partial)";
-    const strictLbl = mode === "autobench" ? "严格全通率 (Strict · 0 违规)" : "严格全通率 (Strict · 整单零失误)";
-
-    const W = 860, rowH = 44, padL = 170, padR = 86, padT = 32, padB = 30;
-    const H = padT + rows.length * rowH + padB;
-    const toX = v => padL + (v / 95) * (W - padL - padR);
-
-    let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block;font-family:var(--font-sans);">`;
-
-    [0, 20, 40, 60, 80].forEach(t => {
-      const x = toX(t);
-      svg += `<line x1="${x}" y1="${padT}" x2="${x}" y2="${H - padB}" stroke="${C.grid}" stroke-dasharray="2,3"/>`;
-      svg += `<text x="${x}" y="${H - padB + 16}" text-anchor="middle" font-size="11" fill="${C.faint}">${t}%</text>`;
-    });
-
-    rows.forEach((r, i) => {
-      const y = padT + i * rowH + 5;
-      const gap = (r.partial - r.strict).toFixed(1);
-      const xp = toX(r.partial), xs = toX(r.strict);
-      const strictCol = r.cn ? C.rust : C.blue;
-
-      svg += `<g class="off-pt" data-tip="<b>${r.model}</b><br>${partialLbl}：<b>${r.partial}%</b><br>${strictLbl}：<b>${r.strict}%</b><br>两项指标落差：<b>−${gap} 个百分点</b>" style="cursor:pointer;">`;
-      svg += `<text x="${padL - 12}" y="${y + 19}" text-anchor="end" font-size="12.4" font-weight="600" fill="${r.cn ? C.rust : C.ink}">${r.model}</text>`;
-      svg += `<rect x="${padL}" y="${y + 3}" width="${xp - padL}" height="10" rx="2" fill="${C.grayBar}"/>`;
-      svg += `<text x="${xp + 6}" y="${y + 12}" font-family="var(--font-mono)" font-size="10.8" fill="${C.muted}">${r.partial}%</text>`;
-      svg += `<rect x="${padL}" y="${y + 16}" width="${xs - padL}" height="10" rx="2" fill="${strictCol}"/>`;
-      svg += `<text x="${xs + 6}" y="${y + 25}" font-family="var(--font-mono)" font-size="10.8" font-weight="600" fill="${strictCol}">${r.strict}%</text>`;
-      svg += `<text x="${W - 10}" y="${y + 19}" text-anchor="end" font-family="var(--font-mono)" font-size="11.5" font-weight="600" fill="${C.rust}">−${gap} pt</text>`;
-      svg += `</g>`;
-    });
-
-    svg += `<rect x="${padL}" y="7" width="11" height="9" rx="1.5" fill="${C.grayBar}"/>`;
-    svg += `<text x="${padL + 16}" y="15" font-size="11.2" fill="${C.muted}">${partialLbl}</text>`;
-    svg += `<rect x="${padL + 215}" y="7" width="11" height="9" rx="1.5" fill="${C.blue}"/>`;
-    svg += `<text x="${padL + 231}" y="15" font-size="11.2" fill="${C.muted}">${strictLbl}（深红为国产模型）</text>`;
-    svg += `</svg>`;
-
-    host.innerHTML = svg;
-    bindTooltips("#chart-office-dual .off-pt", el => el.dataset.tip);
-  }
-
-  /* ------------------------------------------------------------------------
-     6. CHART #5 · 2D -> DESKTOP -> 3D -> REALTIME CLIFF
-     ------------------------------------------------------------------------ */
-  function renderEmbodiedCliff() {
-    const host = $("#chart-embodied-cliff");
-    if (!host) return;
-    const stages = D.embodiedProgression;
-    const W = 880, H = 320, padL = 48, padR = 16, padT = 36, padB = 64;
-    const innerW = W - padL - padR;
-    const groupW = innerW / stages.length;
-    const toY = v => padT + ((100 - v) / 100) * (H - padT - padB);
-
-    let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block;font-family:var(--font-sans);">`;
-
-    [0, 25, 50, 75, 100].forEach(t => {
-      const y = toY(t);
-      svg += `<line x1="${padL}" y1="${y}" x2="${W - padR}" y2="${y}" stroke="${C.grid}" stroke-dasharray="2,3"/>`;
-      svg += `<text x="${padL - 8}" y="${y + 4}" text-anchor="end" font-size="11" fill="${C.faint}">${t}%</text>`;
-    });
-
-    const leg = [["Claude Fable 5.2", C.rust], ["GPT-6 Astra", C.blue], ["Gemini 4 Carbon", C.sage]];
-    leg.forEach(([lbl, col], i) => {
-      const lx = padL + i * 158;
-      svg += `<rect x="${lx}" y="8" width="10" height="10" rx="2" fill="${col}"/>`;
-      svg += `<text x="${lx + 15}" y="17" font-size="11.5" fill="${C.muted}">${lbl}</text>`;
-    });
-
-    stages.forEach((st, idx) => {
-      const gx = padL + idx * groupW + groupW / 2;
-      const bw = 24, gap = 5;
-      const vals = [
-        { k: "Fable 5.2", v: st.fable, col: C.rust },
-        { k: "GPT-6 Astra", v: st.gpt, col: C.blue },
-        { k: "Gemini 4", v: st.gemini, col: C.sage }
-      ];
-
-      if (idx === 4) {
-        svg += `<line x1="${padL + idx * groupW}" y1="${padT}" x2="${padL + idx * groupW}" y2="${H - padB}" stroke="#D1D5DB" stroke-dasharray="4,4"/>`;
-        svg += `<text x="${gx}" y="${padT + 18}" text-anchor="middle" font-size="11" font-weight="600" fill="${C.rust}">63.0% 三家全 0 分</text>`;
-        svg += `<rect x="${gx - 30}" y="${toY(37)}" width="60" height="${toY(0) - toY(37)}" rx="2" fill="#4B5563" class="emb-pt" data-tip="<b>Embodied First Exam (456 核心题)</b><br>${st.note}" style="cursor:pointer;"/>`;
-        svg += `<text x="${gx}" y="${toY(37) - 6}" text-anchor="middle" font-family="var(--font-mono)" font-size="11.2" font-weight="600" fill="${C.ink}">37% 非零</text>`;
-      } else {
-        const startX = gx - (3 * bw + 2 * gap) / 2;
-        vals.forEach((item, j) => {
-          const bx = startX + j * (bw + gap);
-          if (item.v === null) {
-            svg += `<text x="${bx + bw / 2}" y="${toY(0) - 6}" text-anchor="middle" font-size="10" fill="${C.faint}">未报</text>`;
-            return;
-          }
-          const y = toY(item.v);
-          const h = toY(0) - y;
-          svg += `<g class="emb-pt" data-tip="<b>${st.stage.replace("\n", " · ")}</b><br>${item.k}：<b>${item.v}%</b><br>${st.note}" style="cursor:pointer;">`;
-          svg += `<rect x="${bx}" y="${y}" width="${bw}" height="${h}" rx="2" fill="${item.col}"/>`;
-          svg += `<text x="${bx + bw / 2}" y="${y - 5}" text-anchor="middle" font-family="var(--font-mono)" font-size="10.2" font-weight="600" fill="${item.col}">${item.v}${idx === 3 && j === 0 ? "‡" : ""}</text>`;
-          svg += `</g>`;
-        });
-      }
-
-      const lines = st.stage.split("\n");
-      lines.forEach((ln, li) => {
-        svg += `<text x="${gx}" y="${H - padB + 20 + li * 15}" text-anchor="middle" font-size="${li === 0 ? "11.6" : "10.6"}" font-weight="${li === 0 ? "600" : "400"}" fill="${li === 0 ? C.ink : C.muted}">${ln}</text>`;
-      });
-    });
-
-    svg += `</svg>`;
-    host.innerHTML = svg;
-    bindTooltips("#chart-embodied-cliff .emb-pt", el => el.dataset.tip);
-  }
-
-  /* ------------------------------------------------------------------------
-     7. WIDGET #6 · 18+3 EXPLORER TABLE + MINIMAL SLIDE-OUT DRAWER
-     ------------------------------------------------------------------------ */
-  const evLabel = {
-    code: "代码/精确",
-    rubric: "Rubric/LLM",
-    human: "人工",
-    phys: "仿真/实测"
-  };
-
+  const evLabel = { code: "代码/精确", rubric: "Rubric/清单", human: "人工验收", phys: "仿真/湿测" };
   const explorerState = { track: "all", org: "all", access: "all", evalType: "all", search: "", sortKey: null, sortAsc: true };
 
   function renderMasterTable() {
@@ -419,12 +654,13 @@
     if (!tbody) return;
     let list = D.benchmarks.filter(b => {
       if (explorerState.track === "all" && b.track === "legacy") return false;
+      if (explorerState.track === "legacy" && b.track !== "legacy") return false;
       if (explorerState.track !== "all" && explorerState.track !== "legacy" && b.track !== explorerState.track) return false;
       if (explorerState.org !== "all" && b.orgType !== explorerState.org) return false;
       if (explorerState.access !== "all" && b.access !== explorerState.access) return false;
       if (explorerState.evalType !== "all" && !b.evalTags.includes(explorerState.evalType)) return false;
       if (explorerState.search) {
-        const blob = (b.name + b.org + b.source + b.funnel + b.verifier + b.score + b.lesson + b.evalShort).toLowerCase();
+        const blob = (b.name + b.org + b.source + b.funnel + b.verifier + b.score + b.lesson + b.capability).toLowerCase();
         if (!blob.includes(explorerState.search.toLowerCase())) return false;
       }
       return true;
@@ -441,18 +677,18 @@
     }
 
     const lbl = $("#row-count-label");
-    if (lbl) lbl.textContent = `当前展示 ${list.length} 套基准（点击任意行查看详细档案）`;
+    if (lbl) lbl.textContent = `当前展示 ${list.length} 套基准（点击任意行从右侧查看完整档案）`;
 
     tbody.innerHTML = list.map(b => {
-      const evTags = b.evalTags.map(t => `<span class="tag">${evLabel[t]}</span>`).join("");
+      const evBadges = b.evalTags.map(t => `<span class="tag">${evLabel[t] || t}</span>`).join("");
       return `
         <tr class="${b.track === "legacy" ? "legacy-row" : ""}" data-bid="${b.id}">
-          <td><span class="b-name">${b.name}</span><span class="b-sub">${b.trackLabel}</span></td>
-          <td><span style="font-weight:500;display:block;">${b.org}</span><span class="b-sub">${b.orgLabel}</span></td>
-          <td><span style="font-variant-numeric:tabular-nums;font-weight:500;">${b.release}</span><span class="b-sub">${b.evolution}</span></td>
-          <td><span style="font-variant-numeric:tabular-nums;font-weight:500;">${b.countStr}</span></td>
-          <td><span class="tag">${b.accessLabel}</span></td>
-          <td><div class="ev-wrap">${evTags}</div><span class="b-sub">${b.evalShort}</span></td>
+          <td><span class="b-name">${b.name}</span><span class="tag" style="margin-top:3px;">${b.trackLabel}</span></td>
+          <td><span style="font-weight:600;display:block;">${b.org}</span><span class="b-sub">${b.orgScale}</span></td>
+          <td><b>${b.release}</b><span class="b-sub">${b.evolution}</span></td>
+          <td><b>${b.countStr}</b></td>
+          <td><span class="tag ${b.access}">${b.accessLabel}</span></td>
+          <td><div class="ev-wrap">${evBadges}</div><span class="b-sub">${b.evalShort}</span></td>
           <td>${b.score}</td>
           <td><span class="warn-note">${b.lesson}</span></td>
         </tr>
@@ -473,39 +709,41 @@
     drawer.innerHTML = `
       <div class="drawer-head">
         <div>
-          <div style="display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap;">
+          <div style="display:flex;gap:6px;margin-bottom:7px;flex-wrap:wrap;">
             <span class="tag">${b.trackLabel}</span>
-            <span class="tag">${b.orgLabel} · ${b.org}</span>
-            <span class="tag">${b.accessLabel}</span>
+            <span class="tag">${b.orgLabel} | ${b.org}</span>
+            <span class="tag ${b.access}">${b.accessLabel}</span>
           </div>
           <h3>${b.name}</h3>
-          <div style="font-size:12.6px;color:var(--muted);margin-top:4px;">题量：${b.countStr} ｜ 版本演进：${b.evolution}</div>
+          <div style="font-size:12.4px;color:var(--muted);margin-top:4px;">题量：${b.countStr} | 演进：${b.evolution}</div>
         </div>
         <button class="close-btn" id="drawer-close-btn" aria-label="关闭">×</button>
       </div>
       <div class="d-section">
-        <h4>1. 题源与筛选流程</h4>
-        <p><b>题源：</b>${b.source}</p>
-        <p style="margin-top:7px;"><b>筛选与清洗：</b>${b.funnel}</p>
+        <h4>01 | 检验目标与真实需求</h4>
+        <p><b>核心检验能力：</b>${b.capability}</p>
+        <p style="margin-top:6px;"><b>题源：</b>${b.source}</p>
+        <p style="margin-top:6px;"><b>筛选与清洗：</b>${b.funnel}</p>
       </div>
       <div class="d-section">
-        <h4>2. Verifier 与防作弊设计</h4>
-        <p><b>验证逻辑：</b>${b.verifier}</p>
-        <p style="margin-top:7px;"><b>防作弊隔离：</b>${b.detail.antichat}</p>
+        <h4>02 | 验证机制与防作弊防线</h4>
+        <p><b>判分逻辑：</b>${b.verifier}</p>
+        <p style="margin-top:6px;"><b>防作弊隔离：</b>${b.detail.anticheat}</p>
       </div>
       <div class="d-section">
-        <h4>3. 典型题目与实测案例</h4>
+        <h4>03 | 典型案例与实测现象</h4>
         <ul>${b.detail.cases.map(c => `<li>${c}</li>`).join("")}</ul>
       </div>
       <div class="d-section">
-        <h4>4. 代表成绩、成本与采用情况</h4>
-        <p><b>代表成绩：</b>${b.score}</p>
-        <p style="margin-top:7px;"><b>成本门槛：</b>${b.cost}</p>
-        <p style="margin-top:7px;"><b>行业采用：</b>${b.detail.adoption}</p>
+        <h4>04 | 头部读数、成本与行业采用</h4>
+        <p><b>实测读数：</b>${b.score}</p>
+        <p style="margin-top:6px;"><b>成本门槛：</b>${b.cost}</p>
+        <p style="margin-top:6px;"><b>行业采用：</b>${b.detail.adoption}</p>
+        ${b.url ? `<p style="margin-top:9px;"><a href="${b.url}" target="_blank" rel="noopener">查看一手官网或论文来源 -></a></p>` : ""}
       </div>
       <div class="d-lesson">
-        <div style="font-size:12px;font-weight:650;color:var(--muted);margin-bottom:4px;">核心经验</div>
-        <div style="font-size:13.8px;line-height:1.68;color:var(--ink);font-weight:500;">${b.lesson}</div>
+        <div style="font-size:11.6px;font-weight:650;color:var(--muted);margin-bottom:4px;">核心构建启示</div>
+        <div style="font-size:13.6px;font-weight:600;color:var(--ink);line-height:1.65;">${b.lesson}</div>
       </div>
     `;
     bg.classList.add("open");
@@ -518,215 +756,27 @@
   }
 
   /* ------------------------------------------------------------------------
-     8. CHART #7 · LOG SCATTER PLOT & 5-FAMILY EVOLUTION TIMELINE
+     11. DYNAMIC 60-LINK PRIMARY REFERENCES RENDERER
      ------------------------------------------------------------------------ */
-  function renderScatterSVG() {
-    const host = $("#chart-scatter");
-    if (!host) return;
-    const W = 980, H = 380, padL = 132, padR = 28, padT = 34, padB = 48;
-    const xMin = Math.log10(4.5), xMax = Math.log10(3400);
-    const toX = n => padL + ((Math.log10(n) - xMin) / (xMax - xMin)) * (W - padL - padR);
-    const toY = c => padT + ((5.5 - c) / (5.5 - 0.8)) * (H - padT - padB);
-    const trackColor = { code: C.blue, sci: C.sage, off: C.rust, emb: "#4B5563", legacy: "#9CA3AF" };
+  function renderReferences() {
+    const host = $("#ref-grid-host");
+    if (!host || !D.references) return;
+    const total = D.references.reduce((acc, g) => acc + g.items.length, 0);
+    const titleEl = $("#refs-count-title");
+    if (titleEl) titleEl.textContent = `一手来源索引（${total} 条核验链接）`;
 
-    const x50 = toX(50), x250 = toX(250);
-    let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block;font-family:var(--font-sans);">`;
-
-    svg += `<rect x="${x50}" y="${padT}" width="${x250 - x50}" height="${H - padT - padB}" fill="#F8F9FA"/>`;
-    svg += `<line x1="${x50}" y1="${padT}" x2="${x50}" y2="${H - padB}" stroke="#9CA3AF" stroke-width="1.2" stroke-dasharray="4,4"/>`;
-    svg += `<line x1="${x250}" y1="${padT}" x2="${x250}" y2="${H - padB}" stroke="#9CA3AF" stroke-width="1.2" stroke-dasharray="4,4"/>`;
-
-    svg += `<text x="${(padL + x50) / 2}" y="${padT + 16}" text-anchor="middle" font-size="11" fill="${C.faint}">高方差区 (&lt;50 题)</text>`;
-    svg += `<text x="${(x50 + x250) / 2}" y="${padT + 16}" text-anchor="middle" font-size="11.5" font-weight="600" fill="${C.ink}">合理题量区间 (50–250 道重题)</text>`;
-    svg += `<text x="${(x250 + W - padR) / 2}" y="${padT + 16}" text-anchor="middle" font-size="11" fill="${C.faint}">大题量 / 轻量自动化区</text>`;
-
-    [
-      [1.2, "单轮静态问答 (秒级)"],
-      [2.2, "短程单软件 (分钟级)"],
-      [3.2, "跨软件/容器 (0.5–4h)"],
-      [4.2, "多轮实验/项目 (数天)"],
-      [5.1, "超长程工程 (20–24h)"]
-    ].forEach(([val, lbl]) => {
-      const y = toY(val);
-      svg += `<line x1="${padL}" y1="${y}" x2="${W - padR}" y2="${y}" stroke="${C.grid}" stroke-dasharray="2,3"/>`;
-      svg += `<text x="${padL - 10}" y="${y + 4}" text-anchor="end" font-size="11" fill="${C.muted}">${lbl}</text>`;
-    });
-
-    [6, 15, 34, 50, 100, 250, 500, 1000, 2500].forEach(n => {
-      const x = toX(n);
-      svg += `<line x1="${x}" y1="${H - padB}" x2="${x}" y2="${H - padB + 5}" stroke="#9CA3AF"/>`;
-      svg += `<text x="${x}" y="${H - padB + 18}" text-anchor="middle" font-size="11" fill="${(n === 50 || n === 250) ? C.ink : C.faint}" font-weight="${(n === 50 || n === 250) ? "700" : "400"}">${n}</text>`;
-    });
-    svg += `<text x="${(padL + W - padR) / 2}" y="${H - 8}" text-anchor="middle" font-size="11.4" fill="${C.muted}">题目数量规模（对数横轴 · 点击节点查看详细档案）</text>`;
-
-    svg += `<defs><marker id="arr-sc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto"><path d="M0,1 L9,5 L0,9 z" fill="${C.rust}"/></marker></defs>`;
-    [
-      ["asb", "twinlab", "38天扩至52题", 0, -10],
-      ["osworld1", "osworld", "耗时×48重做", -44, 10],
-      ["swe_full", "fc2", "转向合并标准", 28, -12]
-    ].forEach(([aId, bId, lbl, dx, dy]) => {
-      const a = D.benchmarks.find(x => x.id === aId), b = D.benchmarks.find(x => x.id === bId);
-      if (!a || !b) return;
-      const x1 = toX(a.countNum), y1 = toY(a.complexity), x2 = toX(b.countNum), y2 = toY(b.complexity);
-      svg += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${C.rust}" stroke-width="1.3" stroke-dasharray="4,3" marker-end="url(#arr-sc)" opacity="0.7"/>`;
-      svg += `<text x="${(x1 + x2) / 2 + dx}" y="${(y1 + y2) / 2 + dy}" text-anchor="middle" font-size="10.2" fill="${C.rust}">${lbl}</text>`;
-    });
-
-    const offsets = {
-      fc2: [10, 4], fswe2: [10, 4], tb41: [-10, -10], hle: [-10, -10], biomy: [-10, 15],
-      tbs: [-10, 4], asb: [6, 17], twinlab: [10, -8], biobasics: [10, 4], binder: [0, 17],
-      autobench: [0, -11], ale: [8, 15], briefcase: [-10, -10], rli: [10, 4], charto: [10, 4],
-      osworld: [10, -8], robodojo: [10, 4], firstexam: [10, 4], swe_full: [10, -8], swe_pro: [0, 17], osworld1: [10, 14]
-    };
-
-    D.benchmarks.forEach(b => {
-      const x = toX(b.countNum), y = toY(b.complexity);
-      const col = trackColor[b.track];
-      const [dx, dy] = offsets[b.id] || [10, 4];
-      const anchor = dx < 0 ? "end" : (dx === 0 ? "middle" : "start");
-      const r = b.track === "legacy" ? 5 : 6;
-      svg += `<g class="sc-pt" data-id="${b.id}" style="cursor:pointer;">`;
-      svg += `<circle cx="${x}" cy="${y}" r="${r}" fill="${b.track === "legacy" ? "#FFFFFF" : col}" stroke="${col}" stroke-width="1.8"/>`;
-      svg += `<text x="${x + dx}" y="${y + dy}" text-anchor="${anchor}" font-size="10.8" font-weight="500" fill="${col}">${b.name.replace("[旧代对照] ", "")} (${b.countNum})</text>`;
-      svg += `</g>`;
-    });
-
-    svg += `</svg>`;
-    host.innerHTML = svg;
-    bindTooltips(
-      "#chart-scatter .sc-pt",
-      el => {
-        const b = D.benchmarks.find(x => x.id === el.dataset.id);
-        return `<b>${b.name}</b> (${b.org})<br>题量：${b.countStr} ｜ 开放：${b.accessLabel}<br>代表成绩：${b.score}<br><span style="color:${C.accent};">点击查看详细档案</span>`;
-      },
-      el => openDrawer(el.dataset.id)
-    );
-  }
-
-  function renderTimelineSVG() {
-    const host = $("#chart-timeline");
-    if (!host) return;
-    const W = 980, H = 315, padL = 148, padR = 36, padT = 32, padB = 34;
-    const tMin = 2023.75, tMax = 2027.0;
-    const toX = t => padL + ((t - tMin) / (tMax - tMin)) * (W - padL - padR);
-    const lanes = D.timelineLanes;
-
-    let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block;font-family:var(--font-sans);">`;
-    const x26 = toX(2026.0);
-    svg += `<rect x="${x26}" y="${padT - 6}" width="${W - padR - x26}" height="${H - padT - padB + 8}" fill="#F8F9FA"/>`;
-    svg += `<text x="${(x26 + W - padR) / 2}" y="${padT - 12}" text-anchor="middle" font-size="11" fill="${C.muted}">2026 集中换代与清洗期</text>`;
-
-    [2024.0, 2024.5, 2025.0, 2025.5, 2026.0, 2026.5, 2026.92].forEach(t => {
-      const x = toX(t);
-      const yr = Math.floor(t), mo = Math.round((t - yr) * 12) + 1;
-      const lbl = `${yr}.${String(Math.min(12, mo)).padStart(2, "0")}`;
-      svg += `<line x1="${x}" y1="${padT}" x2="${x}" y2="${H - padB}" stroke="${C.grid}" stroke-dasharray="2,3"/>`;
-      svg += `<text x="${x}" y="${H - 12}" text-anchor="middle" font-size="10.8" fill="${C.faint}">${lbl}</text>`;
-    });
-
-    const laneH = (H - padT - padB) / lanes.length;
-    lanes.forEach((ln, idx) => {
-      const y = padT + laneH * idx + laneH / 2;
-      svg += `<text x="6" y="${y - 2}" font-size="12" font-weight="600" fill="${C.ink}">${ln.name}</text>`;
-      svg += `<text x="6" y="${y + 12}" font-size="10.4" fill="${C.faint}">${ln.sub}</text>`;
-      const firstX = toX(ln.nodes[0].t), lastX = toX(ln.nodes[ln.nodes.length - 1].t);
-      svg += `<line x1="${firstX}" y1="${y}" x2="${lastX}" y2="${y}" stroke="#D1D5DB" stroke-width="2" stroke-linecap="round"/>`;
-      ln.nodes.forEach((nd, ni) => {
-        const x = toX(nd.t);
-        const col = ni === ln.nodes.length - 1 ? C.rust : (ni === 0 ? C.blue : "#4B5563");
-        let dx = 0;
-        let yOff = (ni % 2 === 0) ? -13 : 19;
-        if (nd.lbl.includes("锁122题")) { dx = -24; yOff = 19; }
-        if (nd.lbl.includes("TwinLab")) { dx = 18; yOff = 19; }
-        if (nd.lbl.includes("ASB 0.1")) { dx = 8; yOff = -13; }
-        if (nd.lbl.includes("ALE v1.0")) { dx = -10; yOff = -13; }
-        svg += `<g class="tl-pt" data-tip="<b>${nd.lbl}</b><br>${nd.tip}" style="cursor:pointer;">`;
-        svg += `<circle cx="${x}" cy="${y}" r="5" fill="${col}" stroke="#FFFFFF" stroke-width="1.6"/>`;
-        svg += `<text x="${x + dx}" y="${y + yOff}" text-anchor="middle" font-size="10.4" font-weight="500" fill="${col}">${nd.lbl}</text>`;
-        svg += `</g>`;
-      });
-    });
-
-    svg += `</svg>`;
-    host.innerHTML = svg;
-    bindTooltips("#chart-timeline .tl-pt", el => el.dataset.tip);
-  }
-
-  /* ------------------------------------------------------------------------
-     9. WIDGET #8 · FLAT BENCHMARK DESIGN CHECKLIST
-     ------------------------------------------------------------------------ */
-  function initChecklist() {
-    const wrap = $("#checklist-wrap");
-    if (!wrap) return;
-    wrap.innerHTML = D.checks.map(c => `
-      <label class="check-item">
-        <input type="checkbox" id="${c.id}" checked>
-        <div>
-          <div class="check-title">${c.title}<span class="check-pts">(+${c.pts})</span></div>
-          <div class="check-desc">${c.desc}</div>
-        </div>
-      </label>
+    host.innerHTML = D.references.map(g => `
+      <div class="ref-group">
+        <h4>${g.cat} (${g.items.length})</h4>
+        <ul>
+          ${g.items.map(it => `<li><a href="${it.url}" target="_blank" rel="noopener">${it.title}</a></li>`).join("")}
+        </ul>
+      </div>
     `).join("");
-
-    D.checks.forEach(c => {
-      const cb = document.getElementById(c.id);
-      if (cb) cb.addEventListener("change", updateDiag);
-    });
-
-    $$(".preset-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        const presets = {
-          gold: ["c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8"],
-          asb:  ["c2", "c3", "c4", "c6"],
-          old:  ["c1"]
-        };
-        const list = presets[btn.dataset.preset] || [];
-        D.checks.forEach(c => {
-          const cb = document.getElementById(c.id);
-          if (cb) cb.checked = list.includes(c.id);
-        });
-        updateDiag();
-      });
-    });
-
-    updateDiag();
-  }
-
-  function updateDiag() {
-    let score = 0;
-    const alerts = [];
-    D.checks.forEach(c => {
-      const cb = document.getElementById(c.id);
-      if (cb && cb.checked) score += c.pts;
-      else alerts.push(`<div class="alert-item alert-warn">${c.warn}</div>`);
-    });
-    const sEl = $("#diag-score");
-    const vEl = $("#diag-verdict");
-    const aEl = $("#diag-alerts");
-    if (sEl) sEl.textContent = `${score} / 100`;
-    if (vEl) {
-      if (score >= 90) {
-        vEl.textContent = "工业级标准（适合进入主榜并复用于 RL）";
-        vEl.style.color = C.sage;
-      } else if (score >= 65) {
-        vEl.textContent = "基本可用，但在审计或防作弊上存在短板";
-        vEl.style.color = "#8A5A19";
-      } else {
-        vEl.textContent = "风险较高：容易快速饱和或难以被行业采用";
-        vEl.style.color = C.rust;
-      }
-    }
-    if (aEl) {
-      if (alerts.length === 0) {
-        aEl.innerHTML = `<div class="alert-item alert-ok">8 项检查全部通过：具备统计稳定性、防作弊隔离，并可直接复用于 RL 训练环境。</div>`;
-      } else {
-        aEl.innerHTML = alerts.slice(0, 4).join("");
-      }
-    }
   }
 
   /* ------------------------------------------------------------------------
-     10. WIRE CONTROLS & BOOT
+     12. WIRE CONTROLS & BOOT
      ------------------------------------------------------------------------ */
   function bindSegmented(groupId, callback) {
     const grp = document.getElementById(groupId);
@@ -754,25 +804,22 @@
   }
 
   document.addEventListener("DOMContentLoaded", () => {
-    initReadingChrome();
+    initUIHelpers();
     renderAAOvernight();
-    renderAdoptionMatrix("all");
     renderCodeChart("fswe");
     renderOfficeDual("autobench");
-    renderEmbodiedCliff();
-    renderMasterTable();
-    renderScatterSVG();
+    renderEmbodiedSplit();
+    renderDynamicStats();
     renderTimelineSVG();
-    initChecklist();
+    renderDiagramHarbor();
+    renderDiagramCoevolution();
+    renderAdoptionMatrix("all");
+    renderMasterTable();
+    renderReferences();
 
     bindSegmented("adoption-seg", v => renderAdoptionMatrix(v));
     bindSegmented("code-seg", v => renderCodeChart(v));
     bindSegmented("office-seg", v => renderOfficeDual(v));
-    bindSegmented("pattern-seg", v => {
-      $$(".pattern-pane").forEach(p => {
-        p.style.display = (p.id === "pane-" + v) ? "block" : "none";
-      });
-    });
 
     bindPillGroup("track-filters", "track");
     bindPillGroup("org-filters", "org");
@@ -799,7 +846,7 @@
     const bg = $("#drawer-bg");
     if (bg) {
       bg.addEventListener("click", e => {
-        if (e.target === bg) closeDrawer();
+        if (e.target.id === "drawer-bg") closeDrawer();
       });
     }
     document.addEventListener("keydown", e => {
