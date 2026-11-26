@@ -706,85 +706,110 @@
   }
 
   /* ------------------------------------------------------------------------
-     8B. PER-DOMAIN BUILD STATISTICS SVG (NO CROSS-DOMAIN MIXING, SSOT!)
+     8B. INDEPENDENT 16-BENCHMARK STATS SVG GROUPED BY COLORED DOMAIN PLATES
+     Every benchmark is plotted independently (zero cross-benchmark averaging).
      ------------------------------------------------------------------------ */
   function renderDomainStatsSVG() {
     const host = $("#chart-domain-stats");
     if (!host) return;
     const core = D.benchmarks.filter(b => b.track !== "legacy");
-    const domains = [
-      { key: "code", label: "代码工程",       sizeTip: "66-132 题 (20h 项 34 题)", orgTip: "1 核心队 + 20 维护者 / 8+ 校底座" },
-      { key: "sci",  label: "科研任务",       sizeTip: "52-100 题 (湿测 15 靶点)", orgTip: "1 厂 + CRO / 10+ 校科学家" },
-      { key: "off",  label: "办公与职业任务", sizeTip: "91-240 题 (SaaS 可至 657)", orgTip: "产品/评测方 + 23-300 行业专家" },
-      { key: "cua",  label: "CUA 任务",       sizeTip: "100 识图 / 108 长程桌面",  orgTip: "12+ 校共摊 KVM 虚拟机集群" },
-      { key: "phys", label: "物理交互",       sizeTip: "60 题 (统考聚合 456 核)",  orgTip: "18+ 校共摊 3D 仿真与真机台" }
+    const groups = [
+      { key: "code", label: "代码工程",       bg: "#F5F8FC", bar: "#1F4E79" },
+      { key: "sci",  label: "科研任务",       bg: "#F3F8F6", bar: "#2D6A5B" },
+      { key: "off",  label: "办公与职业任务", bg: "#FBF7F1", bar: "#8C6239" },
+      { key: "cua",  label: "CUA 任务",       bg: "#F5F6F9", bar: "#4B5563" },
+      { key: "phys", label: "物理交互",       bg: "#FCF4F1", bar: "#A84A32" }
     ];
 
-    const W = 940, rowH = 54, padL = 152, barW = 340, colSizeX = 520, colOrgX = 716, padT = 48, padB = 18;
-    const H = padT + domains.length * rowH + padB;
+    const W = 980, padL = 224, padR = 294, padT = 56, padB = 34, rowH = 27, groupGap = 8;
+    const plotW = W - padL - padR;
+    const logMin = Math.log10(10), logMax = Math.log10(1500);
+    const toX = n => padL + ((Math.log10(Math.max(10, n)) - logMin) / (logMax - logMin)) * plotW;
+
+    let totalRows = 0;
+    groups.forEach(g => { totalRows += core.filter(b => b.track === g.key).length; });
+    const H = padT + totalRows * rowH + (groups.length - 1) * groupGap + padB;
+
+    const accColor = { open: "#2D6A5B", hyb: "#8C6239", priv: "#A84A32" };
+    const accShort = { open: "全开源", hyb: "公私混合", priv: "私有闭源" };
 
     let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block;font-family:var(--font-sans);">`;
 
-    // Legend at top
-    const leg = [
-      ["全开源 (Open)", "#2D6A5B"],
-      ["公私混合 (Hybrid)", "#8C6239"],
-      ["私有闭源 (Private)", "#A84A32"]
-    ];
+    // Legend row
+    const leg = [["全开源 (6)", "#2D6A5B"], ["公私混合 (7)", "#8C6239"], ["私有闭源 (3)", "#A84A32"]];
     leg.forEach(([txt, col], i) => {
-      const lx = padL + i * 136;
+      const lx = padL + i * 114;
       svg += `<rect x="${lx}" y="8" width="10" height="10" rx="2" fill="${col}"/>`;
-      svg += `<text x="${lx + 14}" y="17" font-size="10.8" font-weight="600" fill="#333333">${txt}</text>`;
+      svg += `<text x="${lx + 14}" y="17" font-size="10.6" font-weight="600" fill="#333333">${txt}</text>`;
+    });
+    svg += `<rect x="${padL + 356}" y="8" width="14" height="10" rx="2" fill="#E8F1F8" stroke="#BDD4E7"/>`;
+    svg += `<text x="${padL + 375}" y="17" font-size="10.4" fill="#1F4E79">50-250 题收敛区 (12/16)</text>`;
+
+    // Column Headers
+    svg += `<text x="12" y="42" font-size="10.8" font-weight="650" fill="#666666">领域底板与独立基准名称</text>`;
+    svg += `<text x="${padL}" y="42" font-size="10.8" font-weight="650" fill="#666666">独立题量规模 (对数刻度，颜色表开放形态)</text>`;
+    svg += `<text x="${W - padR + 18}" y="42" font-size="10.8" font-weight="650" fill="#666666">协作规模与开放策略</text>`;
+    svg += `<line x1="8" y1="49" x2="${W - 8}" y2="49" stroke="#D1D5DB"/>`;
+
+    // Golden zone vertical band (50-250 tasks)
+    const gx1 = toX(50), gx2 = toX(250);
+    const chartBottom = H - padB;
+    svg += `<rect x="${gx1}" y="${padT - 2}" width="${gx2 - gx1}" height="${chartBottom - padT + 4}" fill="#E8F1F8" opacity="0.55"/>`;
+
+    // Vertical grid ticks
+    [15, 50, 100, 250, 1000].forEach(t => {
+      const x = toX(t);
+      svg += `<line x1="${x}" y1="${padT - 2}" x2="${x}" y2="${chartBottom + 2}" stroke="#E5E7EB" stroke-dasharray="3,3"/>`;
+      svg += `<text x="${x}" y="${H - 12}" text-anchor="middle" font-size="10" fill="#8A8A8A">${t} 题</text>`;
     });
 
-    // Column headers
-    svg += `<text x="8" y="39" font-size="11" font-weight="650" fill="#666666">赛道与样本量 (N = 16)</text>`;
-    svg += `<text x="${padL}" y="39" font-size="11" font-weight="650" fill="#666666">开放形态按赛道分布（由 data.js 实时计算）</text>`;
-    svg += `<text x="${colSizeX}" y="39" font-size="11" font-weight="650" fill="#666666">实测收敛题量</text>`;
-    svg += `<text x="${colOrgX}" y="39" font-size="11" font-weight="650" fill="#666666">主流协作阵型</text>`;
-    svg += `<line x1="8" y1="45" x2="${W - 8}" y2="45" stroke="#E5E7EB"/>`;
+    let curY = padT;
+    groups.forEach((g, gi) => {
+      const items = core.filter(b => b.track === g.key);
+      const bandH = items.length * rowH;
 
-    domains.forEach((dm, idx) => {
-      const items = core.filter(b => b.track === dm.key);
-      const n = items.length;
-      const nOpen = items.filter(b => b.access === "open").length;
-      const nHyb = items.filter(b => b.access === "hyb").length;
-      const nPriv = items.filter(b => b.access === "priv").length;
-      const y = padT + idx * rowH + 14;
+      // Subtle domain background plate
+      svg += `<rect x="8" y="${curY}" width="${W - 16}" height="${bandH}" rx="4" fill="${g.bg}" opacity="0.72"/>`;
+      svg += `<rect x="8" y="${curY}" width="3.5" height="${bandH}" rx="1.5" fill="${g.bar}"/>`;
 
-      if (idx > 0) {
-        svg += `<line x1="8" y1="${padT + idx * rowH}" x2="${W - 8}" y2="${padT + idx * rowH}" stroke="#F2F4F7"/>`;
-      }
+      // Re-draw golden zone tint lightly on top of domain plate so it stays visible
+      svg += `<rect x="${gx1}" y="${curY}" width="${gx2 - gx1}" height="${bandH}" fill="#1F4E79" opacity="0.06"/>`;
 
-      svg += `<text x="8" y="${y + 11}" font-size="12.4" font-weight="650" fill="#1A1A1A">${dm.label}</text>`;
-      svg += `<text x="8" y="${y + 26}" font-size="10.4" fill="#8A8A8A">核心样本 N = ${n}</text>`;
+      items.forEach((b, bi) => {
+        const y = curY + bi * rowH;
+        const cy = y + rowH / 2;
+        const bx = toX(b.countNum);
+        const col = accColor[b.access] || "#4B5563";
 
-      let cx = padL;
-      const segs = [
-        { k: "全开源", cnt: nOpen, col: "#2D6A5B" },
-        { k: "公私混合", cnt: nHyb, col: "#8C6239" },
-        { k: "纯私有", cnt: nPriv, col: "#A84A32" }
-      ];
-      segs.forEach(s => {
-        if (!s.cnt) return;
-        const w = (s.cnt / n) * barW;
-        const pctVal = Math.round((s.cnt / n) * 100);
-        const lbl = w >= 86 ? `${s.k} ${pctVal}% (${s.cnt})` : (w >= 48 ? `${pctVal}% (${s.cnt})` : `${s.cnt}`);
-        const names = items.filter(b => (s.k === "全开源" ? b.access === "open" : s.k === "公私混合" ? b.access === "hyb" : b.access === "priv")).map(b => b.name).join("、");
-        svg += `<g class="dom-seg" data-tip="<b>${dm.label} | ${s.k} (${s.cnt}/${n})</b><br>${names}" style="cursor:pointer;">`;
-        svg += `<rect x="${cx}" y="${y + 2}" width="${Math.max(w - 2, 4)}" height="24" rx="3" fill="${s.col}"/>`;
-        svg += `<text x="${cx + (w - 2) / 2}" y="${y + 18}" text-anchor="middle" font-size="10.6" font-weight="600" fill="#FFFFFF">${lbl}</text>`;
+        if (bi > 0) {
+          svg += `<line x1="16" y1="${y}" x2="${W - 14}" y2="${y}" stroke="#FFFFFF" stroke-width="1"/>`;
+        }
+
+        svg += `<g class="ind-bench-row" data-bid="${b.id}" data-tip="<b>${b.name}</b> (${g.label})<br>题量：${b.countStr}<br>协作：${b.orgScale}<br>开放：${b.accessLabel}<br>成本：${b.cost}" style="cursor:pointer;">`;
+        svg += `<rect x="12" y="${y}" width="${W - 24}" height="${rowH}" fill="transparent"/>`;
+        svg += `<text x="20" y="${cy + 4}" font-size="11.2" font-weight="600" fill="#1A1A1A">${b.name}</text>`;
+
+        // Horizontal lollipop bar from padL to bx
+        svg += `<line x1="${padL}" y1="${cy}" x2="${bx}" y2="${cy}" stroke="${col}" stroke-width="3.2" stroke-linecap="round" opacity="0.85"/>`;
+        svg += `<circle cx="${bx}" cy="${cy}" r="4.8" fill="${col}" stroke="#FFFFFF" stroke-width="1.4"/>`;
+        const lblX = bx + 9;
+        svg += `<text x="${lblX}" y="${cy + 3.8}" font-size="10.2" font-weight="650" fill="${col}">${b.countNum}</text>`;
+
+        // Right metadata: open/priv pill + orgScale
+        svg += `<text x="${W - padR + 18}" y="${cy + 3.8}" font-size="10.2" font-weight="600" fill="${col}">${accShort[b.access]}</text>`;
+        svg += `<text x="${W - padR + 68}" y="${cy + 3.8}" font-size="10.2" fill="#4B5563">${b.orgScale}</text>`;
         svg += `</g>`;
-        cx += w;
       });
 
-      svg += `<text x="${colSizeX}" y="${y + 18}" font-size="11.6" font-weight="600" fill="#1A1A1A">${dm.sizeTip}</text>`;
-      svg += `<text x="${colOrgX}" y="${y + 18}" font-size="11.4" fill="#333333">${dm.orgTip}</text>`;
+      curY += bandH + groupGap;
     });
 
     svg += `</svg>`;
     host.innerHTML = svg;
-    bindTooltips("#chart-domain-stats .dom-seg", el => el.dataset.tip);
+    bindTooltips("#chart-domain-stats .ind-bench-row", el => el.dataset.tip);
+    $$("#chart-domain-stats .ind-bench-row").forEach(el => {
+      el.addEventListener("click", () => openDrawer(el.dataset.bid));
+    });
   }
 
   /* ------------------------------------------------------------------------

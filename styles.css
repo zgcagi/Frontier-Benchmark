@@ -524,6 +524,72 @@ article.chapter + article.chapter {
   gap: 6px 16px;
 }
 
+.fig-img-wrap {
+  background: #FFFFFF;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px;
+  overflow: hidden;
+}
+
+.fig-img-wrap img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 3px;
+}
+
+.fig-img-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.fig-img-grid .fig-img-cap {
+  margin-top: 8px;
+  font-size: 11.8px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+/* Independent Per-Benchmark Table Grouped by Subtle Colored Domain Plates */
+.dom-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  margin-bottom: 10px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.dom-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dom-swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  border: 1px solid var(--border-strong);
+  display: inline-block;
+}
+
+table.bench-stats-table { min-width: 980px; font-size: 12.4px; }
+table.bench-stats-table tbody tr.dom-code td:first-child { border-left: 3.5px solid #1F4E79; }
+table.bench-stats-table tbody tr.dom-code { background: #F5F8FC; }
+table.bench-stats-table tbody tr.dom-sci td:first-child { border-left: 3.5px solid #2D6A5B; }
+table.bench-stats-table tbody tr.dom-sci { background: #F3F8F6; }
+table.bench-stats-table tbody tr.dom-off td:first-child { border-left: 3.5px solid #8C6239; }
+table.bench-stats-table tbody tr.dom-off { background: #FBF7F1; }
+table.bench-stats-table tbody tr.dom-cua td:first-child { border-left: 3.5px solid #4B5563; }
+table.bench-stats-table tbody tr.dom-cua { background: #F5F6F9; }
+table.bench-stats-table tbody tr.dom-phys td:first-child { border-left: 3.5px solid #A84A32; }
+table.bench-stats-table tbody tr.dom-phys { background: #FCF4F1; }
+table.bench-stats-table tbody tr:hover { filter: brightness(0.985); }
+table.bench-stats-table td:first-child { padding-left: 11px; }
+
 /* Dual-panel figure (Strictly separated physical units) */
 .dual-fig-grid {
   display: grid;
@@ -1064,7 +1130,7 @@ footer.site-footer {
 
 @media (max-width: 820px) {
   .post-header { margin: 30px auto 20px; }
-  .grid-2, .grid-3, .case-strip, .dual-fig-grid { grid-template-columns: 1fr; }
+  .grid-2, .grid-3, .case-strip, .dual-fig-grid, .fig-img-grid { grid-template-columns: 1fr; }
   .search-input { width: 100%; min-width: 0; }
 }
 
