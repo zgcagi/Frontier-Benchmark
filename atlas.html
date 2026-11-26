@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Frontier Benchmark Atlas · 16 套前沿基准全景图鉴、八厂底表与造榜决策器</title>
+  <meta name="description" content="严格对齐 2026.11 一手核验数据的 16+3 前沿 AI 评测基准交互数据库：动态实时统计、多维筛选与解剖抽屉、五大家族版本泳道、造榜权衡决策器、中美八厂底表与 60 条一手溯源链接。">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div id="read-progress" aria-hidden="true"></div>
+
+<!-- Top Navigation Bar -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand-wrap">
+      <a class="brand" href="index.html">
+        <span class="brand-dot"></span>
+        <span>Frontier Eval Notes · 2026.11</span>
+      </a>
+      <div class="page-switch" role="navigation" aria-label="视图切换">
+        <a class="page-tab" href="index.html">主文 · 深度长文</a>
+        <a class="page-tab active" href="atlas.html">图鉴 · 16 榜数据库 &amp; 决策器</a>
+      </div>
+    </div>
+    <nav class="topbar-actions" aria-label="图鉴导航">
+      <a class="nav-chip" href="#sec-stats">动态统计</a>
+      <a class="nav-chip" href="#sec-explorer">16+3 筛选台</a>
+      <a class="nav-chip" href="#sec-charts">演进与跟进</a>
+      <a class="nav-chip" href="#sec-advisor">造榜决策器</a>
+      <a class="nav-chip" href="#sec-ledgers">八厂底表</a>
+      <a class="nav-chip primary" href="#sec-refs">一手溯源</a>
+    </nav>
+  </div>
+</header>
+
+<!-- Atlas Hero + Dynamic SSOT KPI Strip -->
+<section class="hero compact" id="top">
+  <div class="hero-inner wide">
+    <div class="hero-kicker">Interactive Data Companion · Single Source of Truth</div>
+    <h1>Frontier Benchmark <span class="accent">Atlas</span><br>16 套前沿基准全景图鉴、造榜决策器与一手核验库</h1>
+    <p class="hero-subtitle">
+      与<a href="index.html" style="color:var(--terra);font-weight:700;text-decoration:none;">《当考卷开始反击》主文</a>配套的独立数据工作台。所有统计占比均由 <code>data.js</code> 中的 16 套核心样本实时计算生成（严格对齐 Seminar PPTX P63–P64 底表），杜绝正文与图表自相矛盾。
+    </p>
+    <!-- Dynamically computed from data.js! -->
+    <div class="kpi-strip" id="dynamic-kpis"></div>
+  </div>
+</section>
+
+<main class="atlas-shell">
+
+  <!-- SECTION 1: LIVE DYNAMIC STATS (Zero Hardcoded Contradictions!) -->
+  <section id="sec-stats" style="scroll-margin-top:76px;margin-bottom:36px;">
+    <div class="grid-2 full" id="dynamic-dist-bars"></div>
+  </section>
+
+  <!-- SECTION 2: 16+3 MASTER EXPLORER TABLE + DRAWER -->
+  <section class="figure-card full" id="sec-explorer" style="scroll-margin-top:76px;">
+    <div class="fig-header">
+      <div>
+        <div class="fig-kicker">Workbench 01 · 16 Core + 3 Legacy Master Explorer</div>
+        <h4 class="fig-title">16 套核心前沿基准全景分析台（四维筛选 · 实时检索 · 多列排序 · 点击行展开完整档案）</h4>
+        <div class="fig-sub">严格锁死 16 套核心样本（代码 3 · 科研 6 · 办公 4 · 物理 3），其中 ASB→TwinLab 与 RoboDojo→First Exam 合并记录演进；可一键切换查看 3 套旧代基线对照</div>
+      </div>
+    </div>
+
+    <div class="explorer-toolbar">
+      <div class="filter-group" id="track-filters">
+        <span class="filter-label">赛道：</span>
+        <button class="pill active" data-val="all">全部核心基准 (16)</button>
+        <button class="pill" data-val="code">代码与系统 (3)</button>
+        <button class="pill" data-val="sci">科研与推理 (6)</button>
+        <button class="pill" data-val="off">办公与劳动 (4)</button>
+        <button class="pill" data-val="emb">桌面与物理 (3)</button>
+        <button class="pill" data-val="legacy">仅看旧代对照 (3)</button>
+      </div>
+      <div class="filter-group" id="org-filters">
+        <span class="filter-label">阵营：</span>
+        <button class="pill active" data-val="all">全部</button>
+        <button class="pill" data-val="acad">高校联盟</button>
+        <button class="pill" data-val="data">数据/评测巨头</button>
+        <button class="pill" data-val="lab">大厂自建</button>
+        <button class="pill" data-val="prod">产品公司</button>
+      </div>
+      <div class="filter-group" id="access-filters">
+        <span class="filter-label">开放：</span>
+        <button class="pill active" data-val="all">全部</button>
+        <button class="pill" data-val="hyb">公私混合</button>
+        <button class="pill" data-val="priv">私有闭源</button>
+        <button class="pill" data-val="open">全开源</button>
+      </div>
+      <div class="filter-group" id="eval-filters">
+        <span class="filter-label">怎么评：</span>
+        <button class="pill active" data-val="all">全部</button>
+        <button class="pill" data-val="code">代码/精确</button>
+        <button class="pill" data-val="rubric">Rubric/清单</button>
+        <button class="pill" data-val="human">人工终裁</button>
+        <button class="pill" data-val="phys">仿真/湿测</button>
+      </div>
+      <input type="text" id="search-box" class="search-input" placeholder="检索基准、Harbor、71%、0700...">
+    </div>
+
+    <div class="hint-bar">
+      <span id="row-count-label">当前展示 16 套基准</span>
+      <span>点击列标题排序；<strong>点击任意一行</strong>从右侧展开题源漏斗、防作弊防线与一手链接</span>
+    </div>
+
+    <div class="table-scroll">
+      <table class="master">
+        <thead>
+          <tr>
+            <th data-sort="name">基准名称 &amp; 赛道 ↕</th>
+            <th data-sort="orgType">主导单位与阵营 ↕</th>
+            <th data-sort="releaseYear">发布与演进 ↕</th>
+            <th data-sort="countNum">题量规模 ↕</th>
+            <th data-sort="access">开放形态 ↕</th>
+            <th>验证与判分机制</th>
+            <th>头部实测与口径注记</th>
+            <th>核心造榜教训</th>
+          </tr>
+        </thead>
+        <tbody id="master-tbody"></tbody>
+      </table>
+    </div>
+    <div class="fig-caption">
+      <span>延伸基准注记：正文提及的 UniPat SPU（arXiv:2611.15049）、PostTrainBench、Perplexity WANDR 与 RoboColosseum 均已收录于下方一手溯源索引。</span>
+      <span>核验截止：2026-11-23。</span>
+    </div>
+  </section>
+
+  <!-- SECTION 3: QUANTITATIVE VIEWS (Timeline, Adoption Matrix, Office Dual-Metric) -->
+  <section id="sec-charts" style="scroll-margin-top:76px;">
+
+    <!-- 3.1 Five-Family Evolution Swimlanes -->
+    <figure class="figure-card full">
+      <div class="fig-header">
+        <div>
+          <div class="fig-kicker">Chart A · 2023.10 – 2026.11 Benchmark Lifecycle</div>
+          <h4 class="fig-title">五大家族版本演进泳道：旧榜平均 10–18 个月饱和，2026 进入高频清洗与按月迭代</h4>
+          <div class="fig-sub">悬停任意时间节点查看版本改动；代码/脚本类基准重心在修漏洞与缩容，物理/实验类重心在补齐 50 题与剥离停表</div>
+        </div>
+      </div>
+      <div id="chart-timeline"></div>
+    </figure>
+
+    <!-- 3.2 US vs China 10-Benchmark Adoption Matrix -->
+    <figure class="figure-card full">
+      <div class="fig-header">
+        <div>
+          <div class="fig-kicker">Chart B · Track-Switching Adoption Matrix</div>
+          <h4 class="fig-title">10 项前沿新基准中美官测跟进矩阵（2026 夏秋 → 2026.11）</h4>
+          <div class="fig-sub">海外三强提前 3–6 个月切入（10/10 全覆盖）；点击带有对应档案的行可直接打开右侧解剖抽屉</div>
+        </div>
+        <div class="seg-tabs" id="adoption-seg">
+          <button class="seg-btn active" data-val="all">全部 10 项</button>
+          <button class="seg-btn" data-val="gap">国产官测空缺 (7)</button>
+          <button class="seg-btn" data-val="ok">国产已跟进 (3)</button>
+        </div>
+      </div>
+      <div class="table-scroll">
+        <table class="ed-table">
+          <thead>
+            <tr>
+              <th>前沿基准 &amp; 赛道</th>
+              <th style="text-align:center;">OpenAI<br><span style="font-weight:400;color:var(--faint);">5.6/6 → 6.2</span></th>
+              <th style="text-align:center;">Anthropic<br><span style="font-weight:400;color:var(--faint);">Opus 5 → Fable 5.2</span></th>
+              <th style="text-align:center;">Google<br><span style="font-weight:400;color:var(--faint);">Argon → Neon</span></th>
+              <th style="text-align:center;">国产 3–6 月前<br><span style="font-weight:400;color:var(--faint);">0 / 10</span></th>
+              <th style="text-align:center;">国产当前 (11.16)<br><span style="font-weight:400;color:var(--faint);">仅 3 / 10</span></th>
+              <th>实测代差注记</th>
+            </tr>
+          </thead>
+          <tbody id="adoption-tbody"></tbody>
+        </table>
+      </div>
+      <div class="fig-caption">
+        <span>深蓝 = 2026 夏秋率先切入；米色 = 10–11 月进主表；青色 = 国产已官测；粉红 = 留白或停留在旧版。</span>
+      </div>
+    </figure>
+
+    <!-- 3.3 Office Dual-Metric Gap (Fixed ALE Legend!) -->
+    <figure class="figure-card full">
+      <div class="fig-header">
+        <div>
+          <div class="fig-kicker">Chart C · Partial vs. Strict Metric Gap</div>
+          <h4 class="fig-title">办公基准双口径落差：同一套考卷，步骤分与严格全通率相差 22–34 个百分点</h4>
+          <div class="fig-sub">可切换 AutomationBench-AA（286 配置对齐，含国产追赶读数）与 Agents' Last Exam v1.1（55 职业专业软件）</div>
+        </div>
+        <div class="seg-tabs" id="office-seg">
+          <button class="seg-btn active" data-val="autobench">AutomationBench-AA (657 私题)</button>
+          <button class="seg-btn" data-val="ale">Agents' Last Exam v1.1</button>
+        </div>
+      </div>
+      <div id="chart-office-dual"></div>
+      <div class="fig-caption">
+        <span>来源：Artificial Analysis AutomationBench-AA（286 配置对齐，2026.11）；agents-last-exam.org v1.1 官方榜。</span>
+        <span>注：ALE 切图时仅展示海外三强官方口径，不混入未测样本。</span>
+      </div>
+    </figure>
+  </section>
+
+  <!-- SECTION 4: REAL TRADE-OFF BENCHMARK ADVISOR (Replaces naive checklist!) -->
+  <section class="figure-card full" id="sec-advisor" style="scroll-margin-top:76px;">
+    <div class="fig-header">
+      <div>
+        <div class="fig-kicker">Workbench 02 · Real-World Trade-Off Advisor</div>
+        <h4 class="fig-title">造榜权衡决策器：选定你的真实约束，生成最小可行配方与必踩大坑</h4>
+        <div class="fig-sub">真实造榜从来不是“全部勾选 100 分”，而是在团队人力、预算账单与裁判可信度之间做取舍——切换左侧三项约束查看对标方案</div>
+      </div>
+    </div>
+
+    <div class="advisor-grid" id="advisor-root">
+      <div class="adv-controls">
+        <div class="adv-group">
+          <div class="adv-label">01 · 你是什么类型的团队？</div>
+          <div class="adv-options">
+            <button class="adv-opt active" data-dim="team" data-val="acad">高校 / 开源研究小队（缺重金，要学术影响与生态复利）</button>
+            <button class="adv-opt" data-dim="team" data-val="lab">前沿大模型实验室（要内部真实定标 + 反哺后训练 RL）</button>
+            <button class="adv-opt" data-dim="team" data-val="biz">垂直产品 / 数据公司（要行业话语权 + B2B 沙盒商业化）</button>
+          </div>
+        </div>
+
+        <div class="adv-group">
+          <div class="adv-label">02 · 这套基准的总预算上限？</div>
+          <div class="adv-options">
+            <button class="adv-opt active" data-dim="budget" data-val="low">轻量预算 (&lt;$10K · 靠巧设计、开源众包与零成本重评)</button>
+            <button class="adv-opt" data-dim="budget" data-val="mid">中坚预算 ($10K–$100K · 瞄准 70–150 题黄金区与五轮排雷)</button>
+            <button class="adv-opt" data-dim="budget" data-val="high">重资本投入 (&gt;$100K · 冲击 20h 工程 / 买真单 / 湿实验)</button>
+          </div>
+        </div>
+
+        <div class="adv-group">
+          <div class="adv-label">03 · 你想考哪一类能力？</div>
+          <div class="adv-options">
+            <button class="adv-opt active" data-dim="verifier" data-val="code">代码 / 终端 / 数据库确定性状态（可程序直查终态）</button>
+            <button class="adv-opt" data-dim="verifier" data-val="hybrid">复杂商业交付 / 开放科研分析（既查事实也评质感）</button>
+            <button class="adv-opt" data-dim="verifier" data-val="phys">高密图纸 / 3D 具身物理 / 实体湿实验（强现实约束）</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="adv-output" id="advisor-output"></div>
+    </div>
+  </section>
+
+  <!-- SECTION 5: US 3 + CN 5 VERIFICATION LEDGERS -->
+  <section id="sec-ledgers" style="scroll-margin-top:76px;margin-bottom:36px;">
+    <details class="deep-dive full" open>
+      <summary>
+        <div class="dd-left">
+          <span class="dd-tag slate">Ledger A</span>
+          <span class="dd-title">海外三大实验室（Anthropic / OpenAI / Google DeepMind）2026.11 官方发布主表交集核验</span>
+        </div>
+        <span class="dd-chevron">收起 / 展开 ▾</span>
+      </summary>
+      <div class="dd-body">
+        <div class="table-scroll">
+          <table class="ed-table">
+            <thead>
+              <tr><th>交集层级</th><th>能力维度</th><th>核心评测集</th><th>2026.11 一手公开读数与侧重</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><b>三家硬交集</b></td><td>软件工程</td><td>FrontierCode 2.0</td><td>Fable 5.2 50.2%（发布页 49.1%），Opus 5.5 47.3%，Neon 46.2%，GPT-6.2 Astra 44.2% / Sol 43.8%</td></tr>
+              <tr><td><b>三家硬交集</b></td><td>终端科研</td><td>TB-Science 0.1</td><td>GPT-6.2 Astra 77.1%，Mythos 5.2 75.3%，Fable 5.2 74.6%，Neon 70.5%（单列 0% 拒答率）</td></tr>
+              <tr><td><b>三家硬交集</b></td><td>网安红线</td><td>ExploitBench / Gym</td><td>Anthropic 4 个月 40%→78%→91%（S-1）；OpenAI GPT-6.2 触 Critical（V8-bench 100% / 0-day 53.5%）；Google 分级受控开放</td></tr>
+              <tr><td><b>三家硬交集</b></td><td>行为安全</td><td>审计 / 逃逸 / RSI</td><td>Anthropic 1,800 场景逃逸 39%→3.1%；OpenAI Astra 触 RSI High；Google Gray Swan IPI 间接注入 0%</td></tr>
+              <tr><td><b>双家 / 横评</b></td><td>跨 SaaS 办公</td><td>AutomationBench v1.0.6</td><td>严格全通率：Gemini 4 Neon 56.6%（旧快照 56.3%），Carbon 55.3%，Fable 5.2 51.6%，GPT-6.2 Astra 50.7%</td></tr>
+              <tr><td><b>双家 / 横评</b></td><td>多职业软件</td><td>Agents' Last Exam v1.1</td><td>55 职业沙箱：GPT-6.2 Astra 步骤分 78.3%（严全通 ~47.5%），Neon 75.8%（~46.0%），Fable ~74.5%（~45.2%）</td></tr>
+              <tr><td><b>双家 / 横评</b></td><td>清洗学术与识图</td><td>HLE-Diamond / Chartography</td><td>HLE-Diamond：Fable 80.2% / Astra 72.2% / Neon 71.3%；Chartography：Sol 75.1% / Fable 73.4% / Carbon 72.5%</td></tr>
+              <tr><td><b>单厂重仓</b></td><td>Anthropic</td><td>FSWE v2 / RLI / OSWorld / RoboDojo</td><td>20h 工程 69.9%、Upwork 真外包 41.3%、OSWorld 2.1 步骤分 89.3%（严全通 54.6%）、RoboDojo Sim 64.9%‡</td></tr>
+              <tr><td><b>单厂重仓</b></td><td>OpenAI</td><td>DeepSWE / BioBasics / GDPval</td><td>轻量档 Sol 性价比、湿实验排错 Astra 66.7%、44 职业盲评 GDPval v2 50.4%、Erdős 形式化证明</td></tr>
+              <tr><td><b>单厂重仓</b></td><td>Google</td><td>TB 4.1 / SWE-sweep / GraphWalks</td><td>首推 Cheating-adjusted 防作弊修正分、公开 Antigravity 3× 框架差、1M 上下文 GraphWalks 与 CWE-Bench v2 70.7%</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </details>
+
+    <details class="deep-dive full" open>
+      <summary>
+        <div class="dd-left">
+          <span class="dd-tag teal">Ledger B</span>
+          <span class="dd-title">国产五厂（HY / DeepSeek / Qwen / GLM / Kimi）核心前沿基准全量核验底表</span>
+        </div>
+        <span class="dd-chevron">收起 / 展开 ▾</span>
+      </summary>
+      <div class="dd-body">
+        <div class="table-scroll">
+          <table class="ed-table">
+            <thead>
+              <tr><th>核心基准（海外参比）</th><th>HY (腾讯混元)</th><th>DeepSeek</th><th>Qwen (阿里通义)</th><th>GLM (智谱)</th><th>Kimi (月之暗面)</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><b>FrontierCode 2.0</b><br><span class="b-sub">海外最高 50.2%</span></td><td>官网未入榜<br><span class="b-sub">AA Hy4 31.4%</span></td><td>V4.1 Flash 1017<br>20.2% ($0.38, devin)</td><td>v2 官网未入榜<br><span class="b-sub">AA Qwen4 Max 26.5%</span></td><td>GLM-5.3 20.2% ($7.5)<br><span class="b-sub">Flash 15.0% ($0.79)</span></td><td>K3.1 Pro 19.9% ($3.0)<br><span class="b-sub">K3 18.9% ($4.5)</span></td></tr>
+              <tr><td><b>FrontierSWE v2</b><br><span class="b-sub">海外最高 69.9%</span></td><td>官网未入榜<br><span class="b-sub">自研 Goal2Repo 23.2%</span></td><td>V4 Flash Vision<br>14.8% ($8.6 Pareto)</td><td>Qwen3.8-Max<br>17.8% ($51.3)</td><td><b>GLM-5.3 30.2% ($97)</b><br><span class="b-sub">Flash 18.1% ($11)</span></td><td>Kimi K3<br>25.9% ($110)</td></tr>
+              <tr><td><b>Terminal-Bench 4.1</b><br><span class="b-sub">海外 71.2% / 65.8%</span></td><td>Hy4 37.9% ($348)<br><span class="b-sub">Flash 11.8% ($15)</span></td><td>V4.1 Flash 1017<br>38.5% ($185 Pareto)</td><td>Qwen3.8-Max<br>27.0% ($4.6K, CC)</td><td>GLM-5.3 41.2% ($2.7K)<br><span class="b-sub">Flash 37.0% ($375)</span></td><td><b>Kimi K3.1 Pro 59.7%</b><br><span class="b-sub">$1.1K · 国产第 1</span></td></tr>
+              <tr><td><b>TB-Science 0.1</b><br><span class="b-sub">海外最高 77.1%</span></td><td>官网未入榜<br><span class="b-sub">AA Hy4 12.9%</span></td><td>V4.1 Flash 15.7% (#7)<br><span class="b-sub">V4 Pro 3.8%</span></td><td>官网未入榜<br><span class="b-sub">AA Qwen4 Max 23.3%</span></td><td>GLM-5.3<br>8.1% ($2.7K)</td><td>K3 7.1%<br><span class="b-sub"><b>AA K3.1 Pro 34.3%</b></span></td></tr>
+              <tr><td><b>HLE-Diamond</b><br><span class="b-sub">海外最高 80.2%</span></td><td>Tencent Hy4<br>32.7% (AA v5.0.1)</td><td>V4.1 Flash 25.3%<br><span class="b-sub">原版 HLE 43.3%</span></td><td><b>Qwen4 Max 44.9%</b><br><span class="b-sub">国产最高</span></td><td>GLM-5.3 (max) 17.9%<br><span class="b-sub">原版 HLE 42.3%</span></td><td>Kimi K3.1 Pro 37.3%<br><span class="b-sub">原版 52.5% (工具70%)</span></td></tr>
+              <tr><td><b>AutomationBench</b><br><span class="b-sub">海外 56.6% 严全通</span></td><td>官网未入榜<br><span class="b-sub">AA Hy4 36.2%</span></td><td>V4.1 / V4 Flash<br>AA 35.5%–36.7%</td><td><b>AA Qwen4 Max 47.2%</b><br><span class="b-sub">目标分 72.6%</span></td><td>GLM-5.3<br>AA 29.4%</td><td><b>AA K3.1 Pro 46.0%</b><br><span class="b-sub">目标分 73.3%</span></td></tr>
+              <tr><td><b>RLI / OSWorld v2</b><br><span class="b-sub">海外 41.3% / 89.3%</span></td><td>官网未入榜</td><td>RLI V4.1 Flash 9.6%<br><span class="b-sub">国产唯一在榜</span></td><td>OSWorld v2 21.5%<br><span class="b-sub">1.0-Verified 73.3%</span></td><td>1.0-Verified<br>AutoGLM 48.0%</td><td>OSWorld v2 22.1%<br><span class="b-sub">1.0-Verified 73.1%</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="margin-top:10px;font-size:12.4px;color:var(--muted);">注：严格区分官网原生榜、模型厂自报与 AA v5 统一框架补充读数；核验截止 2026-11-23。</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- SECTION 6: COMPLETE VERIFIED PRIMARY SOURCES + BIBTEX -->
+  <section id="sec-refs" style="scroll-margin-top:76px;">
+    <h2 id="refs-count-title" style="font-family:var(--font-serif);font-size:24px;margin:0 0 8px;">全量一手来源索引</h2>
+    <p style="font-size:13.8px;color:var(--muted);margin:0 0 14px;">
+      正文与图鉴中引用的每一篇论文、榜单、白盒审计与官方系统卡均在此提供可点击直达链接。
+    </p>
+    <div class="ref-grid" id="ref-grid-host"></div>
+
+    <div class="bibtex-wrap">
+      <button class="copy-btn" id="copy-bibtex">复制 BibTeX</button>
+<pre class="code-tree" id="bibtex-code">@misc{wei2026frontier_eval_notes,
+  title        = {When the Exam Strikes Back: Collapse, Reconstruction, and Power Shift in 2026 Frontier AI Evaluation},
+  author       = {Wei, Chuyang},
+  year         = {2026},
+  month        = {November},
+  howpublished = {Frontier Benchmark Research Essay &amp; Interactive Atlas (based on Frontier Benchmark Seminar with Zhu, Minghang)},
+  note         = {Data verified through 2026-11-23 across 16 core frontier benchmarks and 60 primary sources}
+}</pre>
+    </div>
+  </section>
+
+</main>
+
+<!-- Slide-out Benchmark Dossier Drawer -->
+<div class="drawer-backdrop" id="drawer-bg" role="dialog" aria-modal="true" aria-label="基准造榜解剖详情">
+  <div class="drawer" id="drawer-content"></div>
+</div>
+
+<!-- Floating SVG Tooltip -->
+<div id="svg-tooltip" role="tooltip"></div>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div>
+      <strong>Frontier Benchmark Atlas · 2026.11</strong><br>
+      <span>作者：魏楚扬 · 16 套核心前沿基准 + 3 套旧代基线 · 单一数据源动态计算</span>
+    </div>
+    <div style="text-align:right;">
+      <span>核验截止：2026-11-23</span><br>
+      <a href="index.html" style="color:var(--terra);text-decoration:none;font-weight:700;margin-right:14px;">← 返回深度主文</a>
+      <a href="#top" style="color:var(--slate);text-decoration:none;font-weight:600;">返回顶部 ↑</a>
+    </div>
+  </div>
+</footer>
+
+<script src="data.js"></script>
+<script src="charts.js"></script>
+</body>
+</html>
