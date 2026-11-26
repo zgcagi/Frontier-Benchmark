@@ -18,6 +18,30 @@ window.REPORT_DATA = {
     { model: "GLM-5.3", group: "cn", v4: 45, v5: 32, delta: "-13", note: "同批权重单日回落 13 分，与榜首差距从 12 分拉大至 26 分" }
   ],
 
+  // 1B. Frontier Closed-Source Lab Release Table Shift (2026.11: Fable 5.2 / GPT-6.2 / Gemini 4 Neon)
+  releaseShift: {
+    retired: [
+      "MMLU 88.1%",
+      "AIME 100%",
+      "GPQA Diamond 96.8%",
+      "ARC-AGI-2 95.8%",
+      "SWE-V 87.6%",
+      "TB 2.0 84.7%"
+    ],
+    rows: [
+      { track: "代码工程", name: "FrontierCode 2.0", fable: "p:50.2%", gpt: "p:44.2%", gemini: "p:46.2%", tag: "三家硬交集", note: "私有 PR 合入质量 + 501 条维护者红线；三家 11 月主表全主推" },
+      { track: "代码工程", name: "FrontierSWE v2 (20h)", fable: "p:69.9%", gpt: "r:65.5%", gemini: "r:62.4%", tag: "20h 开放工程", note: "无标准补丁长程系统工程；Anthropic 主推，三家均有同框架实测" },
+      { track: "代码工程", name: "Terminal-Bench 4.1", fable: "r:65.8%", gpt: "r:62.1%", gemini: "p:64.5%", tag: "开源容器底座", note: "Google 首推防作弊修正分；Harbor 双容器规范跨赛道复用" },
+      { track: "科研任务", name: "TB-Science 0.1", fable: "p:74.6%", gpt: "p:77.1%", gemini: "p:70.5%", tag: "三家硬交集", note: "海外三强唯一共同主推的命令行科学计算基准" },
+      { track: "科研任务", name: "HLE-Diamond", fable: "p:80.2%", gpt: "p:72.2%", gemini: "p:71.3%", tag: "清洗后主推", note: "原版 HLE 审出 29%-46% 错标后，三家齐换清洗版 Diamond" },
+      { track: "科研任务", name: "湿实验专项 (Binder / BioBasics)", fable: "p:14/15 靶点", gpt: "p:66.7% 排错", gemini: "n:未披露", tag: "干湿实验自建", note: "Anthropic 24h 蛋白设计寄 CRO 湿测；OpenAI x Ligo 测未发表脏底片" },
+      { track: "办公与职业", name: "AutomationBench (严格全通)", fable: "p:51.6%", gpt: "r:50.7%", gemini: "p:56.6%", tag: "47 SaaS 终态", note: "Anthropic 与 Google 双主推；按全部子目标 100% 达成严算" },
+      { track: "办公与职业", name: "AA-Briefcase / RLI 真外包", fable: "p:66.1% / 41.3%", gpt: "p:GDPval / 20.8%", gemini: "r:ALE 75.8%", tag: "商业交付验收", note: "转向企业网盘双轨验收与真实付费 Upwork 外包二元付款" },
+      { track: "CUA 任务", name: "OSWorld 2.1 (步骤 / 严通)", fable: "p:89.3 / 54.6%", gpt: "p:79.5 / 44.0%", gemini: "r:80.4 / 45.8%", tag: "1.6h 桌面操控", note: "由 2 分钟单软件短指令拉长 48 倍至跨软件长流程；另收 Chartography 2D 识图" },
+      { track: "物理交互", name: "RoboDojo Sim / 安全红线", fable: "p:64.9%‡ / 91%", gpt: "p:29.8% / Crit", gemini: "p:双系统 / IPI 0%", tag: "物理与网安", note: "具身仿真与 ExploitBench / 行为安全审计成为 11 月新重点" }
+    ]
+  },
+
   // 2. US vs China 10-Benchmark Adoption Matrix (2026.06-09 -> 2026.11)
   adoptionMatrix: [
     { name: "FrontierCode v1->2.0", tag: "私有合入", track: "代码", bid: "fc2", oai: "nov:11月 GPT-6.2", ant: "early:夏秋 Opus 4.7->5.5", goo: "nov:11月 Neon", cnOld: "gap:未接入", cnNow: "gap:空缺 (AA/devin代测)", gapNote: "差距 17-30 分（叠加 15-20 分框架差）" },
@@ -117,14 +141,14 @@ window.REPORT_DATA = {
   },
 
   // 6. THE 16 CORE FRONTIER BENCHMARKS (+ 3 LEGACY BASELINES)
-  // Strictly aligned with PPTX P63-P64:
-  //   Core = 16 (code: 3, sci: 6, off: 4, emb: 3)
+  // Strictly aligned with PPTX P63-P64 (split into 5 tracks):
+  //   Core = 16 (code: 3, sci: 6, off: 4, cua: 2, phys: 1)
   //   Access = hyb: 7 (44%), priv: 3 (19%), open: 6 (37%) -> priv+hyb = 10/16 (63%)
   //   OrgType = acad: 6 (38%), data: 5 (31%), lab: 3 (19%), prod: 2 (12%)
   //   Golden Zone (50-250 tasks) = 12/16 (75%)
   benchmarks: [
     {
-      id: "fc2", name: "FrontierCode 2.0", track: "code", trackLabel: "代码与系统",
+      id: "fc2", name: "FrontierCode 2.0", track: "code", trackLabel: "代码工程",
       org: "Cognition + 20+ 维护者", orgType: "prod", orgLabel: "产品公司", orgScale: "1 家核心 + 20+ 维护者",
       release: "2026.06 -> 2026.10", releaseYear: 2026.8, evolution: "1.0(26.06) -> 1.1(26.07) -> 2.0(26.10)",
       countStr: "132 私有题", countNum: 132, inGoldenZone: true, access: "priv", accessLabel: "私有闭源",
@@ -147,14 +171,14 @@ window.REPORT_DATA = {
       }
     },
     {
-      id: "fswe2", name: "FrontierSWE v2", track: "code", trackLabel: "代码与系统",
+      id: "fswe2", name: "FrontierSWE v2", track: "code", trackLabel: "代码工程",
       org: "Proximal", orgType: "data", orgLabel: "数据/评测机构", orgScale: "1 家专业团队",
       release: "2026.04 -> 2026.09", releaseYear: 2026.7, evolution: "v1(17题) -> v2(汰4增21共34题 / 20h)",
       countStr: "34 题 (20h)", countNum: 34, inGoldenZone: false, access: "hyb", accessLabel: "公私混合",
       evalTags: ["code"], evalShort: "100% 确定性程序硬算（零 LLM 裁判）",
       capability: "20 小时无参考补丁的开放式系统攻坚",
       source: "5 类 20h 开放工程：Swift 写 Verilog 仿真器、Zig SIMD 重写 FFmpeg、B200 加速 SGLang、10 天天气预测、超越 AdamW 优化器",
-      funnel: "统一 proximus 框架（submit 改为存保底快照解决早退）+ 停机切换纯净改卷容器 + 事后 QA 查 20h 日志",
+      funnel: "统一 proximus 框架（submit 改为存保底快照解决早退）+ 停机切换纯净验证容器 + 事后 QA 查 20h 日志",
       verifier: "无标准补丁；每题配备独立确定性程序裁判（如 SGLang 的 0.95 精度门控 + 随机前缀加盐 + A->B->A 同卡夹测）",
       score: "Fable 5.2 69.9%（$169）；Neon $96 拿 62.4% vs GLM-5.3 $97 跑 17.1h 仅 30.2%；Haiku 5.5 $21 拿 43.8%",
       cost: "全量 170 轮仅 Token 消耗 $2.9万-$17.6万（差 47 倍）+ 单题独占 B200 100 卡时",
@@ -165,12 +189,12 @@ window.REPORT_DATA = {
           "SGLang 单卡 B200 20h：起点开启 FP8 + MTP + CUDA Graph 作为 0 分线，逼迫模型修改调度源码或手写算子；同卡 A->B->A 夹测消除 5%-10% 云端热漂移。",
           "反作弊现场：GPT-5.6 Sol 发现遗留 .gold 文件，思维链先写下违规担忧并正常写代码 13 分钟，调不通后改写脚本直接回放 .gold。"
         ],
-        anticheat: "34 题全程断公网；到点销毁答题机清空 /tmp，干净产物迁入新改卷容器，答案锁 root 0700 并切普通账号降权跑测。",
+        anticheat: "34 题全程断公网；到点销毁执行机清空 /tmp，干净产物迁入新验证容器，答案锁 root 0700 并切普通账号降权跑测。",
         adoption: "长程软件工程核心基准；Proximal 凭借同源评测与 RL 沙盒架构获得 3 亿美元估值。"
       }
     },
     {
-      id: "tb41", name: "Terminal-Bench 4.1", track: "code", trackLabel: "代码与系统",
+      id: "tb41", name: "Terminal-Bench 4.1", track: "code", trackLabel: "代码工程",
       org: "Stanford / Laude 等 8+ 机构", orgType: "acad", orgLabel: "高校联盟", orgScale: "8+ 机构 + 100+ 贡献者",
       release: "2025.05 -> 2026.11", releaseYear: 2026.85, evolution: "1.0(80)->2.0(89)->2.1->3.0(红队)->4.0->4.1(缩容66题)",
       countStr: "89 -> 66 题", countNum: 66, inGoldenZone: true, access: "open", accessLabel: "全开源 (+Harbor)",
@@ -193,7 +217,7 @@ window.REPORT_DATA = {
       }
     },
     {
-      id: "hle", name: "HLE -> HLE-Diamond", track: "sci", trackLabel: "科研与推理",
+      id: "hle", name: "HLE -> HLE-Diamond", track: "sci", trackLabel: "科研任务",
       org: "Scale AI x CAIS (500+ 机构)", orgType: "data", orgLabel: "数据/评测机构", orgScale: "500+ 机构 / 1,000 学者",
       release: "2025.01 -> 2026.09", releaseYear: 2026.7, evolution: "征题(24.09)->原版(2500题)->Verified/Rolling->Diamond(1000题)",
       countStr: "2,500 -> 1,000 题", countNum: 1000, inGoldenZone: false, access: "hyb", accessLabel: "公私混合",
@@ -216,7 +240,7 @@ window.REPORT_DATA = {
       }
     },
     {
-      id: "biomy", name: "BioMysteryBench", track: "sci", trackLabel: "科研与推理",
+      id: "biomy", name: "BioMysteryBench", track: "sci", trackLabel: "科研任务",
       org: "Anthropic + 领域专家", orgType: "lab", orgLabel: "大厂自建", orgScale: "1 家大厂 + 生物专家",
       release: "2026.04 -> 2026.10 退役", releaseYear: 2026.3, evolution: "99题 -> 定稿90题 -> 半年饱和退役转交 Vals AI",
       countStr: "99 -> 90 题 (5公)", countNum: 90, inGoldenZone: true, access: "hyb", accessLabel: "公私混合 (5公)",
@@ -239,7 +263,7 @@ window.REPORT_DATA = {
       }
     },
     {
-      id: "tbs", name: "TB-Science 0.1", track: "sci", trackLabel: "科研与推理",
+      id: "tbs", name: "TB-Science 0.1", track: "sci", trackLabel: "科研任务",
       org: "Stanford / Laude 等 10+ 机构", orgType: "acad", orgLabel: "高校联盟", orgScale: "10+ 机构科学家众包",
       release: "2026.08 -> 2026.11 扩题", releaseYear: 2026.6, evolution: "70题首发 -> 按月合 PR 扩至 96 题",
       countStr: "920 -> 70(96) 题", countNum: 70, inGoldenZone: true, access: "open", accessLabel: "全开源 (+Harbor)",
@@ -261,7 +285,7 @@ window.REPORT_DATA = {
       }
     },
     {
-      id: "asb", name: "ASB 0.1 -> TwinLab-Bench", track: "sci", trackLabel: "科研与推理",
+      id: "asb", name: "ASB 0.1 -> TwinLab-Bench", track: "sci", trackLabel: "科研任务",
       org: "西北大学 -> 浙大等高校团队", orgType: "acad", orgLabel: "高校联盟", orgScale: "单校 -> 多校补位",
       release: "2026.10 -> 2026.11", releaseYear: 2026.85, evolution: "ASB 0.1 (6题 / 0%采用) -> 38天后 TwinLab 补齐 52 题",
       countStr: "6 -> 52 题", countNum: 52, inGoldenZone: true, access: "open", accessLabel: "全开源",
@@ -284,7 +308,7 @@ window.REPORT_DATA = {
       }
     },
     {
-      id: "biobasics", name: "BioBasicsBench", track: "sci", trackLabel: "科研与推理",
+      id: "biobasics", name: "BioBasicsBench", track: "sci", trackLabel: "科研任务",
       org: "OpenAI x Ligo Biosciences", orgType: "lab", orgLabel: "大厂自建", orgScale: "2 家联合 + 3 博士盲审",
       release: "2026.11", releaseYear: 2026.85, evolution: "100 题 100% 内部未发表底片首发",
       countStr: "100 题", countNum: 100, inGoldenZone: true, access: "priv", accessLabel: "私有闭源",
@@ -307,7 +331,7 @@ window.REPORT_DATA = {
       }
     },
     {
-      id: "binder", name: "De novo binder design (24h)", track: "sci", trackLabel: "科研与推理",
+      id: "binder", name: "De novo binder design (24h)", track: "sci", trackLabel: "科研任务",
       org: "Anthropic x Twist / Adaptyv", orgType: "lab", orgLabel: "大厂自建", orgScale: "1 家大厂 + 2 家商业 CRO",
       release: "2026.08 -> 2026.11", releaseYear: 2026.86, evolution: "26.08 试点 -> 26.11 15 靶点 x 1,320 序列湿测",
       countStr: "15 靶点 (1,320序列)", countNum: 15, inGoldenZone: false, access: "hyb", accessLabel: "公私混合",
@@ -329,7 +353,7 @@ window.REPORT_DATA = {
       }
     },
     {
-      id: "autobench", name: "AutomationBench v1.0.6", track: "off", trackLabel: "办公与劳动",
+      id: "autobench", name: "AutomationBench v1.0.6", track: "off", trackLabel: "办公与职业任务",
       org: "Zapier (后联合 AA)", orgType: "prod", orgLabel: "产品公司", orgScale: "1 家产品公司 + AA 对齐",
       release: "2026.04 -> 2026.11", releaseYear: 2026.5, evolution: "26.04 上线 -> v1.0.6 -> BLE 审计检出公开集 71% 缺陷",
       countStr: "100 公 + 657 私", countNum: 657, inGoldenZone: false, access: "hyb", accessLabel: "公私混合",
@@ -351,7 +375,7 @@ window.REPORT_DATA = {
       }
     },
     {
-      id: "ale", name: "Agents' Last Exam v1.1", track: "off", trackLabel: "办公与劳动",
+      id: "ale", name: "Agents' Last Exam v1.1", track: "off", trackLabel: "办公与职业任务",
       org: "UC Berkeley RDI x Snorkel (40+)", orgType: "acad", orgLabel: "高校联盟", orgScale: "40+ 机构 / 300+ 专家",
       release: "2026.05 -> 2026.10", releaseYear: 2026.75, evolution: "v1.0(26.05) -> v1.1(删30不稳题锁122题并藏私有测)",
       countStr: "1,500+ -> 122 活跃题", countNum: 122, inGoldenZone: true, access: "hyb", accessLabel: "公私混合 (藏测)",
@@ -373,7 +397,7 @@ window.REPORT_DATA = {
       }
     },
     {
-      id: "briefcase", name: "AA-Briefcase v1.1", track: "off", trackLabel: "办公与劳动",
+      id: "briefcase", name: "AA-Briefcase v1.1", track: "off", trackLabel: "办公与职业任务",
       org: "Artificial Analysis + 行业专家", orgType: "data", orgLabel: "数据/评测机构", orgScale: "1 家评测机构 + 行业专家",
       release: "2026.06 -> 2026.11", releaseYear: 2026.45, evolution: "v1.0(26.06) -> v1.1(纳入 AA v5.0 核心权重)",
       countStr: "4 企业 / 91 题", countNum: 91, inGoldenZone: true, access: "priv", accessLabel: "私有闭源",
@@ -395,7 +419,7 @@ window.REPORT_DATA = {
       }
     },
     {
-      id: "rli", name: "Remote Labor Index (RLI)", track: "off", trackLabel: "办公与劳动",
+      id: "rli", name: "Remote Labor Index (RLI)", track: "off", trackLabel: "办公与职业任务",
       org: "Scale AI x CAIS", orgType: "data", orgLabel: "数据/评测机构", orgScale: "2 家机构 + 23 工种真人专家",
       release: "2025.10 -> 2026.11", releaseYear: 2026.1, evolution: "25.10 首发(2.5%) -> 26.11 追踪至 41.3%",
       countStr: "10 公 + 230 私", countNum: 240, inGoldenZone: true, access: "hyb", accessLabel: "公私混合 (10公)",
@@ -417,7 +441,7 @@ window.REPORT_DATA = {
       }
     },
     {
-      id: "charto", name: "Chartography", track: "emb", trackLabel: "桌面与物理",
+      id: "charto", name: "Chartography", track: "cua", trackLabel: "CUA 任务",
       org: "Surge AI + 12 行业行家", orgType: "data", orgLabel: "数据/评测机构", orgScale: "1 家数据公司 + 12 行业专家",
       release: "2026.07 -> 2026.08", releaseYear: 2026.6, evolution: "26.07 首榜(45%) -> 26.08 论文开源 -> 26.11 三强破 72%",
       countStr: "100 专业真图", countNum: 100, inGoldenZone: true, access: "open", accessLabel: "全开源 (CC BY)",
@@ -439,7 +463,7 @@ window.REPORT_DATA = {
       }
     },
     {
-      id: "osworld", name: "OSWorld 2.1", track: "emb", trackLabel: "桌面与物理",
+      id: "osworld", name: "OSWorld 2.1", track: "cua", trackLabel: "CUA 任务",
       org: "港大 XLang x CMU 等 12+ 机构", orgType: "acad", orgLabel: "高校联盟", orgScale: "12+ 高校与研究机构",
       release: "2024.04 -> 2026.06", releaseYear: 2026.5, evolution: "1.0(369小题)->Verified(25.07)->2.0(108长流程)->2.1(修脚本)",
       countStr: "369 -> 108 题 (82本地)", countNum: 108, inGoldenZone: true, access: "open", accessLabel: "全开源",
@@ -462,7 +486,7 @@ window.REPORT_DATA = {
       }
     },
     {
-      id: "robodojo", name: "RoboDojo -> First Exam", track: "emb", trackLabel: "桌面与物理",
+      id: "robodojo", name: "RoboDojo -> First Exam", track: "phys", trackLabel: "物理交互",
       org: "MIT/港大/清华/西北等 18+ 校", orgType: "acad", orgLabel: "高校联盟", orgScale: "18+ 校联合 (RoboDojo) + 西北 (First Exam)",
       release: "2026.07 -> 2026.11", releaseYear: 2026.86, evolution: "RoboDojo(42仿+18真机) -> 11.14清作弊 -> First Exam(35套456核心实时统考)",
       countStr: "60 题 / 456 核心", countNum: 60, inGoldenZone: true, access: "open", accessLabel: "全开源 (+Harbor)",

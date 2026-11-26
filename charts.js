@@ -143,6 +143,105 @@
   }
 
   /* ------------------------------------------------------------------------
+     2B. FIGURE 1.2 | FRONTIER CLOSED-SOURCE RELEASE SHIFT (2026.11)
+     Shows retired saturated benchmarks vs Claude Fable 5.2 / GPT-6.2 / Neon
+     ------------------------------------------------------------------------ */
+  function renderReleaseShiftSVG() {
+    const host = $("#chart-release-shift");
+    if (!host || !D.releaseShift) return;
+    const { retired, rows } = D.releaseShift;
+
+    const W = 940, rowH = 34;
+    const topBannerH = 62;
+    const tblHeadY = topBannerH + 46;
+    const H = tblHeadY + rows.length * rowH + 34;
+
+    const colTrack = 12;
+    const colName = 104;
+    const colFable = 365;
+    const colGpt = 530;
+    const colGemini = 695;
+    const colTag = 835;
+
+    let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block;font-family:var(--font-sans);">`;
+
+    // Top Strip: Retired Static Benchmarks
+    svg += `<rect x="8" y="6" width="${W - 16}" height="52" rx="6" fill="#F8F9FA" stroke="#E5E7EB"/>`;
+    svg += `<text x="20" y="25" font-size="11.2" font-weight="700" fill="#666666">已撤出 2026.11 发布主表的旧静态榜（传统选择题 = 0）</text>`;
+    svg += `<rect x="${W - 350}" y="13" width="330" height="22" rx="4" fill="#FDF3F0" stroke="#EACBC2"/>`;
+    svg += `<text x="${W - 185}" y="28" text-anchor="middle" font-size="10.6" font-weight="650" fill="#A84A32">Claude Fable 5.2 主表 14 项：8 项 2026 新发 / 2 项自建 / 0 项单选</text>`;
+
+    let rx = 20;
+    retired.forEach(item => {
+      const pw = Math.max(88, item.length * 6.8 + 16);
+      svg += `<rect x="${rx}" y="34" width="${pw}" height="18" rx="3" fill="#FFFFFF" stroke="#D1D5DB"/>`;
+      svg += `<text x="${rx + pw / 2}" y="46.5" text-anchor="middle" font-size="9.8" fill="#8A8A8A" text-decoration="line-through">${item}</text>`;
+      rx += pw + 8;
+    });
+
+    // Legend Row
+    svg += `<circle cx="16" cy="${topBannerH + 17}" r="4.5" fill="#1F4E79"/>`;
+    svg += `<text x="26" y="${topBannerH + 21}" font-size="10.6" fill="#333333">实心点：该厂 2026.11 官方发布页主推</text>`;
+    svg += `<circle cx="246" cy="${topBannerH + 17}" r="4.5" fill="#FFFFFF" stroke="#666666" stroke-width="1.6"/>`;
+    svg += `<text x="256" y="${topBannerH + 21}" font-size="10.6" fill="#333333">空心圈：竞品对照或第三方统测可比读数</text>`;
+    svg += `<text x="484" y="${topBannerH + 21}" font-size="10.6" fill="#8A8A8A">悬停任意一行查看评测细则</text>`;
+
+    // Table Headers
+    svg += `<line x1="8" y1="${tblHeadY - 18}" x2="${W - 8}" y2="${tblHeadY - 18}" stroke="#1A1A1A" stroke-width="1.3"/>`;
+    svg += `<text x="${colTrack}" y="${tblHeadY - 4}" font-size="11" font-weight="650" fill="#666666">所属赛道</text>`;
+    svg += `<text x="${colName}" y="${tblHeadY - 4}" font-size="11" font-weight="650" fill="#1A1A1A">2026 前沿基准</text>`;
+    svg += `<text x="${colFable}" y="${tblHeadY - 4}" text-anchor="middle" font-size="11.2" font-weight="700" fill="#A84A32">Anthropic Fable 5.2 (11.09)</text>`;
+    svg += `<text x="${colGpt}" y="${tblHeadY - 4}" text-anchor="middle" font-size="11.2" font-weight="700" fill="#2D6A5B">OpenAI GPT-6.2 (11.17)</text>`;
+    svg += `<text x="${colGemini}" y="${tblHeadY - 4}" text-anchor="middle" font-size="11.2" font-weight="700" fill="#1F4E79">Google Neon (11.18)</text>`;
+    svg += `<text x="${colTag}" y="${tblHeadY - 4}" text-anchor="middle" font-size="11" font-weight="650" fill="#666666">转向特征</text>`;
+    svg += `<line x1="8" y1="${tblHeadY + 4}" x2="${W - 8}" y2="${tblHeadY + 4}" stroke="#D1D5DB"/>`;
+
+    const drawCell = (raw, cx, y, color) => {
+      const [mode, val] = raw.split(":");
+      if (mode === "n") {
+        return `<text x="${cx}" y="${y + 4}" text-anchor="middle" font-size="10.5" fill="#9CA3AF">${val}</text>`;
+      }
+      const isPrimary = mode === "p";
+      const dotX = cx - 44;
+      const circle = isPrimary
+        ? `<circle cx="${dotX}" cy="${y}" r="4.8" fill="${color}"/>`
+        : `<circle cx="${dotX}" cy="${y}" r="4.5" fill="#FFFFFF" stroke="${color}" stroke-width="1.6"/>`;
+      return `${circle}<text x="${dotX + 10}" y="${y + 4}" font-size="11" font-weight="${isPrimary ? "650" : "400"}" fill="${isPrimary ? "#1A1A1A" : "#666666"}">${val}</text>`;
+    };
+
+    rows.forEach((r, idx) => {
+      const rowTop = tblHeadY + 5 + idx * rowH;
+      const y = rowTop + rowH / 2;
+      const isHard = r.tag === "三家硬交集";
+      if (isHard) {
+        svg += `<rect x="8" y="${rowTop}" width="${W - 16}" height="${rowH}" fill="#FDF3F0" opacity="0.55"/>`;
+      } else if (idx % 2 === 1) {
+        svg += `<rect x="8" y="${rowTop}" width="${W - 16}" height="${rowH}" fill="#FAFAFA"/>`;
+      }
+      svg += `<g class="shift-row" data-tip="<b>${r.name}</b> (${r.track})<br>${r.note}" style="cursor:pointer;">`;
+      svg += `<rect x="8" y="${rowTop}" width="${W - 16}" height="${rowH}" fill="transparent"/>`;
+      svg += `<text x="${colTrack}" y="${y + 4}" font-size="10.8" fill="#666666">${r.track}</text>`;
+      svg += `<text x="${colName}" y="${y + 4}" font-size="11.6" font-weight="${isHard ? "700" : "600"}" fill="${isHard ? "#A84A32" : "#1A1A1A"}">${r.name}</text>`;
+      svg += drawCell(r.fable, colFable, y, "#A84A32");
+      svg += drawCell(r.gpt, colGpt, y, "#2D6A5B");
+      svg += drawCell(r.gemini, colGemini, y, "#1F4E79");
+      const tagBg = isHard ? "#FDF3F0" : "#F2F4F7";
+      const tagFg = isHard ? "#A84A32" : "#4B5563";
+      const tagBd = isHard ? "#EACBC2" : "#E5E7EB";
+      svg += `<rect x="${colTag - 44}" y="${y - 10}" width="88" height="20" rx="3" fill="${tagBg}" stroke="${tagBd}"/>`;
+      svg += `<text x="${colTag}" y="${y + 3.5}" text-anchor="middle" font-size="10.2" font-weight="600" fill="${tagFg}">${r.tag}</text>`;
+      svg += `</g>`;
+      svg += `<line x1="8" y1="${rowTop + rowH}" x2="${W - 8}" y2="${rowTop + rowH}" stroke="#EFEFEF"/>`;
+    });
+
+    svg += `<line x1="8" y1="${tblHeadY + 5 + rows.length * rowH}" x2="${W - 8}" y2="${tblHeadY + 5 + rows.length * rowH}" stroke="#1A1A1A" stroke-width="1.2"/>`;
+    svg += `</svg>`;
+
+    host.innerHTML = svg;
+    bindTooltips("#chart-release-shift .shift-row", el => el.dataset.tip);
+  }
+
+  /* ------------------------------------------------------------------------
      3. FIGURE 2 | CODING COST PARETO & TB 4.1 SWITCHER
      ------------------------------------------------------------------------ */
   function renderCodeChart(mode = "fswe") {
@@ -292,95 +391,134 @@
   }
 
   /* ------------------------------------------------------------------------
-     5. FIGURE 4 | EMBODIED TWO-PANEL SPLIT (Strictly Separated Physical Units)
+     5A. FIGURE 2.3 | CUA GAP: 2D CHART READING VS 1.6H DESKTOP GUI (PART 2.4)
      ------------------------------------------------------------------------ */
-  function renderEmbodiedSplit() {
-    const hostA = $("#chart-embodied-acc");
+  function renderCUAGap() {
+    const host = $("#chart-cua-gap");
+    if (!host) return;
+    const stages = D.embodiedAccuracy.slice(0, 3); // Chartography, OSWorld Partial, OSWorld Strict
+    const W = 720, H = 290, padL = 46, padR = 24, padT = 38, padB = 58;
+    const groupW = (W - padL - padR) / stages.length;
+    const toY = v => padT + ((100 - v) / 100) * (H - padT - padB);
+
+    let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block;font-family:var(--font-sans);">`;
+    [0, 25, 50, 75, 100].forEach(t => {
+      const y = toY(t);
+      svg += `<line x1="${padL}" y1="${y}" x2="${W - padR}" y2="${y}" stroke="#E5E7EB" stroke-dasharray="3,3"/>`;
+      svg += `<text x="${padL - 8}" y="${y + 4}" text-anchor="end" font-size="10.5" fill="#8A8A8A">${t}%</text>`;
+    });
+
+    const leg = [["Anthropic (Fable 5.2)", "#A84A32"], ["OpenAI (Sol / Astra)", "#1F4E79"], ["Google (Carbon)", "#2D6A5B"]];
+    leg.forEach(([lbl, col], i) => {
+      const lx = padL + i * 195;
+      svg += `<rect x="${lx}" y="9" width="10" height="10" rx="2" fill="${col}"/>`;
+      svg += `<text x="${lx + 14}" y="18" font-size="11" font-weight="600" fill="#333333">${lbl}</text>`;
+    });
+
+    stages.forEach((st, idx) => {
+      const gx = padL + idx * groupW + groupW / 2;
+      const bw = 30, gap = 8;
+      const startX = gx - (3 * bw + 2 * gap) / 2;
+      const items = [
+        { ...st.anthropic, col: "#A84A32" },
+        { ...st.openai, col: "#1F4E79" },
+        { ...st.google, col: "#2D6A5B" }
+      ];
+      items.forEach((it, j) => {
+        const bx = startX + j * (bw + gap);
+        const y = toY(it.val), h = toY(0) - y;
+        svg += `<g class="cua-pt" data-tip="<b>${st.stage.replace("\n", " | ")}</b><br>${it.model}: <b>${it.val}%</b><br>${st.note}" style="cursor:pointer;">`;
+        svg += `<rect x="${bx}" y="${y}" width="${bw}" height="${h}" rx="3" fill="${it.col}"/>`;
+        svg += `<text x="${bx + bw / 2}" y="${y - 6}" text-anchor="middle" font-size="10.5" font-weight="650" fill="${it.col}">${it.val}%</text>`;
+        svg += `</g>`;
+      });
+
+      st.stage.split("\n").forEach((ln, li) => {
+        svg += `<text x="${gx}" y="${H - padB + 20 + li * 15}" text-anchor="middle" font-size="${li === 0 ? "11.5" : "10.2"}" font-weight="${li === 0 ? "650" : "400"}" fill="${li === 0 ? "#1A1A1A" : "#666666"}">${ln}</text>`;
+      });
+    });
+
+    // Drop annotation between Partial and Strict
+    const xP = padL + 1.5 * groupW;
+    const xS = padL + 2.5 * groupW;
+    svg += `<text x="${(xP + xS) / 2}" y="${toY(72)}" text-anchor="middle" font-size="10.4" font-weight="650" fill="#A84A32">严全通掉 34.7 分</text>`;
+    svg += `<text x="${(xP + xS) / 2}" y="${toY(72) + 14}" text-anchor="middle" font-size="9.6" fill="#666666">(93% 单向推进不回检)</text>`;
+
+    svg += `</svg>`;
+    host.innerHTML = svg;
+    bindTooltips("#chart-cua-gap .cua-pt", el => el.dataset.tip);
+  }
+
+  /* ------------------------------------------------------------------------
+     5B. FIGURE 2.4 | PHYSICAL INTERACTION SPLIT: SIM VS REAL & REALTIME CLOCK
+     Strictly Separated Physical Units (NO Mixed Y-Axis)
+     ------------------------------------------------------------------------ */
+  function renderPhysSplit() {
+    const hostA = $("#chart-phys-sim");
     const hostB = $("#chart-first-exam");
 
     if (hostA) {
-      const stages = D.embodiedAccuracy;
-      const W = 540, H = 300, padL = 42, padR = 12, padT = 36, padB = 60;
-      const groupW = (W - padL - padR) / stages.length;
-      const toY = v => padT + ((100 - v) / 100) * (H - padT - padB);
+      const bars = [
+        { label: "Claude Fable 5.2", sub: "Isaac Sim 停表 + 私有外挂", val: 64.9, txt: "64.9%‡", col: "#A84A32", tip: "带私有抽帧/插值外挂 + 停表冻结重力慢思考；尚未提交真机成绩" },
+        { label: "RealEval 真机最高", sub: "18 项恒定光箱真实双臂", val: 33.9, txt: "33.9%", col: "#2D6A5B", tip: "18 项真实机械臂实测台最高分，三大通用旗舰均未交真机成绩" },
+        { label: "GPT-6 Astra", sub: "Isaac Sim 停表仿真", val: 29.8, txt: "29.8%", col: "#1F4E79", tip: "无私有外挂下的停表仿真成绩，约 Fable 带外挂读数的一半" },
+        { label: "开源 VLA 机器人小模型", sub: "换光照/纹理视觉泛化后", val: 8.8, txt: "8.8%", col: "#64748B", tip: "传统微调小模型一换桌面纹理和光照，进度分大降 67%-96%" }
+      ];
+      const W = 450, H = 290, padL = 148, padR = 54, padT = 18, rowH = 62;
+      const toW = v => (v / 80) * (W - padL - padR);
 
       let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block;font-family:var(--font-sans);">`;
-      [0, 25, 50, 75, 100].forEach(t => {
-        const y = toY(t);
-        svg += `<line x1="${padL}" y1="${y}" x2="${W - padR}" y2="${y}" stroke="#E5E7EB" stroke-dasharray="3,3"/>`;
-        svg += `<text x="${padL - 6}" y="${y + 4}" text-anchor="end" font-size="10.2" fill="#8A8A8A">${t}%</text>`;
+      [0, 20, 40, 60, 80].forEach(t => {
+        const x = padL + toW(t);
+        svg += `<line x1="${x}" y1="${padT}" x2="${x}" y2="${H - 28}" stroke="#E5E7EB" stroke-dasharray="3,3"/>`;
+        svg += `<text x="${x}" y="${H - 12}" text-anchor="middle" font-size="10" fill="#8A8A8A">${t}%</text>`;
       });
 
-      const leg = [["Anthropic (Fable 5.2)", "#A84A32"], ["OpenAI (Sol / Astra)", "#1F4E79"], ["Google (Carbon)", "#2D6A5B"]];
-      leg.forEach(([lbl, col], i) => {
-        const lx = padL + i * 160;
-        svg += `<rect x="${lx}" y="9" width="10" height="10" rx="2" fill="${col}"/>`;
-        svg += `<text x="${lx + 14}" y="18" font-size="10.4" font-weight="600" fill="#333333">${lbl}</text>`;
+      bars.forEach((b, i) => {
+        const y = padT + i * rowH + 10;
+        const bw = toW(b.val);
+        svg += `<g class="phys-a-pt" data-tip="<b>${b.label} (${b.txt})</b><br>${b.tip}" style="cursor:pointer;">`;
+        svg += `<text x="${padL - 10}" y="${y + 13}" text-anchor="end" font-size="11.5" font-weight="650" fill="${b.col}">${b.label}</text>`;
+        svg += `<text x="${padL - 10}" y="${y + 27}" text-anchor="end" font-size="9.6" fill="#666666">${b.sub}</text>`;
+        svg += `<rect x="${padL}" y="${y + 4}" width="${bw}" height="22" rx="3.5" fill="${b.col}"/>`;
+        svg += `<text x="${padL + bw + 7}" y="${y + 19}" font-size="11.5" font-weight="700" fill="${b.col}">${b.txt}</text>`;
+        svg += `</g>`;
       });
-
-      stages.forEach((st, idx) => {
-        const gx = padL + idx * groupW + groupW / 2;
-        const bw = 21, gap = 6;
-        const startX = gx - (3 * bw + 2 * gap) / 2;
-        const items = [
-          { ...st.anthropic, col: "#A84A32" },
-          { ...st.openai, col: "#1F4E79" },
-          { ...st.google, col: "#2D6A5B" }
-        ];
-        items.forEach(it => {
-          const j = items.indexOf(it);
-          const bx = startX + j * (bw + gap);
-          if (it.val === null) {
-            svg += `<text x="${bx + bw / 2}" y="${toY(0) - 8}" text-anchor="middle" font-size="9.5" fill="#8A8A8A">未报</text>`;
-            return;
-          }
-          const y = toY(it.val), h = toY(0) - y;
-          svg += `<g class="emb-a-pt" data-tip="<b>${st.stage.replace("\n", " | ")}</b><br>${it.model}: <b>${it.val}%</b><br>${st.note}" style="cursor:pointer;">`;
-          svg += `<rect x="${bx}" y="${y}" width="${bw}" height="${h}" rx="3" fill="${it.col}"/>`;
-          svg += `<text x="${bx + bw / 2}" y="${y - 5}" text-anchor="middle" font-size="9.1" font-weight="600" fill="${it.col}">${it.val}${it.dagger ? "‡" : ""}</text>`;
-          svg += `</g>`;
-        });
-
-        st.stage.split("\n").forEach((ln, li) => {
-          svg += `<text x="${gx}" y="${H - padB + 19 + li * 14}" text-anchor="middle" font-size="${li === 0 ? "10.8" : "9.8"}" font-weight="${li === 0 ? "650" : "400"}" fill="${li === 0 ? "#1A1A1A" : "#666666"}">${ln}</text>`;
-        });
-      });
-
       svg += `</svg>`;
       hostA.innerHTML = svg;
-      bindTooltips("#chart-embodied-acc .emb-a-pt", el => el.dataset.tip);
+      bindTooltips("#chart-phys-sim .phys-a-pt", el => el.dataset.tip);
     }
 
     if (hostB) {
       const f = D.firstExamCliff;
-      const W = 340, H = 300;
+      const W = 360, H = 290;
       let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block;font-family:var(--font-sans);">`;
 
-      svg += `<text x="10" y="22" font-size="11" font-weight="650" fill="#1F4E79">1. 允许仿真暂停重力 (Turn-based 最高准确率)</text>`;
-      svg += `<rect x="10" y="34" width="320" height="24" rx="4" fill="#E5E7EB"/>`;
-      svg += `<rect x="10" y="34" width="${(f.turnBasedBest.val / 100) * 320}" height="24" rx="4" fill="#1F4E79" class="emb-b-pt" data-tip="<b>Turn-based 停表模式</b><br>${f.turnBasedBest.note}" style="cursor:pointer;"/>`;
-      svg += `<text x="${10 + (f.turnBasedBest.val / 100) * 320 + 8}" y="51" font-size="12" font-weight="700" fill="#1F4E79">34.0% (GPT-6 Astra)</text>`;
-      svg += `<text x="10" y="76" font-size="10.4" fill="#666666">开源最高 9.0%；每步允许停表思考 10-18 秒</text>`;
+      svg += `<text x="10" y="22" font-size="11.2" font-weight="650" fill="#1F4E79">1. 允许仿真暂停重力 (停表模式最高分)</text>`;
+      svg += `<rect x="10" y="34" width="340" height="24" rx="4" fill="#E5E7EB"/>`;
+      svg += `<rect x="10" y="34" width="${(f.turnBasedBest.val / 100) * 340}" height="24" rx="4" fill="#1F4E79" class="emb-b-pt" data-tip="<b>Turn-based 停表模式</b><br>${f.turnBasedBest.note}" style="cursor:pointer;"/>`;
+      svg += `<text x="${10 + (f.turnBasedBest.val / 100) * 340 + 8}" y="51" font-size="12" font-weight="700" fill="#1F4E79">34.0% (GPT-6 Astra)</text>`;
+      svg += `<text x="10" y="75" font-size="10.4" fill="#666666">开源最高 9.0%；每步允许停表思考 10-18 秒</text>`;
 
-      svg += `<line x1="10" y1="95" x2="330" y2="95" stroke="#D1D5DB" stroke-dasharray="4,3"/>`;
+      svg += `<line x1="10" y1="93" x2="350" y2="93" stroke="#D1D5DB" stroke-dasharray="4,3"/>`;
 
-      svg += `<text x="10" y="117" font-size="11" font-weight="650" fill="#A84A32">2. 取消暂停键切回连续物理时钟 (456 题结局拆解)</text>`;
-      const zeroW = (f.realtimeZeroPct / 100) * 320;
-      const nonZeroW = 320 - zeroW;
+      svg += `<text x="10" y="114" font-size="11.2" font-weight="650" fill="#A84A32">2. 取消暂停键切回连续物理时钟 (456 题结局)</text>`;
+      const zeroW = (f.realtimeZeroPct / 100) * 340;
+      const nonZeroW = 340 - zeroW;
       svg += `<g class="emb-b-pt" data-tip="<b>Realtime 连续物理时钟 (456 核心题)</b><br>${f.note}" style="cursor:pointer;">`;
-      svg += `<rect x="10" y="128" width="${zeroW}" height="42" rx="4" fill="#A84A32"/>`;
-      svg += `<text x="${10 + zeroW / 2}" y="147" text-anchor="middle" font-size="12.5" font-weight="700" fill="#FFFFFF">63.0% 全员 0 分</text>`;
-      svg += `<text x="${10 + zeroW / 2}" y="162" text-anchor="middle" font-size="10" fill="#FDE8E1">287 / 456 题三家全零</text>`;
-      svg += `<rect x="${10 + zeroW + 4}" y="128" width="${nonZeroW - 4}" height="42" rx="4" fill="#64748B"/>`;
-      svg += `<text x="${10 + zeroW + 4 + (nonZeroW - 4) / 2}" y="147" text-anchor="middle" font-size="11.6" font-weight="600" fill="#FFFFFF">37.0%</text>`;
-      svg += `<text x="${10 + zeroW + 4 + (nonZeroW - 4) / 2}" y="162" text-anchor="middle" font-size="9.8" fill="#E2E8F0">至少一家非零</text>`;
+      svg += `<rect x="10" y="125" width="${zeroW}" height="42" rx="4" fill="#A84A32"/>`;
+      svg += `<text x="${10 + zeroW / 2}" y="144" text-anchor="middle" font-size="12.5" font-weight="700" fill="#FFFFFF">63.0% 全员 0 分</text>`;
+      svg += `<text x="${10 + zeroW / 2}" y="159" text-anchor="middle" font-size="10" fill="#FDE8E1">287 / 456 题三家全零</text>`;
+      svg += `<rect x="${10 + zeroW + 4}" y="125" width="${nonZeroW - 4}" height="42" rx="4" fill="#64748B"/>`;
+      svg += `<text x="${10 + zeroW + 4 + (nonZeroW - 4) / 2}" y="144" text-anchor="middle" font-size="11.6" font-weight="600" fill="#FFFFFF">37.0%</text>`;
+      svg += `<text x="${10 + zeroW + 4 + (nonZeroW - 4) / 2}" y="159" text-anchor="middle" font-size="9.8" fill="#E2E8F0">至少一家非零</text>`;
       svg += `</g>`;
 
-      svg += `<rect x="10" y="190" width="320" height="94" rx="5" fill="#FFFFFF" stroke="#E5E7EB"/>`;
-      svg += `<text x="22" y="212" font-size="11.2" font-weight="650" fill="#1A1A1A">延迟对比 (实测物理时间尺度)</text>`;
-      svg += `<text x="22" y="232" font-size="10.8" fill="#333333">- 慢思考大模型决策周期：约 10-18 秒/步 (~0.1 Hz)</text>`;
-      svg += `<text x="22" y="250" font-size="10.8" fill="#333333">- 倾倒水杯落地：0.4 秒 | 滑动目标移出：1.2 秒</text>`;
-      svg += `<text x="22" y="270" font-size="10.8" font-weight="600" fill="#A84A32">- 实时物理控制需要高频低延迟策略与高层规划协同</text>`;
+      svg += `<rect x="10" y="185" width="340" height="92" rx="5" fill="#FFFFFF" stroke="#E5E7EB"/>`;
+      svg += `<text x="22" y="207" font-size="11.2" font-weight="650" fill="#1A1A1A">速度差对照 (实测时间尺度)</text>`;
+      svg += `<text x="22" y="227" font-size="10.8" fill="#333333">- 大模型思考一步：10-18 秒 (~0.1 Hz)</text>`;
+      svg += `<text x="22" y="245" font-size="10.8" fill="#333333">- 倒下的水杯落地：0.4 秒 | 目标滑出：1.2 秒</text>`;
+      svg += `<text x="22" y="264" font-size="10.8" font-weight="600" fill="#A84A32">- 实时控臂需要高频低延迟策略配合高层规划</text>`;
       svg += `</svg>`;
       hostB.innerHTML = svg;
       bindTooltips("#chart-first-exam .emb-b-pt", el => el.dataset.tip);
@@ -476,44 +614,44 @@
 
       <!-- Top External Driver: Real Demand -->
       <rect x="180" y="10" width="520" height="46" rx="6" fill="#FDF3F0" stroke="#A84A32" stroke-width="1.3"/>
-      <text x="440" y="29" text-anchor="middle" font-size="11.8" font-weight="700" fill="#A84A32">核心驱动力：主动挖掘真实研发与业务需求（防止系统在旧题里空转）</text>
-      <text x="440" y="47" text-anchor="middle" font-size="10.8" fill="#5C281A">旧榜被击穿只是被动触发，人类新场景与真需求才是 Env 持续演进的源头</text>
+      <text x="440" y="29" text-anchor="middle" font-size="11.8" font-weight="700" fill="#A84A32">源头动力：把真实研发和业务需求持续做进环境（防止在旧题里空转）</text>
+      <text x="440" y="47" text-anchor="middle" font-size="10.8" fill="#5C281A">旧榜考满只是被动提醒，人类新场景与真需求才是 Env 持续演进的起点</text>
 
       <line x1="440" y1="56" x2="440" y2="86" stroke="#A84A32" stroke-width="1.8" marker-end="url(#co-arr-r)"/>
 
       <!-- Center Top: Environment -->
       <rect x="260" y="92" width="360" height="68" rx="6" fill="#EDF6F4" stroke="#2D6A5B" stroke-width="1.5"/>
-      <text x="440" y="114" text-anchor="middle" font-size="13" font-weight="700" fill="#2D6A5B">Environment | 可验证防作弊沙盒环境</text>
+      <text x="440" y="114" text-anchor="middle" font-size="13" font-weight="700" fill="#2D6A5B">Environment | 可自动验分的防作弊沙盒</text>
       <text x="440" y="134" text-anchor="middle" font-size="11" fill="#333333">真实脏场景 + Harbor 物理隔离 + 双向断言 / 物理实测</text>
-      <text x="440" y="150" text-anchor="middle" font-size="10.4" fill="#666666">同时承担「外部基准评测」与「内部长程 RL 训练场」双重角色</text>
+      <text x="440" y="150" text-anchor="middle" font-size="10.4" fill="#666666">同时用作「外部基准评测」与「内部长程 RL 训练场」</text>
 
       <!-- Bottom Left: Model -->
       <rect x="30" y="198" width="270" height="72" rx="6" fill="#F0F5FA" stroke="#1F4E79" stroke-width="1.4"/>
       <text x="165" y="220" text-anchor="middle" font-size="12.6" font-weight="700" fill="#1F4E79">Model | 模型权重迭代</text>
-      <text x="165" y="240" text-anchor="middle" font-size="11" fill="#333333">吸收高信噪比 RL 奖励，内化工程边界、</text>
-      <text x="165" y="256" text-anchor="middle" font-size="11" fill="#333333">自造测试与无效路径回滚习惯 (FireFlash +10.4 分)</text>
+      <text x="165" y="240" text-anchor="middle" font-size="11" fill="#333333">靠干净 RL 奖励学会控制改动边界、</text>
+      <text x="165" y="256" text-anchor="middle" font-size="11" fill="#333333">自造测试与走不通时果断回滚 (FireFlash +10.4 分)</text>
 
       <!-- Bottom Right: Harness -->
       <rect x="580" y="198" width="270" height="72" rx="6" fill="#FAF5EE" stroke="#8C6239" stroke-width="1.4"/>
       <text x="715" y="220" text-anchor="middle" font-size="12.6" font-weight="700" fill="#8C6239">Harness | 执行框架迭代</text>
-      <text x="715" y="240" text-anchor="middle" font-size="11" fill="#333333">依据失败轨迹定向修补工具、上下文压缩与</text>
-      <text x="715" y="256" text-anchor="middle" font-size="11" fill="#333333">快照回滚机制 (训练与评测对齐即涨 +4.4 分)</text>
+      <text x="715" y="240" text-anchor="middle" font-size="11" fill="#333333">按失败记录修补工具、上下文压缩与</text>
+      <text x="715" y="256" text-anchor="middle" font-size="11" fill="#333333">快照回滚机制 (训练与评测锁同套即涨 +4.4 分)</text>
 
       <!-- Arrows: Env -> Model, Env -> Harness -->
       <path d="M 260,126 L 165,126 L 165,192" fill="none" stroke="#2D6A5B" stroke-width="1.8" marker-end="url(#co-arr-g)"/>
       <rect x="64" y="136" width="156" height="22" rx="4" fill="#FFFFFF" stroke="#C3DFD8"/>
-      <text x="142" y="151" text-anchor="middle" font-size="10.6" font-weight="600" fill="#2D6A5B">2. 输出干净 RL 奖励反哺</text>
+      <text x="142" y="151" text-anchor="middle" font-size="10.6" font-weight="600" fill="#2D6A5B">2. 输出干净 RL 奖励训练</text>
 
       <path d="M 620,126 L 715,126 L 715,192" fill="none" stroke="#A84A32" stroke-width="1.8" marker-end="url(#co-arr-r)"/>
       <rect x="660" y="136" width="156" height="22" rx="4" fill="#FFFFFF" stroke="#EACBC2"/>
-      <text x="738" y="151" text-anchor="middle" font-size="10.6" font-weight="600" fill="#A84A32">3. 失败轨迹回传补短板</text>
+      <text x="738" y="151" text-anchor="middle" font-size="10.6" font-weight="600" fill="#A84A32">3. 失败记录回传修短板</text>
 
       <!-- Bidirectional Model <-> Harness -->
       <line x1="306" y1="226" x2="574" y2="226" stroke="#1F4E79" stroke-width="1.8" marker-end="url(#co-arr-b)"/>
       <line x1="574" y1="246" x2="306" y2="246" stroke="#1F4E79" stroke-width="1.8" marker-end="url(#co-arr-b)"/>
       <rect x="348" y="218" width="184" height="36" rx="4" fill="#FFFFFF" stroke="#CBD5E1"/>
-      <text x="440" y="234" text-anchor="middle" font-size="10.8" font-weight="700" fill="#1F4E79">4. 耦合演进 (RSI 在路上)</text>
-      <text x="440" y="249" text-anchor="middle" font-size="10" fill="#666666">参与自身代码与下一代环境构建</text>
+      <text x="440" y="234" text-anchor="middle" font-size="10.8" font-weight="700" fill="#1F4E79">4. 三者一起迭代 (RSI)</text>
+      <text x="440" y="249" text-anchor="middle" font-size="10" fill="#666666">参与自身研发与下一代环境搭建</text>
     </svg>`;
     host.innerHTML = svg;
   }
@@ -575,10 +713,11 @@
     if (!host) return;
     const core = D.benchmarks.filter(b => b.track !== "legacy");
     const domains = [
-      { key: "code", label: "代码与系统工程", sizeTip: "66-132 题 (20h 项 34 题)", orgTip: "1 核心队 + 20 维护者 / 8+ 校底座" },
-      { key: "sci",  label: "科学研究",       sizeTip: "52-100 题 (湿测 15 靶点)", orgTip: "1 厂 + CRO / 10+ 校科学家" },
-      { key: "off",  label: "白领办公与劳动", sizeTip: "91-240 题 (SaaS 可至 657)", orgTip: "产品方或评测机构 + 23-300 专家" },
-      { key: "emb",  label: "桌面与三维物理", sizeTip: "60-108 题 (统考 456 核)",  orgTip: "12-18+ 高校联盟共摊基建" }
+      { key: "code", label: "代码工程",       sizeTip: "66-132 题 (20h 项 34 题)", orgTip: "1 核心队 + 20 维护者 / 8+ 校底座" },
+      { key: "sci",  label: "科研任务",       sizeTip: "52-100 题 (湿测 15 靶点)", orgTip: "1 厂 + CRO / 10+ 校科学家" },
+      { key: "off",  label: "办公与职业任务", sizeTip: "91-240 题 (SaaS 可至 657)", orgTip: "产品/评测方 + 23-300 行业专家" },
+      { key: "cua",  label: "CUA 任务",       sizeTip: "100 识图 / 108 长程桌面",  orgTip: "12+ 校共摊 KVM 虚拟机集群" },
+      { key: "phys", label: "物理交互",       sizeTip: "60 题 (统考聚合 456 核)",  orgTip: "18+ 校共摊 3D 仿真与真机台" }
     ];
 
     const W = 940, rowH = 54, padL = 152, barW = 340, colSizeX = 520, colOrgX = 716, padT = 48, padB = 18;
@@ -892,9 +1031,11 @@
   document.addEventListener("DOMContentLoaded", () => {
     initUIHelpers();
     renderAAOvernight();
+    renderReleaseShiftSVG();
     renderCodeChart("fswe");
     renderOfficeDual("autobench");
-    renderEmbodiedSplit();
+    renderCUAGap();
+    renderPhysSplit();
     renderDynamicStats();
     renderDomainStatsSVG();
     renderTimelineSVG();

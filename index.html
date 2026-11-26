@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>2026 前沿 AI 评测的范式变化</title>
-  <meta name="description" content="从 2026 年 10 月 AA v5.0 换榜切入，拆解代码、科研、办公与三维物理四大前沿赛道 9 个案例，给出分领域 Benchmark 构建参数与行动指南，并讨论 Benchmark RSI 与环境共同进化。">
-  <link rel="stylesheet" href="styles.css?v=20261126-4">
+  <meta name="description" content="Zhongguancun Academy 前沿评测调研：从 2026 年 10 月 AA v5.0 换榜与闭源三强发布主表转向切入，拆解代码工程、科研任务、办公与职业任务、CUA 任务和物理交互五大前沿赛道案例，按领域给出如何搭建有价值 Benchmark 的量化指南，并讨论 Benchmark RSI。">
+  <link rel="stylesheet" href="styles.css?v=20261126-5">
 </head>
 <body>
 
@@ -15,7 +15,7 @@
     <a class="site-brand" href="#top">Frontier Evaluation Notes</a>
     <nav class="header-nav" aria-label="导航">
       <a href="#toc">目录</a>
-      <a href="#part-2">赛道案例</a>
+      <a href="#part-2">五大赛道</a>
       <a href="#part-3">构建指南</a>
       <a href="#part-4">Benchmark RSI</a>
       <a href="#references">References</a>
@@ -30,18 +30,18 @@
   <header class="post-header">
     <h1>2026 前沿 AI 评测的范式变化</h1>
     <div class="post-meta">
-      <span>作者：魏楚扬</span>
+      <span>Zhongguancun Academy</span>
       <span>|</span>
       <span>2026-11-26</span>
       <span>|</span>
-      <span>数据核验截至 2026-11-23</span>
+      <span>数据截至 2026-11-23</span>
       <span>|</span>
       <span>约 1.2 万字 / 22 分钟阅读</span>
       <span>|</span>
-      <a href="benchmarks.html" style="color:var(--accent);text-decoration:none;font-weight:500;">配套 16+3 基准目录</a>
+      <a href="benchmarks.html" style="color:var(--accent);text-decoration:none;font-weight:500;">16+3 基准目录</a>
     </div>
     <p class="post-lead">
-      2026 年 10 月 27 日，Artificial Analysis 升级了综合指数里的三项子基准。模型权重未做改动，不同实验室的排名在 24 小时内迅速分化。本文基于 2026 年 11 月前沿评测调研（与朱明航合讲、何纪言主持），先总结旧静态基准失效后新一代评测的四个特征，再按代码、科研、办公与物理世界四个赛道逐一拆解 9 个代表性案例，随后按领域给出如何搭建有价值 Benchmark 的量化参数与五步行动指南，最后讨论 Benchmark RSI 下的环境与模型共同进化。
+      2026 年 10 月 27 日，Artificial Analysis 换掉了综合指数里的三项子基准。被测模型一行权重都没改，排名却在 24 小时内直接拉开两档。本文由 Zhongguancun Academy 基于 2026 年 11 月前沿评测调研整理：先讲清旧静态基准为什么失效、新一代评测到底在测什么，再按代码工程、科研任务、办公与职业任务、CUA 任务和物理交互五个赛道拆解 9 个真实案例，接着按领域给出如何搭建有价值 Benchmark 的量化参数和五步上手做法，最后讨论 Benchmark RSI 下的环境与模型共同进化。
     </p>
   </header>
 
@@ -58,19 +58,20 @@
         </ul>
       </li>
       <li>
-        <a class="toc-main" href="#part-2">二、四大前沿赛道案例拆解</a>
+        <a class="toc-main" href="#part-2">二、五大前沿赛道案例拆解</a>
         <ul class="toc-sub">
-          <li><a href="#sec-2-1">2.1 代码与系统工程：FrontierCode 2.0 与 FrontierSWE v2</a></li>
-          <li><a href="#sec-2-2">2.2 科学研究：TB-Science 0.1 与 De novo binder design</a></li>
-          <li><a href="#sec-2-3">2.3 白领办公与真实劳动：AutomationBench、AA-Briefcase 与 RLI</a></li>
-          <li><a href="#sec-2-4">2.4 桌面操控与三维物理世界：OSWorld 2.1、RoboDojo 与 First Exam</a></li>
+          <li><a href="#sec-2-1">2.1 代码工程：FrontierCode 2.0 与 FrontierSWE v2</a></li>
+          <li><a href="#sec-2-2">2.2 科研任务：TB-Science 0.1 与 De novo binder design</a></li>
+          <li><a href="#sec-2-3">2.3 办公与职业任务：AutomationBench、AA-Briefcase 与 RLI</a></li>
+          <li><a href="#sec-2-4">2.4 CUA 任务：Chartography 与 OSWorld 2.1</a></li>
+          <li><a href="#sec-2-5">2.5 物理交互：RoboDojo 与 Embodied First Exam</a></li>
         </ul>
       </li>
       <li>
-        <a class="toc-main" href="#part-3">三、如何搭建有价值的 Benchmark：分领域统计与行动指南</a>
+        <a class="toc-main" href="#part-3">三、如何搭建有价值的 Benchmark</a>
         <ul class="toc-sub">
-          <li><a href="#sec-3-1">3.1 分领域核心参数对照（按赛道拆解，不混算均值）</a></li>
-          <li><a href="#sec-3-2">3.2 四个赛道的实操差异与统计结论</a></li>
+          <li><a href="#sec-3-1">3.1 五大赛道构建参数对照（按领域拆开，不混算平均）</a></li>
+          <li><a href="#sec-3-2">3.2 五个赛道的实操差异与统计结论</a></li>
           <li><a href="#sec-3-3">3.3 从零起步的五步行动指南</a></li>
         </ul>
       </li>
@@ -99,10 +100,10 @@
     <div class="prose">
       <h3 id="sec-1-1">1.1 AA v5.0 隔夜换榜与评分分化</h3>
       <p>
-        2026 年 10 月 26 日至 27 日，第三方评测机构 Artificial Analysis 将综合能力指数（Intelligence Index）由 v4.3.2 升级至 v5.0。办公与知识、编程工程、科学推理、通用知识四个一级维度各占 25% 权重，受测模型检查点也完全相同。
+        2026 年 10 月 26 日到 27 日，第三方评测机构 Artificial Analysis 把综合能力指数（Intelligence Index）从 v4.3.2 升级到了 v5.0。办公与知识、编程工程、科学推理、通用知识四个一级维度各占 25% 权重不变，被测模型也是同一批权重。
       </p>
       <p>
-        仅仅隔了 24 小时，排名出现显著分层：GPT-6 Astra 逆势上升 4 分，Claude Opus 5.5 与 Gemini 4 Carbon 稳定在 50 至 58 区间；国产主力模型单日回落 9 至 13 分（Kimi K3.1 Pro 由 55 降至 46，DeepSeek V4.1 Flash 与 GLM-5.3 均由 45 降至 32），与榜首的分差从 12 分拉大至 26 分。<span class="sn-ref" data-sn="sn-1">1</span><span class="sidenote" id="sn-1"><span class="sn-num">[1]</span>2026 年 11 月 16 日发布的 Qwen4 Max 在 AA v5.0.1 上取得 43 分（国产第二），但未参与 10.26 至 10.27 的隔夜同批测试，下方图 1.1 严格仅展示同批 6 款模型。</span>
+        只隔了 24 小时，榜单就立刻拉开了差距：GPT-6 Astra 反而涨了 4 分，Claude Opus 5.5 和 Gemini 4 Carbon 稳在 50 到 58 分；国产主力模型一天之内普遍回落 9 到 13 分（Kimi K3.1 Pro 从 55 降到 46，DeepSeek V4.1 Flash 和 GLM-5.3 都从 45 降到 32），和榜首的分差从 12 分拉大到 26 分。<span class="sn-ref" data-sn="sn-1">1</span><span class="sidenote" id="sn-1"><span class="sn-num">[1]</span>2026 年 11 月 16 日发布的 Qwen4 Max 在 AA v5.0.1 上拿到 43 分（国产第二），但它没参加 10.26 到 10.27 的隔夜同批测试，图 1.1 只放同批受测的 6 款模型。</span>
       </p>
     </div>
 
@@ -111,68 +112,85 @@
       <div class="fig-header">
         <div>
           <h4 class="fig-title">图 1.1：AA Intelligence Index 隔夜升级对比（2026.10.26 v4.3.2 到 10.27 v5.0）</h4>
-          <div class="fig-sub">仅展示 10.26 与 10.27 同批受测的 6 款模型，四个一级维度权重不变，仅替换 3 项私有与长程子基准</div>
+          <div class="fig-sub">只看 10.26 与 10.27 同批受测的 6 款模型；四个一级维度权重不变，只替换了 3 项私有和长程子基准</div>
         </div>
       </div>
       <div id="chart-aa-overnight"></div>
       <div class="fig-caption">
-        <span>数据来源：Artificial Analysis v4.3.2 / v5.0 / v5.0.1（2026.10-11）。11 月 v5.0.1 前十均由海外闭源模型占据（50-65 分）。</span>
+        <span>数据来源：Artificial Analysis v4.3.2 / v5.0 / v5.0.1（2026.10-11）。11 月 v5.0.1 前十全被海外闭源模型占据（50-65 分）。</span>
         <span>核心替换：+FrontierCode 2.0、+TB-Science 0.1、+HLE-Diamond。</span>
       </div>
     </figure>
 
     <div class="prose">
       <p>
-        对照新旧子榜组成，分数变动的原因很直接：v5.0 移除了趋近饱和或题库老化的 <code>GDPval-AA v2.1</code>、<code>SciCode</code>、原版 <code>HLE</code> 与 <code>AA-LCR v1.1</code>，换入私有代码合入 <a class="bench-ref" data-bid="fc2">FrontierCode 2.0</a>、科研容器 <a class="bench-ref" data-bid="tbs">TB-Science 0.1</a> 与清洗版 <a class="bench-ref" data-bid="hle">HLE-Diamond</a>。调整后，总榜 60% 权重转向私有留出集，单题中位输出由 35k tokens 升至 59k tokens。
+        看一眼换掉和换进的题目，原因一目了然：v5.0 踢掉了已经考满或题库过时的 <code>GDPval-AA v2.1</code>、<code>SciCode</code>、原版 <code>HLE</code> 和 <code>AA-LCR v1.1</code>，换进了私有代码合入 <a class="bench-ref" data-bid="fc2">FrontierCode 2.0</a>、科研容器 <a class="bench-ref" data-bid="tbs">TB-Science 0.1</a> 和清洗版 <a class="bench-ref" data-bid="hle">HLE-Diamond</a>。换完之后，总榜 60% 的权重落在私有留出集上，单题中位输出长度从 35k tokens 涨到了 59k tokens。
       </p>
 
       <h3 id="sec-1-2">1.2 旧静态基准饱和与三大实验室换轨</h3>
       <p>
-        AA 换榜背后是两股同时发生的变化：旧静态基准普遍失效，以及 AI 真实使用方式已经跨过单轮问答阶段。
+        AA 换榜背后是两件同时发生的事：老的静态基准普遍考满了，而且真实世界里用 AI 的方式早就不是一问一答了。
       </p>
       <p>
-        首先是旧基准在 1 至 2 年内大面积饱和。Epoch AI 追踪显示，MMLU（88.1%）、AIME（100%）、GPQA Diamond（96.8%）、SWE-bench Verified（83.5% / 官报 87.6%）、Terminal-Bench 2.0（10 个月由 32.6% 升至 84.7%）与 ARC-AGI-2（95.8%）均已触顶。Akhtar 等人在 ICML 2026 对 60 个公开基准的统计指出，近半数榜单的前列分差已小于单模型多次采样的随机标准差（0.3 至 1.5 分）。
+        先看老基准。Epoch AI 追踪显示，MMLU（88.1%）、AIME（100%）、GPQA Diamond（96.8%）、SWE-bench Verified（83.5% / 官报 87.6%）、Terminal-Bench 2.0（10 个月从 32.6% 涨到 84.7%）和 ARC-AGI-2（95.8%）全都接近满分。Akhtar 等人在 ICML 2026 统计了 60 个公开基准，发现近一半榜单前几名之间的分差，已经比同一个模型多跑几次的随机波动（0.3 到 1.5 分）还要小。
       </p>
       <p>
-        与此同时，高分段暴露出大量考题与测试缺陷：OpenAI 在 2026 年 2 月停报 SWE-bench Verified 时复查了 138 道未解题，确认 59.4% 存在测试缺陷；FutureHouse 在 HLE 生化纯文本 321 题中审出 29% +/- 3.7% 的标准答案错误；Epoch AI 在 FrontierMath v1 中审出 42% 勘误。当试卷余量里有近三成到一半是出题误差，继续围绕小数点竞争已无区分意义。
+        更麻烦的是，考到高分段后，题目本身的毛病全露出来了：OpenAI 在 2026 年 2 月停报 SWE-bench Verified 时复查了 138 道没做对的题，确认 59.4% 是测试写坏了；FutureHouse 复查 HLE 321 道生化纯文本题，查出 29% +/- 3.7% 的标准答案本身就是错的；Epoch AI 在 FrontierMath v1 里审出 42% 勘误。剩下没拿到的分里，有三成到一半是题目错标，继续比小数点已经没有意义。
       </p>
       <p>
-        更核心的驱动来自应用场景升级。Anthropic 在 SEC Form S-1 招股书中披露，模型的使用形态已从秒级单轮问答（Chatbots）和单软件辅助（Copilots），演进到能够连续自主运行 38 分钟、跨多个系统核对 14,302 笔交易流水并走完财务月结与审批的自主协作者（Virtual Collaborators）。
+        另一边的变化来自真实使用方式。Anthropic 在 SEC Form S-1 招股书里披露，用户用模型的方式已经从几秒钟一轮的问答（Chatbots）和单软件辅助（Copilots），变成了能自己连干 38 分钟、跨多个系统核对 14,302 笔交易流水并走完财务月结和审批的自主协作者（Virtual Collaborators）。
       </p>
       <p>
-        基于这两点，OpenAI、Anthropic 与 Google DeepMind 早在 2026 年夏秋（约 3 至 6 个月前）即批量切换至新一代长程与私有基准。2026 年 11 月发布的 Claude Fable 5.2 主表包含 14 项基准，其中 8 项为 2026 年新发布、2 项为实验室自建，传统静态选择题数量为零。同期国内多数旗舰仍集中在 SWE-bench Pro、TB 2.1 与原版 HLE，对 10 项核心新榜的跟进滞后一轮。
+        所以 OpenAI、Anthropic 和 Google DeepMind 早在 2026 年夏秋（3 到 6 个月前）就集体切到了新一代长程和私有基准上。如图 1.2 所示，2026 年 11 月发布的 Claude Fable 5.2 主表里一共 14 项基准，其中 8 项是 2026 年新发布的，2 项是实验室自己造的，传统静态选择题一项都不剩；三家旗舰在 11 月同时收拢到了 FrontierCode 2.0、TB-Science 0.1、HLE-Diamond、AutomationBench 和安全红线测试上。同期国内多数旗舰发布表还停在 SWE-bench Pro、TB 2.1 和原版 HLE，对 10 项核心新榜的跟进慢了一拍。
       </p>
+    </div>
 
+    <!-- Figure 1.2: 2026.11 Closed-Source Frontier Release Table Shift -->
+    <figure class="figure-card full">
+      <div class="fig-header">
+        <div>
+          <h4 class="fig-title">图 1.2：2026.11 闭源三强官方发布主表转向实录（旧静态榜撤出与新主表收敛）</h4>
+          <div class="fig-sub">核对 Anthropic Fable 5.2（11.09）、OpenAI GPT-6.2（11.17）与 Google Gemini 4 Neon（11.18）发布页与模型卡原文</div>
+        </div>
+      </div>
+      <div id="chart-release-shift"></div>
+      <div class="fig-caption">
+        <span>一手来源：anthropic.com/claude-fable-and-mythos-5-2、openai.com GPT-6.2 Release、blog.google Gemini 4 Neon（2026.11）。</span>
+        <span>注：红底高亮行为海外三家 2026.11 官方发布页同时主推的硬交集基准。</span>
+      </div>
+    </figure>
+
+    <div class="prose">
       <h3 id="sec-1-3">1.3 新一代 Benchmark 的四个核心特征</h3>
       <p>
-        综合 2026 年海外三大实验室官方发布主表与第三方综合榜的选型方向，新一代前沿评测相比旧静态基准发生了四项明确变化：
+        把海外三强 2026 年的官方主表和第三方综合榜合起来看，新一代评测和老静态题库相比，有四个非常明确的变化：
       </p>
       <ol>
-        <li><strong>更贴近长程与无标准答案的开放任务</strong>：任务时长由单轮秒级和分钟级短修，拉长至 1.6 小时桌面流程、20 小时系统工程与 24 小时蛋白设计；很多优化与设计任务连人类专家都没有固定参考补丁，只能依赖确定性性能测量或实体实验验收。</li>
-        <li><strong>需求更模糊、上下文更接近真实脏数据</strong>：不再把修改文件、边界条件和格式写进说明书，而是还原简短口语吐槽、包含数万条群聊和冲突制度的企业网盘、未裁剪的反光实验底片以及预埋错误的虚拟机快照，考察模型识别隐性契约与控制改动边界的能力。</li>
-        <li><strong>场景大范围外扩至科研、办公与三维物理</strong>：从确定性最高的代码仓库起步，将容器隔离与终态校验思路扩展至干湿科研实验、跨 SaaS 企业办公、真实付费远程外包、跨软件桌面 GUI 以及双臂机器人物理控制。</li>
-        <li><strong>评测对象由孤立权重转为耦合系统</strong>：静态时代的度量模型 <code>Prompt -> Model -> Score</code> 已经失效，新基准度量的是 <strong>Model x Harness x Environment -> Score</strong>。Google 在 2026 年 11 月 18 日 Gemini 4 Neon 主表中给出了直接控制变量证据：同一 Neon 权重在 <code>SWE-sweep</code> 上配 <code>Mini-SWE</code> 解决率为 12.8%，换原厂 <code>Antigravity</code> 升至 39.0%（相差 3 倍）；在 <code>Terminal-Bench 2.0</code> 上仅把容器超时放宽 3 至 5 倍，同一 GPT-5.2 权重即多拿 6 至 15 分。</li>
+        <li><strong>任务更长，而且常常没有标准答案</strong>：时长从几秒单轮、几分钟修小 bug，拉长到 1.6 小时桌面流程、20 小时系统工程和 24 小时蛋白设计。很多性能优化和科研设计连人类专家都没有固定参考补丁，只能靠确定性性能测量或实体实验结果说话。</li>
+        <li><strong>需求更模糊，上下文都是真实脏材料</strong>：不再把要改的文件、边界条件和输出格式全写进题干，而是直接给一句简短口语反馈、塞满数万条群聊和冲突制度的企业网盘、没裁边的反光实验照片，或是预埋了错账的虚拟机快照，专门查模型能不能自己读出隐性规则、管住改动范围。</li>
+        <li><strong>场景从写代码扩到科研、办公、CUA 和物理世界</strong>：先在最容易自动判分的代码仓库把容器隔离和终态校验跑通，再把这套思路扩到干湿科研实验、跨 SaaS 办公、真实付费外包、桌面软件操控和双臂机器人物理控制。</li>
+        <li><strong>测的不再只是模型本身，而是整套系统</strong>：以前是 <code>Prompt -> Model -> Score</code>，现在测的是 <strong>Model x Harness x Environment -> Score</strong>。Google 在 2026 年 11 月 18 日 Gemini 4 Neon 发布页给出了直接的控制变量对照：同一个 Neon 权重在 <code>SWE-sweep</code> 上配 <code>Mini-SWE</code> 解决率只有 12.8%，换自研 <code>Antigravity</code> 直接涨到 39.0%（差 3 倍）；在 <code>Terminal-Bench 2.0</code> 上只把容器超时放宽 3 到 5 倍，同一个 GPT-5.2 权重就能多拿 6 到 15 分。</li>
       </ol>
     </div>
   </article>
 
   <!-- ====================================================================
-       PART 2 | FOUR FRONTIER TRACKS CASE STUDIES (Lil'Log style)
+       PART 2 | FIVE FRONTIER TRACKS CASE STUDIES (Lil'Log style)
        ==================================================================== -->
   <article class="chapter" id="part-2">
-    <h2>二、四大前沿赛道案例拆解</h2>
+    <h2>二、五大前沿赛道案例拆解</h2>
     <p class="chapter-lead">
-      本节分代码与系统工程、科学研究、白领办公与真实劳动、桌面操控与三维物理世界四个赛道，挑选 9 个代表性 Benchmark 展开拆解。每个案例统一说明四个部分：目标检验能力与任务设定、验证与计分机制、关键实测与具体失败样本，以及暴露出的模型能力边界。点击正文中的基准名称可随时展开完整档案抽屉。
+      这一节按代码工程、科研任务、办公与职业任务、CUA 任务和物理交互五个赛道，挑 9 个代表性 Benchmark 逐个拆开看。每个案例都讲清四件事：想测什么能力、怎么搭环境与判分、实测分数和具体怎么翻的错、以及暴露出的能力边界。点击正文里带下划线的基准名称，随时可以从右侧拉出完整档案。
     </p>
 
-    <!-- 2.1 CODE & SYSTEMS ENGINEERING -->
+    <!-- 2.1 CODING -->
     <div class="prose">
-      <h3 id="sec-2-1">2.1 代码与系统工程</h3>
+      <h3 id="sec-2-1">2.1 代码工程</h3>
       <p>
-        代码是客观可验证性最高、商业回报最直接的领域，也是旧范式最早失效的赛道。<a class="bench-ref" data-bid="swe_full">SWE-bench</a> 过去三年迭代五代，即使 <a class="bench-ref" data-bid="swe_pro">SWE-bench Pro</a>（2025.09）买进 1,865 道商业私仓任务、DeepSWE 脱离 GitHub 手写 113 道原创题，Pro 仍在一年内由 23% 升至 93.0%，DeepSWE 升至 74.1%。根因在于五代考法始终停留在“旧仓 + Issue -> 交补丁 -> 过单元测试即满分”，天然容易被大规模 RL 刷满。
+        代码最容易客观判分，商业回报也最直接，所以老办法最早在这里失灵。<a class="bench-ref" data-bid="swe_full">SWE-bench</a> 过去三年换了五代，哪怕 <a class="bench-ref" data-bid="swe_pro">SWE-bench Pro</a>（2025.09）买进了 1,865 道商业私仓任务、DeepSWE 脱离 GitHub 手写了 113 道原创题，Pro 还是在一年内从 23% 涨到 93.0%，DeepSWE 涨到 74.1%。问题出在考法没变：五代全都是“给仓库和 Issue -> 交补丁 -> 跑过单元测试就满分”，太容易被大规模强化学习刷满。
       </p>
       <p>
-        同时，单元测试自身出现两头失准：OpenAI（2026.02）在 Verified 未解题中查出 35.5% 因单测断言过窄错杀合法解（例如 <code>scikit-learn-14520</code> 把历史 PR 评论区临时商定的固定警告文案写进测试）；METR（2026.03）将 296 个单测 100% 通过的 AI 补丁匿名交给 <code>scikit-learn</code>、<code>Sphinx</code> 与 <code>pytest</code> 维护者盲审，近半数被拒绝合入（可合入率低于单测通过率 24 个百分点）。以下两个案例分别从“单次 PR 合入质量”和“20 小时完整工程”两个方向突破这一局限。
+        更要命的是，单元测试自己也两头不准：一边判太严，OpenAI（2026.02）在 Verified 没解出的题里查出 35.5% 是单测写得过窄，把合法解错杀了（比如 <code>scikit-learn-14520</code> 把当年 PR 评论区临时商量的固定警告文案写死了）；另一边判太松，METR（2026.03）把 296 个单测 100% 通过的 AI 补丁匿名发给 <code>scikit-learn</code>、<code>Sphinx</code> 和 <code>pytest</code> 的原维护者盲审，近一半被拒绝合入（真正能合进去的比例比单测通过率低 24 个百分点）。下面两个案例分别从“单次 PR 能不能真合入”和“20 小时开放工程”两个方向解决这件事。
       </p>
 
       <!-- Case 1: FrontierCode 2.0 -->
@@ -181,13 +199,13 @@
         <span class="case-meta-tag">Cognition + 20+ 维护者 | 2026.06 -> 2026.10 | 132 私有题</span>
       </div>
       <p>
-        <strong>任务与环境设定：</strong><a class="bench-ref" data-bid="fc2">FrontierCode 2.0</a> 覆盖 36 个以上大型开源仓库，由 20 余位原项目维护者每题投入超过 40 小时深度改写。80% 的参考实现结构性偏离历史公开 PR 以阻断预训练记忆；题面长度压缩至原描述的三分之一，只保留一线用户的简短口语反馈，迫使模型自主阅读代码库识别隐性架构约束。
+        <strong>任务与环境设定：</strong><a class="bench-ref" data-bid="fc2">FrontierCode 2.0</a> 挑了 36 个以上大型开源仓库，请 20 多位原项目维护者每道题花 40 小时以上深度改写。80% 的参考实现故意绕开历史公开 PR 的写法，防止模型背答案；题干砍掉三分之二长度，只留一线用户一句简短口语反馈，逼模型自己读代码库找隐性规则。
       </p>
       <p>
-        <strong>验证与计分机制：</strong>评测分为两道门控。验证端先用 <code>mutagent</code> 动态对齐模型自创的合法函数与变量命名（较 SWE-bench Pro 将假阴性误判降低 81%）。第一关是 <strong>501 条维护者一票否决红线（Blocker）</strong>，平均每题 3 至 4 条，涉及资源泄漏或破坏对外公开 API 时，即使行为单测全绿也直接判 0 分。通过红线后，第二关再结合自适应单测与维护者预编写的逐条核查清单（由 GPT-6 Luna 严格对照写死清单核验，不做开放式主观打分）计算得分。
+        <strong>验证与计分机制：</strong>判分设了两道关。先用 <code>mutagent</code> 自动对齐模型自己起的函数名和变量名（比 SWE-bench Pro 少了 81% 的误杀）。第一关是 <strong>501 条维护者一票否决红线（Blocker）</strong>，平均每题 3 到 4 条，只要出现资源泄漏或破坏对外公开 API，哪怕单测全绿也直接判 0 分。过了红线，第二关再结合自适应单测和维护者提前写死的逐条核查清单（由 GPT-6 Luna 严格照表打勾，不做开放式主观评价）算分。
       </p>
       <p>
-        <strong>实测与具体失败样本：</strong>全榜最高分压在 50.2%（Claude Fable 5.2），意味着顶尖模型仍有一半 PR 达不到维护者合入标准。更有意思的是思考预算消融：提高思考档位后，遗漏关键收尾的失误率由 26.0% 降至 15.3%，但越界删改代码的比例反由 3.8% 升至 4.9%，导致 Fable 5.2 花费 3.15 倍算力成本（$55.9/题）得分反跌 2.0 分，Gemini 4 Neon 跌 1.4 分；克制的轻量档 GPT-6.2 Sol 仅花 $1.29/题即拿到 43.8%（单题成本效率差 14 倍）。两道官方真题呈现了这种正反边界约束：
+        <strong>实测与具体失败样本：</strong>全榜最高分压在 50.2%（Claude Fable 5.2），说明最强的模型写出来的 PR，依然有一半过不了维护者这关。更有意思的是思考预算对照实验：把思考档位调高之后，漏掉关键收尾的错误从 26.0% 降到 15.3%，但顺手乱删无关代码的比例却从 3.8% 涨到 4.9%。结果 Fable 5.2 花了 3.15 倍算力成本（$55.9/题），分数反而跌了 2.0 分，Gemini 4 Neon 跌了 1.4 分；反倒是克制的轻量档 GPT-6.2 Sol 每题只花 $1.29 就拿到 43.8%（单题性价比差 14 倍）。两道官方真题把“不能少做”和“不能多做”讲得非常清楚：
       </p>
     </div>
 
@@ -195,7 +213,7 @@
       <div class="case-box rust">
         <div class="case-label">案例 1A（不能少做）：MSW 前端模拟库资源泄漏</div>
         <p>
-          用户只反馈“调用 <code>reset()</code> 后下次请求未从第 1 步开始”，未提资源释放。MSW 使用 JS 生成器 <code>function*</code>，清理逻辑写在 <code>finally</code> 中。模型直接写 <code>this.resolverIterator = undefined</code> 丢弃引用，行为单测 100% 绿灯；但 JS 垃圾回收不会执行暂停生成器的 <code>finally</code> 块，高并发下引发连接泄漏，触红线判 0 分。
+          用户只说“调用 <code>reset()</code> 后下次请求没从第 1 步开始”，没提资源释放。MSW 底层用了 JS 生成器 <code>function*</code>，清理逻辑写在 <code>finally</code> 里。模型直接写 <code>this.resolverIterator = undefined</code> 扔掉引用，单测 100% 绿灯；但 JS 垃圾回收不会触发暂停生成器的 <code>finally</code> 块，高并发下立刻连接泄漏，踩红线判 0 分。
         </p>
 <pre class="code-tree"><span class="cm">// AI 常见写法：单测全绿，但 GC 跳过 finally 导致泄漏</span>
 <span class="hi-red">this.resolverIterator = undefined</span>
@@ -205,14 +223,14 @@
 this.resolverIterator = undefined;
 Promise.resolve(it?.return());</span></pre>
         <p>
-          <strong>结果：</strong>Claude Opus 5.5 从 low 到 max 全部 5 个思考档 0/5 失败；但只要题面多提醒一句“记得释放资源”，模型 100% 能写对。
+          <strong>结果：</strong>Claude Opus 5.5 从 low 到 max 全部 5 个思考档 0/5 全错；但只要题干里多加一句“记得释放资源”，模型 100% 能写对。
         </p>
       </div>
 
       <div class="case-box accent">
         <div class="case-label">案例 1B（不能多做）：PostHog Android 越界删接口</div>
         <p>
-          仓库根目录的 <code>posthog.api</code> 锁定了全部对外公开类签名：老模块不再使用时只能清空内部逻辑留空壳，不能删文件，否则下游 App 升级编译报错。工单仅反馈断网重连时新旧队列冲突。
+          仓库根目录的 <code>posthog.api</code> 锁死了所有对外公开类签名：老模块不用了只能清空内部实现留个空壳，不能删文件，否则下游 App 一升级就编译报错。工单只报了断网重连时新旧队列冲突。
         </p>
 <pre class="code-tree"><span class="cm">// GPT-6 Astra [low 档]: 只修队列，保留旧类空壳</span>
 <span class="hi-sage">5 / 5 全部满分通过</span>
@@ -221,14 +239,14 @@ Promise.resolve(it?.return());</span></pre>
 <span class="hi-red">1 / 5 通过
 (删旧类破 posthog.api + 改无关队列 +77 行)</span></pre>
         <p>
-          <strong>结果：</strong>高思考档修完主逻辑后嫌空壳类冗余，顺手整文件删除并改动无关队列，触发 Scope Blocker 被一票否决。
+          <strong>结果：</strong>高思考档修完主逻辑后觉得空壳类碍眼，顺手把整个文件删了还改了无关队列，直接触发 Scope Blocker 判 0 分。
         </p>
       </div>
     </div>
 
     <div class="prose">
       <p>
-        <strong>能力边界小结：</strong>FrontierCode 2.0 证明增加测试时推理预算不会自动产生工程克制。此外，国产模型在该榜官网停在约 20% 主要叠加了工具口径差异：发布时未自测，由榜方用通用 <code>devin-cli</code> 代跑，而美系三强使用原厂深度适配框架（连 Google Argon 用 <code>devin-cli</code> 也仅 27.6%）。
+        <strong>能力边界小结：</strong>FrontierCode 2.0 说明多花推理算力不会自动长出工程分寸感。另外，国产模型在这张榜的官网分停在 20% 左右，很大一部分是工具口径差异：发布时没用原厂框架自测，而是由榜方用通用 <code>devin-cli</code> 代跑，美系三强用的则是自家深度适配框架（连 Google Argon 换 <code>devin-cli</code> 也只有 27.6%）。
       </p>
 
       <!-- Case 2: FrontierSWE v2 -->
@@ -237,21 +255,21 @@ Promise.resolve(it?.return());</span></pre>
         <span class="case-meta-tag">Proximal | 2026.04 -> 2026.09 | 34 题 (20h / A100-B200)</span>
       </div>
       <p>
-        <strong>任务与环境设定：</strong><a class="bench-ref" data-bid="fswe2">FrontierSWE v2</a> 在 v1 基础上淘汰 4 题、新增 21 题，共 34 道限时 20 小时的开放项目（按需配 A100/B200，跑 5 次取 <code>mean@5</code>），涵盖 Swift 从零写 Verilog 仿真器、Zig SIMD 重写 FFmpeg 视频缩放库超越原版 C、单卡 B200 优化 SGLang 推理引擎、本地 GPU 训练 10 天全球天气预测模型，以及设计通用优化器在隐藏架构上跑赢 AdamW。
+        <strong>任务与环境设定：</strong><a class="bench-ref" data-bid="fswe2">FrontierSWE v2</a> 在 v1 基础上砍掉 4 题、新增 21 题，一共 34 道限时 20 小时的开放项目（按需配 A100/B200，每题跑 5 次取 <code>mean@5</code>），包括用 Swift 从零写 Verilog 仿真器、用 Zig SIMD 重写 FFmpeg 视频缩放库跑赢原版 C、单卡 B200 加速 SGLang 推理引擎、本地 GPU 训练 10 天全球天气预测模型，以及设计新优化器在隐藏架构上跑赢 AdamW。
       </p>
       <p>
-        为解决模型运行半小时就草草交卷的早退问题，统一框架 <code>proximus</code> 只暴露 <code>bash / submit / list_submissions / view_image</code> 四个工具，并将 <code>submit</code> 改为<strong>保存保底快照但不结束运行</strong>，系统顺手提示剩余小时数鼓励继续优化（改坏可回退），辅以自动上下文压缩和 <code>PROGRESS.md</code> 笔记。
+        为了治好模型跑半小时就草草收工的毛病，统一框架 <code>proximus</code> 只开放 <code>bash / submit / list_submissions / view_image</code> 四个工具，还把 <code>submit</code> 改成了<strong>保存保底快照但不结束运行</strong>：每次提交后系统都会提醒还剩多少小时，鼓励继续优化（改坏了可以回退），再配上自动上下文压缩和 <code>PROGRESS.md</code> 进度笔记。
       </p>
       <p>
-        <strong>验证与计分机制：</strong>全部 34 题坚持 100% 确定性程序硬算、零 LLM 主观裁判。以连专家都不知道最快能跑多少毫秒的 <strong>SGLang 单卡 B200 20h 提速题</strong> 为例，起点已全开 <strong>FP8 量化 + MTP 投机解码 + CUDA Graph</strong> 作为 0 分基线（调启动参数拿不到分，必须改底层调度源码或手写 GPU 算子），交卷后迁入全新改卷容器依次过三道自动化门控：
+        <strong>验证与计分机制：</strong>34 道题全部用确定性程序硬算，零 LLM 主观裁判。拿连人类专家都不知道最快能跑多少毫秒的 <strong>SGLang 单卡 B200 20h 提速题</strong> 来说，起点已经全开了 <strong>FP8 量化 + MTP 投机解码 + CUDA Graph</strong> 当作 0 分基线（靠调启动参数拿不到分，必须改底层调度源码或手写 GPU 算子），交卷后迁进全新验证容器依次过三道门：
       </p>
       <ol>
-        <li><strong>精度等价门控（0.95 而非 1.00）：</strong>在 <code>temperature=0</code> 下比对原版 A 与优化版 B 的平均前缀一致率，低于 0.95 判 0 分。设 0.95 既拦截偷降 INT4 换吞吐，又容忍合法改变 GPU 并行归约顺序带来的极微 FP8 浮点舍入分岔。</li>
-        <li><strong>随机前缀加盐与长度核验：</strong>将同一段拼接随机盐值的请求同步发给 A 和 B，使预计算 Prefix Cache 失效，并以 A 为基准检查正文与输出长度，防止高并发下偷截断刷 token/s。</li>
-        <li><strong>同卡 <code>A -> B -> A</code> 三明治夹测与短板加权：</strong>同卡连测取两次 A 的中位数锚定 0 分基线，消除云端 B200 5% 至 10% 的热漂移；设 1.02x 起分吃掉 2% 噪声、2.0x 封顶，并按单路延迟与并发吞吐的短板加权公式 <code>0.30 + 0.70 x min(单路, 并发)</code> 防止偏科。</li>
+        <li><strong>精度等价门控（卡 0.95 而不是 1.00）：</strong>在 <code>temperature=0</code> 下比对原版 A 和优化版 B 的平均前缀一致率，低于 0.95 直接 0 分。设 0.95 既挡住了偷降 INT4 换速度，又容得下合法改变 GPU 并行归约顺序带来的极微 FP8 舍入差异。</li>
+        <li><strong>随机前缀加盐与长度核验：</strong>把拼了随机盐值的同一批请求同时发给 A 和 B，让预计算 Prefix Cache 失效，再按 A 检查正文和输出长度，防止高并发下偷截断刷 token/s。</li>
+        <li><strong>同卡 <code>A -> B -> A</code> 三明治夹测与短板加权：</strong>同一张卡连测两次 A 取中位数当 0 分线，消掉云端 B200 5% 到 10% 的温度波动；设 1.02x 起分吃掉 2% 噪声、2.0x 封顶，并按单路延迟和并发吞吐的短板公式 <code>0.30 + 0.70 x min(单路, 并发)</code> 算分，防止只顾一头。</li>
       </ol>
       <p>
-        <strong>实测与能力边界：</strong>图 2.1 展示了 20h 长程工程与开源终端基准 <a class="bench-ref" data-bid="tb41">Terminal-Bench 4.1</a> 的对比。在 FrontierSWE v2 上，国产主力运行时间比海外更久（GLM-5.3 跑 17.1h、Kimi K3 跑 18.5h，高于海外 12.1 至 16.5h），单题花费与 Gemini 4 Neon（$96）持平甚至更高（$97 至 $110），解决率却不到一半（25.9% 至 30.2% vs 61.2% 至 62.4%）；海外小模型 Claude Haiku 5.5 仅花 $21/题即拿 43.8%，反证瓶颈不在参数规模或预算。官方轨迹复盘定位了三项长程工程习惯差距：遇错修改底层架构而非局部打补丁（系统实现类差 50+ 分）、主动自建分布外测试集排查假高分（科研算法类差 35 至 48 分）、以及连续 2 至 3 小时无收益时果断 <code>git reset</code> 换方案（弱模型在 0 分题上同样耗满 18 小时以上）。
+        <strong>实测与能力边界：</strong>图 2.1 对比了 20h 长程工程和开源终端基准 <a class="bench-ref" data-bid="tb41">Terminal-Bench 4.1</a>。在 FrontierSWE v2 上，国产主力跑的时间比海外更久（GLM-5.3 跑 17.1h、Kimi K3 跑 18.5h，高于海外的 12.1 到 16.5h），单题花钱和 Gemini 4 Neon（$96）差不多甚至更贵（$97 到 $110），解决率却不到一半（25.9% 到 30.2% vs 61.2% 到 62.4%）；海外小模型 Claude Haiku 5.5 每题只花 $21 就拿到 43.8%，说明卡住成绩的不是参数不够大，也不是预算不够高。官方翻看运行记录后定位了三个习惯差距：遇错肯改底层架构而不是打小补丁（系统实现类差 50+ 分）、会自己造分布外测试集排查假高分（科研算法类差 35 到 48 分）、以及连试 2 到 3 小时没进展时果断 <code>git reset</code> 换思路（弱模型在 0 分题上也会死磕满 18 小时以上）。
       </p>
     </div>
 
@@ -259,8 +277,8 @@ Promise.resolve(it?.return());</span></pre>
     <figure class="figure-card">
       <div class="fig-header">
         <div>
-          <h4 class="fig-title">图 2.1：代码赛道实测对比（FrontierSWE v2 20h 成本 Pareto 与 Terminal-Bench 4.1 官方榜）</h4>
-          <div class="fig-sub">点击右侧切换视图；在同约 $100/题区间内，FSWE v2 解决率差一倍，而开源底座 TB 4.1 差距已缩至 6.1 分</div>
+          <h4 class="fig-title">图 2.1：代码工程实测对比（FrontierSWE v2 20h 成本 Pareto 与 Terminal-Bench 4.1 官方榜）</h4>
+          <div class="fig-sub">点击右侧切换视图；同在 $100/题区间里 FSWE v2 解决率差一倍，开源底座 TB 4.1 差距已缩到 6.1 分</div>
         </div>
         <div class="seg-tabs" id="code-seg">
           <button class="seg-btn active" data-val="fswe">FrontierSWE v2 (20h Pareto)</button>
@@ -270,15 +288,15 @@ Promise.resolve(it?.return());</span></pre>
       <div id="chart-code-pareto"></div>
       <div class="fig-caption">
         <span>数据来源：frontierswe.com（34 题 x 5 轮均值，统一 proximus）；tbench.ai（TB 4.1，2026.11.20 抓取）。</span>
-        <span>注：TB 4.1 上多数国产模型搭 Claude Code 参测；FSWE v2 单题全量 170 轮 Token 成本为 $2.9万-$17.6万。</span>
+        <span>注：TB 4.1 上多数国产模型搭 Claude Code 参测；FSWE v2 单模型跑完 170 轮仅 Token 费为 $2.9万-$17.6万。</span>
       </div>
     </figure>
 
-    <!-- 2.2 AI FOR SCIENCE -->
+    <!-- 2.2 SCIENCE -->
     <div class="prose">
-      <h3 id="sec-2-2">2.2 科学研究</h3>
+      <h3 id="sec-2-2">2.2 科研任务</h3>
       <p>
-        科学研究评测在 2026 年经历了从静态学术闭卷问答向真实数据计算与实体湿实验的迁移。前期高关注度的 <a class="bench-ref" data-bid="hle">HLE</a> 在原版上因 29% 至 46% 的错题比例卡住 74% 上限，直到清洗为 HLE-Diamond 才恢复区分度。更贴近科研一线工作流的，是“断网容器科学计算”和“实体商业湿实验验证”两类基准。
+        2026 年的科研评测从静态闭卷答题转向了真数据计算和实体湿实验。前期关注度很高的 <a class="bench-ref" data-bid="hle">HLE</a> 原版因为 29% 到 46% 的错题比例卡死在 74% 上下，洗成 HLE-Diamond 后才恢复区分度。更贴近一线科研日常的，是“断网容器科学计算”和“真实验室湿测验证”这两类。
       </p>
 
       <!-- Case 3: TB-Science 0.1 -->
@@ -287,13 +305,13 @@ Promise.resolve(it?.return());</span></pre>
         <span class="case-meta-tag">Stanford / Laude 等 10+ 机构 | 2026.08 -> 2026.11 | 70 (扩至 96) 题</span>
       </div>
       <p>
-        <strong>任务与环境设定：</strong><a class="bench-ref" data-bid="tbs">TB-Science 0.1</a> 面向一线科研人员征集了 920 份提案（形成 386 个 PR），按 7.6% 的严苛录用率定稿 70 题（后续按月合入 PR 扩至 96 题），覆盖生命科学（19）、物理（17）、数统（17）、工程（9）与地球科学（8）。代表任务包括利用 17 年冰川卫星 GeoTIFF 立体图计算高程变化、用 R 对 9 年水文数据做 15 参数全局优化、强放热反应釜安全温控以及 Lorenz-96 混沌系统反推干扰项。
+        <strong>任务与环境设定：</strong><a class="bench-ref" data-bid="tbs">TB-Science 0.1</a> 向一线科研人员征集了 920 份提案（整理出 386 个 PR），按 7.6% 的录用率筛出 70 题首发（后面按月合入 PR 扩到 96 题），覆盖生命科学（19）、物理（17）、数统（17）、工程（9）和地球科学（8）。代表题目包括用 17 年冰川卫星 GeoTIFF 图算高程变化、用 R 对 9 年水文数据做 15 参数全局优化、强放热反应釜安全温控，以及 Lorenz-96 混沌系统反推干扰项。
       </p>
       <p>
-        <strong>验证与计分机制：</strong>直接复用源自 <a class="bench-ref" data-bid="tb41">Terminal-Bench</a> 的开源 Harbor 断网双容器架构。执行容器全程断公网防检索原论文，交卷后由独立验证容器运行纯 <code>pytest</code> 数值与状态断言。所有题目入库前强制要求参考解连跑 5/5 稳定通过（排除数值随机抖动）且空提交必得 0 分。
+        <strong>验证与计分机制：</strong>直接沿用从 <a class="bench-ref" data-bid="tb41">Terminal-Bench</a> 拆出来的开源 Harbor 断网双容器。执行容器全程断公网防查论文，交卷后由独立验证容器跑纯 <code>pytest</code> 数值和状态检查。每道题入库前必须保证参考解连跑 5/5 全过（排除随机数值抖动），而且空提交必得 0 分。
       </p>
       <p>
-        <strong>实测与能力边界：</strong>由于底座标准统一、入库质检严格，TB-Science 0.1 成为 2026 年 11 月海外三大实验室唯一共同采纳的科研基准（GPT-6.2 Astra 77.1%、Claude Fable 5.2 74.6%、Gemini 4 Neon 70.5%，国内 AA 口径最高为 Kimi K3.1 Pro 34.3%）。同时它清晰暴露了两项非模型变量：Fable 5.2 换用简装框架 <code>Mini-SWE</code> 后得分立刻下降 18.9 分；单题成本剪刀差高达 18 倍（Gemini 4 Argon 单题 $44.9，高于 GPT-6.2 Sol 的 $2.53 近 18 倍，得分反低 14 分）。
+        <strong>实测与能力边界：</strong>因为容器标准统一、入库卡得严，TB-Science 0.1 成了 2026 年 11 月海外三大实验室唯一共同主推的科研基准（GPT-6.2 Astra 77.1%、Claude Fable 5.2 74.6%、Gemini 4 Neon 70.5%，国内 AA 口径最高是 Kimi K3.1 Pro 34.3%）。同时它也暴露了两个非模型因素：Fable 5.2 换上简装框架 <code>Mini-SWE</code> 后分数直接掉 18.9 分；单题花钱最多差了 18 倍（Gemini 4 Argon 单题 $44.9，比 GPT-6.2 Sol 的 $2.53 贵 18 倍，分反而低 14 分）。
       </p>
 
       <!-- Case 4: De novo binder design (24h) -->
@@ -302,21 +320,21 @@ Promise.resolve(it?.return());</span></pre>
         <span class="case-meta-tag">Anthropic x Twist / Adaptyv | 2026.08 -> 2026.11 | 15 靶点 / 1,320 序列</span>
       </div>
       <p>
-        <strong>任务与环境设定：</strong><a class="bench-ref" data-bid="binder">De novo binder design</a> 向模型提供 15 个真实疾病靶点蛋白的三维结构（如泛素连接酶亚基 RBX1）与 1.6 万字操作说明，只给单卡 GPU 与 24 小时预算。在无人干预下，Agent 需要自主调用 RFdiffusion、BindCraft 生成自然界原本不存在的新蛋白序列，自己排查工具链脚本报错，并用 Boltz 与 AlphaFold 执行多轮重折叠初筛，最终交付最优 30 条候选序列。
+        <strong>任务与环境设定：</strong><a class="bench-ref" data-bid="binder">De novo binder design</a> 给模型 15 个真实疾病靶点蛋白的三维结构（比如泛素连接酶亚基 RBX1）和 1.6 万字操作说明，配单卡 GPU 和 24 小时预算。全程无人插手，Agent 要自己调 RFdiffusion、BindCraft 从零设计自然界原本不存在的新蛋白序列，工具报错自己修，再用 Boltz 和 AlphaFold 多轮重折叠初筛，最后交出最好的 30 条候选序列。
       </p>
       <p>
-        <strong>验证与计分机制：</strong>研究团队没有停留在电脑打分函数上，而是设置了两阶验收：第一阶为计算重折叠模拟通过率；第二阶将产出的 1,320 条蛋白序列隐去生成来源，寄给两家独立商业 CRO 机构，由 Twist Bioscience 在真实细胞中合成表达，再由 Adaptyv Bio 使用生物物理仪器实测结合亲和力。
+        <strong>验证与计分机制：</strong>研究团队没有只看电脑模拟打分，而是分两步验收：第一步看计算重折叠模拟通过率；第二步把生成的 1,320 条蛋白序列抹掉来源，盲寄给两家独立商业 CRO 机构，由 Twist Bioscience 在真实细胞里合成表达，再由 Adaptyv Bio 上生物物理仪器实测结合亲和力。
       </p>
       <p>
-        <strong>实测与能力边界：</strong>模型在 15 个靶点中成功设计出 14 个真实有效结合蛋白（RBX1 亲和力达 3.9 nM，优于传统人类专家 10% 至 15% 的常规命中率）。但两组口径的反差同样明确：<strong>计算重折叠模拟通过率高达 85.1%，寄往独立实验室的湿实验真实成功率回落至 22% 至 35%</strong>。这一结果直接说明，在科学设计任务上，缺乏独立物理或湿实验终裁时，纯计算代理指标存在明显的过拟合风险。<span class="sn-ref" data-sn="sn-2">2</span><span class="sidenote" id="sn-2"><span class="sn-num">[2]</span>在湿实验原始证据识读一侧，OpenAI 与 Ligo 联合构建的 <a class="bench-ref" data-bid="biobasics">BioBasicsBench</a>（2026.11，100 道未发表脏底片排错题）给出互补实证：GPT-5.2 因看不清未裁剪电泳胶，单题输出 27,620 tokens 仅得 31.2%；视觉分辨率提升的 GPT-6 Astra 得分升至 66.7%，单题输出反而减半至 4,704 tokens。</span>
+        <strong>实测与能力边界：</strong>模型在 15 个靶点里成功造出 14 个真实有效的结合蛋白（RBX1 亲和力达到 3.9 nM，高于传统人类专家 10% 到 15% 的常见命中率）。但两组数字的反差同样扎眼：<strong>电脑重折叠模拟通过率高达 85.1%，寄去独立实验室真做出来的湿实验成功率掉到 22% 到 35%</strong>。这说明在科学设计类任务上，只要少了独立的物理或湿实验终裁，纯计算打分函数很容易被模型过拟合。<span class="sn-ref" data-sn="sn-2">2</span><span class="sidenote" id="sn-2"><span class="sn-num">[2]</span>在湿实验读图排错这边，OpenAI 和 Ligo 联合做的 <a class="bench-ref" data-bid="biobasics">BioBasicsBench</a>（2026.11，100 道未发表脏底片排错题）给出了另一面证据：GPT-5.2 看不清没裁边的电泳胶，单题硬写 27,620 tokens 只拿 31.2%；看图更准的 GPT-6 Astra 涨到 66.7%，单题输出反而减半到 4,704 tokens。</span>
       </p>
     </div>
 
-    <!-- 2.3 OFFICE WORKFLOWS & REAL LABOR (3 Cases including AA-Briefcase!) -->
+    <!-- 2.3 OFFICE & PROFESSIONAL WORK -->
     <div class="prose">
-      <h3 id="sec-2-3">2.3 白领办公与真实劳动</h3>
+      <h3 id="sec-2-3">2.3 办公与职业任务</h3>
       <p>
-        进入真实企业办公环境后，单轮对话盲评（如早期的 Arena 排名）因受排版长度与表面流畅度影响，已无法反映真实交付可用度。以下三个基准分别覆盖“后台跨软件 API 编排”“高噪企业网盘与商业文档生成”以及“真实付费外包交付”三个递进层次。
+        放到真实公司和付费外包场景里，单轮对话盲评（比如早期 Arena）很容易被排版好看、字数长的回答带偏，测不出活到底能不能直接交付。下面三个基准分别测三层递进能力：跨软件 API 后台编排、高噪企业网盘里算账写汇报，以及真实付费外包单交付。
       </p>
 
       <!-- Case 5: AutomationBench -->
@@ -325,13 +343,13 @@ Promise.resolve(it?.return());</span></pre>
         <span class="case-meta-tag">Zapier / AA | 2026.04 -> 2026.11 | 100 公开 + 657 私有题</span>
       </div>
       <p>
-        <strong>任务与环境设定：</strong>为消除连接真实商业网站触发验证码、封号与改版的不稳定性，Zapier 基于数百万条企业自动化工作流构建了 <a class="bench-ref" data-bid="autobench">AutomationBench</a>，在本地沙盒完整克隆了 47 款常用企业 SaaS 与约 500 个 REST API。系统模拟同事在 Slack 发起需求且禁止向人反问，Agent 仅通过 <code>Search</code>（查接口文档）和 <code>Execute</code>（执行请求）跨 CRM、表格、邮件与工单系统完成多步操作。
+        <strong>任务与环境设定：</strong>直接连真实商业网站会碰上验证码、封号和网页改版，根本没法复现。Zapier 从数百万条真实企业自动化工作流里提炼出 <a class="bench-ref" data-bid="autobench">AutomationBench</a>，在本地沙盒完整克隆了 47 款常用企业 SaaS 和约 500 个 REST API。系统模拟同事在 Slack 派活且不许反问，Agent 只能用 <code>Search</code>（查接口文档）和 <code>Execute</code>（发请求）跨 CRM、表格、邮件和工单系统把活干完。
       </p>
       <p>
-        <strong>验证与计分机制：</strong>验证器完全忽略模型的文字总结，直接用确定性代码核查 47 个后台数据库的终态。Artificial Analysis 对 286 种模型配置、657 道私有题做了全量双口径对齐：一是零违规前提下的子目标平均完成率（主榜目标分），二是要求全部子目标 100% 达成且零违规的严格全通率（Strict Pass Rate）。
+        <strong>验证与计分机制：</strong>验证器完全不看模型嘴上怎么汇报，直接写确定性代码查 47 个后台数据库的最终状态。Artificial Analysis 对 286 种模型配置、657 道私有题对齐了两种口径：一个是零违规前提下的子目标平均完成率（主榜目标分），另一个是要求所有子目标 100% 达成且零违规的严格全通率（Strict Pass Rate）。
       </p>
       <p>
-        <strong>实测与验证器漏洞：</strong>如图 2.2 所示，同一套任务集上两档口径相差 22 至 34 个百分点：Gemini 4 Neon 目标分 79.3%，严格全通率为 56.6%；MiniMax M3.1 Flash 目标分 72.5%，严格全通率跌至 38.1%（差 34.4 分）；国产新旗舰 Qwen4 Max（47.2%）与 Kimi K3.1 Pro（46.0%）已将严格全通差距缩小至约 9 分。更值得关注的是 2026 年 11 月第三方机构 <strong>BLE（Benchmarks' Last Exam）</strong>对公开集 v1.0.6 100 道判分脚本的白盒代码审查：即使完全不用 LLM 裁判，仍有 <strong>71 道脚本确认存在判分缺陷</strong>（仅 19 题合格、10 题存疑），说明复杂业务下的纯代码断言同样高度脆弱。
+        <strong>实测与验证器漏洞：</strong>如图 2.2 所示，同一套题上两档口径差了 22 到 34 个百分点：Gemini 4 Neon 目标分 79.3%，严格全通率 56.6%；MiniMax M3.1 Flash 目标分 72.5%，严格全通率跌到 38.1%（差 34.4 分）；国产新旗舰 Qwen4 Max（47.2%）和 Kimi K3.1 Pro（46.0%）已经把严格全通差距追到 9 分左右。更值得警惕的是 2026 年 11 月第三方机构 <strong>BLE（Benchmarks' Last Exam）</strong> 对公开集 v1.0.6 100 道判分脚本做的白盒审查：即便完全没用 LLM 当裁判，仍有 <strong>71 道纯代码脚本确认写错了或留了洞</strong>（只有 19 题合格、10 题存疑），说明业务一复杂，手写代码断言一样非常脆弱。
       </p>
     </div>
 
@@ -339,8 +357,8 @@ Promise.resolve(it?.return());</span></pre>
     <figure class="figure-card">
       <div class="fig-header">
         <div>
-          <h4 class="fig-title">图 2.2：办公基准双口径差距（AutomationBench-AA 与 ALE v1.1）及 BLE 100 题脚本审计</h4>
-          <div class="fig-sub">点击右侧切换两个办公基准的双口径对比；下方条形展示 BLE 对 AutomationBench 公开集 v1.0.6 的逐题脚本审计结果</div>
+          <h4 class="fig-title">图 2.2：办公与职业基准双口径差距（AutomationBench-AA 与 ALE v1.1）及 BLE 100 题脚本审计</h4>
+          <div class="fig-sub">点击右侧切换两个基准的双口径对比；下方条形展示 BLE 对 AutomationBench 公开集 v1.0.6 的逐题脚本审计结果</div>
         </div>
         <div class="seg-tabs" id="office-seg">
           <button class="seg-btn active" data-val="autobench">AutomationBench-AA (657 私题)</button>
@@ -359,17 +377,17 @@ Promise.resolve(it?.return());</span></pre>
           <div class="info-card">
             <div class="ic-k">假阳性放水 | 28 题</div>
             <h4>关键数值写错仍判满分</h4>
-            <p>脚本只查目标表是否新增行而漏查字段内容，会计借贷写反或发票漏算 $1,000 照常满分。</p>
+            <p>脚本只查目标表有没有新增行，不查字段值，会计借贷写反或发票漏算 $1,000 照样满分。</p>
           </div>
           <div class="info-card">
             <div class="ic-k">假阴性错杀 | 18 题</div>
             <h4>隐藏列名导致合法解判零</h4>
-            <p>题干未规定新表列名或排序，判分脚本却写死了未声明的固定字段名，直接错杀合法答案。</p>
+            <p>题干没规定新表列名和排序，脚本却写死了没声明的字段名，直接把对的答案判成 0 分。</p>
           </div>
           <div class="info-card">
             <div class="ic-k">单向断言漏洞 | 9 题</div>
             <h4>改状态标记即可绕过检查</h4>
-            <p>未发邮件仅把草稿字段改成 <code>SENT</code> 或直接删除整行数据，便骗过了单向数据库检查。</p>
+            <p>没发邮件只把草稿状态改成 <code>SENT</code>，或者干脆删掉整行，就骗过了单向数据库检查。</p>
           </div>
         </div>
       </div>
@@ -385,13 +403,13 @@ Promise.resolve(it?.return());</span></pre>
         <span class="case-meta-tag">Artificial Analysis | 2026.06 -> 2026.11 | 4 家模拟企业 / 91 题</span>
       </div>
       <p>
-        <strong>任务与环境设定：</strong><a class="bench-ref" data-bid="briefcase">AA-Briefcase v1.1</a> 面向战略咨询、财务尽调与商业分析场景。领域专家耗费数千小时搭建了 4 家模拟公司的完整网盘，内含数千份历史财报底表、合同草稿、新旧冲突制度以及 25,000 条跨周 Slack 群聊记录。例如在季度损益重算与 12 页董事会 PPT 任务中，财务总监在 Slack 第 1.8 万条消息里临时变更了欧洲区退货计提规则，如果模型只照网盘中的旧版 PDF 制度计算，整套 Excel 公式模型与汇报将全盘失真。
+        <strong>任务与环境设定：</strong><a class="bench-ref" data-bid="briefcase">AA-Briefcase v1.1</a> 测的是战略咨询、财务尽调和商业分析。行业专家花了数千小时搭出 4 家模拟公司的完整网盘，里面塞了数千份历史财报、合同草稿、新旧打架的公司制度，还有 25,000 条跨周 Slack 群聊记录。比如季度损益重算加 12 页董事会 PPT 这道题，财务总监在 Slack 第 1.8 万条消息里临时改了欧洲区退货计提规则，模型要是只按网盘旧 PDF 算，整套 Excel 和汇报全都会错。
       </p>
       <p>
-        <strong>验证与计分机制：</strong>针对“既要算对账、又要写好汇报”的开放商业交付，纯代码脚本只能校验单元格数字，纯盲评又会被排版精致但利润算错的长文误导。AA-Briefcase 由此采用<strong>双轨解耦验收</strong>：轨道一由审计脚本对照专家预编写的细粒度客观清单（Rubric），逐项核查 Excel 单元格数值、公式引用及必含图表（0 至 100%）；轨道二将隐去模型署名的 PPT 与备忘录交评审团两两盲比，折算叙事结构与洞察质感的 Elo 分（0 至 3000）。
+        <strong>验证与计分机制：</strong>商业汇报既要账算对，又要讲得清。纯代码只能查数字，纯盲评又会被排版漂亮但利润算错的长文骗过去。所以 AA-Briefcase 把评分物理拆成两轨：第一轨用审计脚本照着专家写死的客观清单（Rubric）逐条核对 Excel 数值、公式引用和必含图表（0 到 100%）；第二轨把隐去署名的 PPT 和备忘录交给评审团两两盲比，算出叙事结构和洞察质量的 Elo 分（0 到 3000）。
       </p>
       <p>
-        <strong>实测与能力边界：</strong>双轨评测呈现出清晰的“冠军分家”：Claude Fable 5.2 在客观硬指标 Rubric 上以 <strong>66.1%</strong> 居首（领先 Opus 5.5 近 5 个百分点），表现出更强的信息降噪与数值严谨度；而在评审团匿名盲评轨道上，Claude Opus 5.5（1800 Elo，Sonnet 5.5 约 1811）反超 Fable 5.2（1785 Elo）。更重要的是底层完成度统计：尽管平均 Rubric 已过 60%，但能够把单道任务全部硬要求一条不漏 100% 达标的<strong>完美交付率仅约 3%</strong>，91 题中有 31 题所有参测模型均未过半。
+        <strong>实测与能力边界：</strong>两项指标的冠军不是同一个模型：Claude Fable 5.2 在客观硬指标 Rubric 上以 <strong>66.1%</strong> 排第一（领先 Opus 5.5 近 5 个百分点），从脏材料里抠对数字的能力更稳；但在匿名盲评轨道上，Claude Opus 5.5（1800 Elo，Sonnet 5.5 约 1811）反超了 Fable 5.2（1785 Elo）。更扎心的数字在底层：虽然平均 Rubric 已经过了 60%，但把单道题所有硬要求一条不漏 100% 做对的<strong>完美交付率只有约 3%</strong>，91 题里有 31 题所有模型都没过半。
       </p>
 
       <!-- Case 7: Remote Labor Index -->
@@ -400,21 +418,21 @@ Promise.resolve(it?.return());</span></pre>
         <span class="case-meta-tag">Scale AI x CAIS | 2025.10 -> 2026.11 | 10 公开 + 230 私有真单</span>
       </div>
       <p>
-        <strong>任务与环境设定：</strong><a class="bench-ref" data-bid="rli">Remote Labor Index（RLI）</a> 放弃模拟编题，直接花费 $14.4 万向 Upwork 自由职业者买断 240 个真实已结款商业外包项目（覆盖全栈开发、建筑渲染、数据分析、平面设计、3D 建模与音视频剪辑等 23 个远程工种，累计 6,000+ 小时人类工时及人类中标稿）。剔除需反复线下开会拉扯的订单后，将甲方原始脏素材原样交给配备各类专业软件的虚拟桌面 Agent 独立交付。
+        <strong>任务与环境设定：</strong><a class="bench-ref" data-bid="rli">Remote Labor Index（RLI）</a> 干脆不自己编题了，直接花 $14.4 万找 Upwork 自由职业者买断 240 个真实已结款的外包项目（覆盖全栈开发、建筑渲染、数据分析、平面设计、3D 建模和音视频剪辑等 23 个远程工种，总计 6,000+ 小时人类工时和人类中标稿）。去掉必须反复线下开会拉扯的单子后，把甲方原始脏素材原封不动交给装好专业软件的虚拟桌面 Agent 独立交稿。
       </p>
       <p>
-        <strong>验证与计分机制：</strong>由同领域真人专家对照人类中标稿执行<strong>商业二元验收</strong>：只判断“甲方是否愿意按约付款收货”。即使完成 90% 工作量，只要存在一处影响交付的硬伤即整单拒付得 0 分。
+        <strong>验证与计分机制：</strong>请同行业真人专家对照人类中标稿做<strong>二元付款验收</strong>：只问一句“如果是你当甲方，愿不愿意按合同付钱收货”。哪怕干完了 90%，只要有一处影响交付的硬伤，整单直接拒付得 0 分。
       </p>
       <p>
-        <strong>实测与能力边界：</strong>2025 年 10 月首发时全场最高自动化率仅 2.5%；至 2026 年 11 月，Claude Fable 5.2 升至 <strong>41.3%</strong>，领先 Opus 5.5（21.3%）与 GPT-6 Astra（20.8%）一倍（国产仅 DeepSeek V4.1 Flash 以 9.6% 在榜）。对剩余 58.7% 被拒订单的归因显示，多数退单并非源于领域知识不足，而是四类基础工程品控失误：导出 0 字节损坏文件、漏交设计源文件图层、报告正文与附表数据冲突、3D 或排版穿模。商业交付遵循乘法法则，任一环节归零即整单作废；同时 41.3% 仅代表已剔除多轮沟通的单次打包外包单，不能直接外推为可替代 41.3% 的全职岗位。
+        <strong>实测与能力边界：</strong>2025 年 10 月刚发榜时全场最高自动化率只有 2.5%；到 2026 年 11 月，Claude Fable 5.2 涨到了 <strong>41.3%</strong>，比 Opus 5.5（21.3%）和 GPT-6 Astra（20.8%）高出一倍（国产目前只有 DeepSeek V4.1 Flash 以 9.6% 在榜）。拆开看剩下 58.7% 被退单的原因，大多数不是专业知识不懂，而是四类基础品控失误：导出 0 字节坏文件、忘交设计源文件图层、报告正文和附表数字打架、3D 或排版穿模。商业交付只要错一个关键环节，整单就会被退回；同时 41.3% 只代表去掉多轮沟通后的单次打包外包单，不能直接说成能替代 41.3% 的全职岗位。
       </p>
     </div>
 
-    <!-- 2.4 DESKTOP GUI & 3D PHYSICAL WORLD -->
+    <!-- 2.4 CUA TASKS -->
     <div class="prose">
-      <h3 id="sec-2-4">2.4 桌面操控与三维物理世界</h3>
+      <h3 id="sec-2-4">2.4 CUA 任务</h3>
       <p>
-        在二维静态高密度专业识图上，Surge AI 的 <a class="bench-ref" data-bid="charto">Chartography</a>（2026.07-08，12 行业 100 张真工程图纸，禁用代码放大工具每题连跑 20 遍）已记录到集体过关：短短 4 个月内，三大实验室旗舰从 45.0% 齐齐升至 72.5% 至 75.1%（GPT-6.2 Sol 75.1%、Fable 5.2 73.4%、Gemini 4 Carbon 72.5%，极差 2.6 分）。然而，一旦从静态看图进入长流程桌面 GUI 操控与三维物理交互，能力分化立刻显现。
+        测计算机操控（Computer-Use Agents，CUA）之前，先得排除一个基础问题：模型到底能不能看清屏幕上的高密度内容？Surge AI 的 <a class="bench-ref" data-bid="charto">Chartography</a>（2026.07-08，12 个行业 100 张真实工程与金融图纸，禁用代码裁剪放大工具，每题连跑 20 遍）已经给出了答案：短短 4 个月，三大实验室旗舰从 45.0% 齐齐涨到 72.5% 至 75.1%（GPT-6.2 Sol 75.1%、Fable 5.2 73.4%、Gemini 4 Carbon 72.5%，极差只有 2.6 分）。2D 静态看图基本过关了，真正的硬骨头在于看懂之后能不能像人一样操作整个操作系统把长流程做完。
       </p>
 
       <!-- Case 8: OSWorld 2.1 -->
@@ -423,13 +441,35 @@ Promise.resolve(it?.return());</span></pre>
         <span class="case-meta-tag">港大 XLang x CMU 等 12+ 机构 | 2024.04 -> 2026.06 | 108 题 (82 本地离线)</span>
       </div>
       <p>
-        <strong>任务与环境设定：</strong><a class="bench-ref" data-bid="osworld1">OSWorld 1.0</a> 的 369 道 2 分钟单软件短指令在 2026 年中升至 86.1% 饱和后，团队彻底重构了 <a class="bench-ref" data-bid="osworld">OSWorld 2.0 / 2.1</a>：邀请一线财务、设计与开发从业者构建 108 道跨软件复合任务（82 道纯本地离线），将人类专家中位耗时拉长 48 倍至 <strong>1.6 小时</strong>，单题平均横跨 2.44 款桌面软件，并手工预埋错账 ERP、多图层 GIMP 源文件与 31 个本地 Docker 网站。单题需交互 250 至 318 步以上且每步回传 1080p 截图（$22 至 $76/题）。2.1 版组织人类逐题录制 Golden Trajectory 通关轨迹，集中排除了损坏素材、端口冲突与假阴性误杀。
+        <strong>任务与环境设定：</strong><a class="bench-ref" data-bid="osworld1">OSWorld 1.0</a> 的 369 道 2 分钟单软件短指令在 2026 年中刷到 86.1% 饱和后，团队推倒重做了 <a class="bench-ref" data-bid="osworld">OSWorld 2.0 / 2.1</a>：请一线财务、设计和开发从业者写了 108 道跨软件长流程任务（82 道纯本地离线），把人类专家中位耗时拉长 48 倍到 <strong>1.6 小时</strong>，单题平均跨 2.44 款桌面软件，还手工预埋了错账 ERP、多图层 GIMP 源文件和 31 个本地 Docker 网站。单题要交互 250 到 318 步以上，每步回传 1080p 截图（单题光跑一次就要 $22 到 $76）。2.1 版让人类逐题录了一遍 Golden Trajectory 通关录像，集中清掉了坏素材、端口冲突和误杀脚本。
       </p>
       <p>
-        <strong>验证与计分机制：</strong>不依赖截图视觉主观裁判，而是将 1.6 小时流程拆成 10 至 15 个 <code>Sub-goal DAG</code> 依赖节点，由底层 Python 脚本直接核查 SQL 记录、Excel 公式树、PNG 透明通道与 DOM 结构，并列输出步骤平均分（Partial）与严格全通率（Strict）。
+        <strong>验证与计分机制：</strong>不靠截图给视觉模型打主观分，而是把 1.6 小时流程拆成 10 到 15 个 <code>Sub-goal DAG</code> 依赖节点，用底层 Python 脚本直接查 SQL 记录、Excel 公式树、PNG 透明通道和网页 DOM，同时报步骤平均分（Partial）和严格全通率（Strict）。
       </p>
       <p>
-        <strong>实测与失败样本：</strong>在 82 道本地离线题上，Fable 5.2 步骤平均分高达 <strong>89.3%</strong>（Carbon 80.4%、Astra 79.5%），但切换为严格全通后骤降 34.7 个百分点至 <strong>54.6%</strong>（Carbon 45.8%、Astra 44.0%；2.0 含在线网页全集更低至 20.6%）。轨迹统计揭示了共性缺陷：模型将超过 <strong>93% 的操作步数用于单向向前推进，回检并修正前序失误的步数不足 7%</strong>，经常在写完复杂跨表公式或改完前端代码后，因末步漏按 <code>Ctrl+S</code> 保存或漏合并图层导致整单归零。
+        <strong>实测与失败样本：</strong>如图 2.3 所示，在 82 道本地离线题上，Fable 5.2 步骤平均分高达 <strong>89.3%</strong>（Carbon 80.4%、Astra 79.5%），但一换严格全通就掉 34.7 个百分点，只剩 <strong>54.6%</strong>（Carbon 45.8%、Astra 44.0%；2.0 含在线网页全集更低，只有 20.6%）。翻看操作记录会发现同一个毛病：模型把超过 <strong>93% 的步数都花在一路往前点，回头检查并修正前序失误的步数不到 7%</strong>，经常写完复杂跨表公式或改完前端代码，最后一步忘按 <code>Ctrl+S</code> 保存或者忘合并图层，整单直接归零。
+      </p>
+    </div>
+
+    <!-- Figure 2.3: CUA Gap (Chartography 2D vs OSWorld 2.1 Partial & Strict) -->
+    <figure class="figure-card">
+      <div class="fig-header">
+        <div>
+          <h4 class="fig-title">图 2.3：CUA 任务能力分化（2D 专业识图已过关，1.6 小时桌面长流程严格全通掉 34.7 分）</h4>
+          <div class="fig-sub">对比 Chartography（禁工具 2D 图纸）、OSWorld 2.1 桌面步骤分（Partial）与严格全通率（Strict）</div>
+        </div>
+      </div>
+      <div id="chart-cua-gap"></div>
+      <div class="fig-caption">
+        <span>数据来源：Surge AI Chartography（arXiv:2608.10677，每题 20 遍）；HKU XLang OSWorld 2.1（82 道本地离线集，2026.06-11）。</span>
+      </div>
+    </figure>
+
+    <!-- 2.5 PHYSICAL INTERACTION -->
+    <div class="prose">
+      <h3 id="sec-2-5">2.5 物理交互</h3>
+      <p>
+        从屏幕桌面再往前跨一步，就是真实的三维物理世界。这里最关键的分水岭不是“能不能认出桌上的杯子”，而是<strong>控制精度、换环境能不能泛化，以及能不能跟上真实物理时间的流速</strong>。
       </p>
 
       <!-- Case 9: RoboDojo & Embodied First Exam -->
@@ -438,183 +478,209 @@ Promise.resolve(it?.return());</span></pre>
         <span class="case-meta-tag">MIT / 港大 / 清华 / 西北等 18+ 校 | 2026.07 -> 2026.11 | 60 题 / 456 核心题</span>
       </div>
       <p>
-        <strong>任务与环境设定：</strong><a class="bench-ref" data-bid="robodojo">RoboDojo</a> 基于 NVIDIA Isaac Sim 构建了 42 项仿真任务（涵盖毫米级拧螺丝、杯盖遮挡记忆、双臂接力与心算算式抓积木等 5 维 24 技能），配套 1.5m 恒定 LED 灯箱与 3D 打印夹具锁死硬件变量的 18 项 RealEval 真机实测台。不同于传统微调机器人小模型（VLA 在更换桌面纹理与光照的视觉域随机化测试中进度分下降 67% 至 96%），2026 年的尝试是让零遥操作微调的通用大模型读取三路相机画面，直接输出双臂末端 6-DoF 位姿。
+        <strong>任务与环境设定：</strong><a class="bench-ref" data-bid="robodojo">RoboDojo</a> 基于 NVIDIA Isaac Sim 搭了 42 项仿真任务（涵盖毫米级拧螺丝、杯盖遮挡记忆、双臂接力和心算算式抓积木等 5 维 24 技能），并配套 18 项 RealEval 真机实测台（用 1.5m 恒定 LED 灯箱和 3D 打印夹具把光照和桌面硬件变量锁死）。传统微调机器人小模型（VLA）一换桌面纹理或灯光，进度分就会狂掉 67% 到 96%；2026 年的新尝试是让零遥操作微调的通用大模型直接看三路相机画面，输出双臂末端 6-DoF 位姿。
       </p>
       <p>
-        <strong>验证口径与真实前提：</strong>在 RoboDojo 仿真榜上，Claude Fable 5.2 报出 <strong>64.9%‡</strong>，达到 GPT-6 Astra（29.8%）的 2.18 倍。但右上角双剑号 <code>‡</code> 对应三条不可忽略的前提：第一，整套抽帧、坐标编码与动作插值控制外挂属内部私有（中立榜 BenchLM 仅列 Display-only，且 RoboDojo 在 2026.11.14 审计清退了向 Prompt 注入分步解题指南的 <code>SOLVE* 75%</code> 与 <code>Q0* 68.9%</code>）；第二，仿真默认采用回合制阻塞（Step-blocking），每步思考 10 至 18 秒期间物理引擎冻结重力与惯性；第三，18 项 RealEval 真机最高分仅为 <strong>33.9%</strong>，三大通用大模型旗舰尚无一家交出真机成绩。
+        <strong>验证口径与小字前提：</strong>在 RoboDojo 仿真榜上，Claude Fable 5.2 报了 <strong>64.9%‡</strong>，是 GPT-6 Astra（29.8%）的 2.18 倍。但右上角双剑号 <code>‡</code> 背后有三条必须看清的前提：第一，抽帧、坐标编码和动作插值那整套控制外挂没有开源（中立榜 BenchLM 只标 Display-only；RoboDojo 还在 2026.11.14 审计清退了往 Prompt 里硬塞分步指南的 <code>SOLVE* 75%</code> 和 <code>Q0* 68.9%</code>）；第二，仿真默认开着“停表模式”（Step-blocking），模型每想一步花 10 到 18 秒时，物理引擎把重力和惯性都冻住了；第三，18 项 RealEval 真机最高分只有 <strong>33.9%</strong>，三大通用旗舰目前一家都没交真机成绩。
       </p>
       <p>
-        <strong>实时物理裁决与路线分化：</strong>2026 年 11 月，西北大学用 Harbor 统合包含 RoboDojo 在内的 35 套具身仿真、47 种本体，发布 <strong>Embodied First Exam</strong>（arXiv:2611.12177），在 456 道核心题上对照停表模式与连续真实物理时钟。如图 2.3 右侧所示，允许停表思考时 GPT-6 Astra 达 34.0%（开源最高 9.0%）；一旦取消暂停键切回连续物理时钟，大模型每步 10 至 18 秒延迟远慢于倾倒杯子 0.4 秒落地与目标 1.2 秒滑出半径的速度，<strong>63.0%（287/456 题）三大旗舰全得 0 分</strong>。这道 0.1Hz 慢思考与 10 至 50Hz 实时物理之间的延迟壁垒，直接解释了三大厂具身路线的分化：Anthropic 轻资产只测大脑空间规划外溢，OpenAI 将 Robotics 并入核心研究部押注统一模型直控，Google DeepMind 坚持“高层通用大脑 + 底层高频小脑（Gemini Robotics 2.5）”双系统并在奔驰产线实现 96% 分拣成功率。
+        <strong>实时物理裁决与三厂路线分化：</strong>2026 年 11 月，西北大学用 Harbor 把包含 RoboDojo 在内的 35 套具身仿真、47 种机器人本体统合起来，发了 <strong>Embodied First Exam</strong>（arXiv:2611.12177），专门在 456 道核心题上对照“停表模式”和“真实连续物理时钟”。如图 2.4 右侧所示，允许停表思考时 GPT-6 Astra 能到 34.0%（开源最高 9.0%）；一旦把暂停键拿掉、切回真实流动的物理时间，大模型每步 10 到 18 秒的延迟根本追不上 0.4 秒砸地的倾倒水杯和 1.2 秒滑出抓取半径的目标，<strong>63.0%（287/456 题）三大旗舰全得 0 分</strong>。这道 0.1Hz 慢思考和 10 到 50Hz 实时物理之间的速度差，直接解释了三家大厂的路线分化：Anthropic 走轻资产，只测通用大模型做空间规划能走到哪一步；OpenAI 把 Robotics 并回核心研究部，押注统一模型直控；Google DeepMind 坚持“高层通用大脑 + 底层高频小脑（Gemini Robotics 2.5）”双系统，已经在奔驰产线做到 96% 分拣成功率。
       </p>
     </div>
 
-    <!-- Figure 2.3: Strictly Separated Two-Panel Embodied Chart -->
+    <!-- Figure 2.4: Strictly Separated Physical Interaction Two-Panel Chart -->
     <figure class="figure-card">
       <div class="fig-header">
         <div>
-          <h4 class="fig-title">图 2.3：由 2D 专业识图、桌面长流程、3D 停表仿真到连续物理时钟的能力分化</h4>
-          <div class="fig-sub">严格拆分两套不同物理量纲：左图为单模型任务准确率（%），右图为 Embodied First Exam 456 核心题在停表与实时模式下的结局拆解</div>
+          <h4 class="fig-title">图 2.4：物理交互实测分化（停表仿真 vs 真机上限，以及切回实时物理时钟的结局）</h4>
+          <div class="fig-sub">严格分开两套不同物理量纲：左图为单任务准确率（%），右图为 Embodied First Exam 456 题的停表与实时对照</div>
         </div>
       </div>
       <div class="dual-fig-grid">
         <div class="dual-subpanel">
-          <div class="dual-subpanel-title">Panel A | 单模型任务准确率 (%) <span>Chartography -> OSWorld -> RoboDojo Sim</span></div>
-          <div id="chart-embodied-acc"></div>
+          <div class="dual-subpanel-title">Panel A | RoboDojo 仿真与真机对比 <span>单位：单任务准确率 (%)</span></div>
+          <div id="chart-phys-sim"></div>
         </div>
         <div class="dual-subpanel">
-          <div class="dual-subpanel-title">Panel B | First Exam 停表与实时对照 <span>456 核心题 / 35 套仿真统考</span></div>
+          <div class="dual-subpanel-title">Panel B | First Exam 停表与实时时钟 <span>456 核心题 / 35 套仿真</span></div>
           <div id="chart-first-exam"></div>
         </div>
       </div>
       <div class="fig-caption">
-        <span>左图模型与正文一致：Chartography 采 GPT-6.2 Sol 75.1% / Fable 5.2 73.4% / Gemini 4 Carbon 72.5%。</span>
+        <span>左图来源：RoboDojo Leaderboard &amp; RealEval（2026.07-11）。Fable 64.9%‡ 含私有控制外挂且未提交真机成绩。</span>
         <span>右图来源：Northwestern Univ. Embodied First Exam（arXiv:2611.12177）。</span>
       </div>
     </figure>
   </article>
 
   <!-- ====================================================================
-       PART 3 | ACTIONABLE DOMAIN-BY-DOMAIN BENCHMARK CONSTRUCTION PLAYBOOK
+       PART 3 | HOW TO BUILD A VALUABLE BENCHMARK (5-DOMAIN PLAYBOOK)
        ==================================================================== -->
   <article class="chapter" id="part-3">
-    <h2>三、如何搭建有价值的 Benchmark：分领域统计与行动指南</h2>
+    <h2>三、如何搭建有价值的 Benchmark</h2>
     <p class="chapter-lead">
-      搭建一套能进入一线模型发布主表、并反哺后训练迭代的 Benchmark，不能把不同领域的经验混为一谈。基于第二节拆解的 9 个案例以及 <a class="bench-ref" data-bid="hle">HLE-Diamond</a>、<a class="bench-ref" data-bid="tb41">Terminal-Bench 4.1</a>、<a class="bench-ref" data-bid="asb">ASB 0.1 / TwinLab</a>、<a class="bench-ref" data-bid="biomy">BioMysteryBench</a>、<a class="bench-ref" data-bid="biobasics">BioBasicsBench</a>、<a class="bench-ref" data-bid="ale">ALE v1.1</a>、<a class="bench-ref" data-bid="charto">Chartography</a> 与 <a class="bench-ref" data-bid="swe_pro">SWE-bench Pro</a> 等核心样本，本节严格按四大领域拆解“大约做多少题、拉多少组织、造题和做题各花多少钱、要不要私有、第一步怎么开始”，给出一份可直接落地的工程行动指南。
+      想做一套真正能进一线模型发布表、又能拿来反哺训练的 Benchmark，千万别把不同赛道的经验混着抄。基于第二节 9 个案例，加上 <a class="bench-ref" data-bid="hle">HLE-Diamond</a>、<a class="bench-ref" data-bid="tb41">Terminal-Bench 4.1</a>、<a class="bench-ref" data-bid="asb">ASB 0.1 / TwinLab</a>、<a class="bench-ref" data-bid="biomy">BioMysteryBench</a>、<a class="bench-ref" data-bid="biobasics">BioBasicsBench</a>、<a class="bench-ref" data-bid="ale">ALE v1.1</a> 和 <a class="bench-ref" data-bid="swe_pro">SWE-bench Pro</a> 等关键样本，本节按五个赛道拆开算账：大约做多少题、拉多少企业或机构、造题和做题各花多少钱、要不要私有、第一步怎么动手。
     </p>
 
     <div class="prose">
-      <h3 id="sec-3-1">3.1 分领域核心参数对照（按赛道拆解，不混算均值）</h3>
+      <h3 id="sec-3-1">3.1 五大赛道构建参数对照（按领域拆开，不混算平均）</h3>
       <p>
-        如果把 16 套前沿基准笼统求平均，很容易得到失真的经验数字。按领域切开后可以看到截然相反的工程规律：白领办公类样本 <strong>100% 设有私有防线</strong>（零全开源），而桌面与三维物理类 <strong>100% 全开源</strong>；代码与科研类则在“开源容器底座”与“私有防污染主榜”之间分化。表 3.1 与图 3.1 给出了四个赛道各自的真实参数区间与起步决策：
+        把 16 套前沿基准混在一起算平均数，拿到的数字基本用不上。按五个赛道切开后，各领域的做法差别非常大：办公与职业类 <strong>100% 留了私有题</strong>（一套全开源的都没有），而 CUA 和物理交互两类 <strong>100% 全开源</strong>；代码工程和科研任务则在“开源容器底座”和“私有防污染主榜”之间分开走。表 3.1 和图 3.1 把五个赛道的真实参数和起步办法直接摆了出来：
       </p>
     </div>
 
-    <!-- Table 3.1: 4-Domain Actionable Playbook Matrix -->
+    <!-- Table 3.1: 5-Domain Actionable Playbook Matrix -->
     <figure class="figure-card full">
       <div class="fig-header">
         <div>
-          <h4 class="fig-title">表 3.1：四大赛道 Benchmark 构建参数与起步决策对照（基于 16 套核心样本及历史参照分领域汇总）</h4>
-          <div class="fig-sub">回答六个核心立项问题：大约多少题、拉多少组织与专家、造题成本、做题（复测）成本、要不要私有、第一步怎么开始</div>
+          <h4 class="fig-title">表 3.1：五大赛道 Benchmark 构建参数与起步对照（按领域拆分统计，基于 16 核心 + 参照样本）</h4>
+          <div class="fig-sub">直接回答立项六个问题：做多少题、拉多少组织与专家、造题花多少、跑榜花多少、要不要私有、怎么开始</div>
         </div>
       </div>
       <div class="table-scroll">
         <table class="ed-table playbook-table">
           <thead>
             <tr>
-              <th>领域与核心样本</th>
-              <th>建议题量</th>
+              <th>赛道与样本</th>
+              <th>大约多少题</th>
               <th>拉多少组织与专家</th>
               <th>造题成本与周期</th>
-              <th>做题（复测）成本</th>
+              <th>做题（跑榜）成本</th>
               <th>要不要私有</th>
-              <th>第一步怎么开始 (MVP)</th>
+              <th>怎么开始 (MVP)</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td>
-                代码与系统工程<br>
+                代码工程<br>
                 <span class="b-sub">FC 2.0 / FSWE v2 / TB 4.1 (N=3)</span>
               </td>
               <td>
-                <b>66 至 132 题</b><br>
-                <span class="b-sub">20h 超长程项目缩至 34 题 (x5 轮 = 170 次)；告别旧千题</span>
+                <b>66 到 132 题</b><br>
+                <span class="b-sub">20h 超长程项目压到 34 题 (x5 轮 = 170 次)；不再凑千题</span>
               </td>
               <td>
-                两条路线：<br>
+                看定位：<br>
                 1) 公共底座拉 <b>8+ 机构 + 100+ 贡献者</b> (TB)<br>
                 2) 主榜用 <b>1 核心队 + 20+ 原维护者</b> (FC 2.0)
               </td>
               <td>
-                重在深度改写与门控：FC 2.0 单题维护者 <b>>40h</b>；TB 单题严审 <b>>3h</b> + 红队攻题
+                人力吃在改题和写门控：FC 2.0 每题维护者投入 <b>>40h</b>；TB 每题严审 <b>>3h</b> 加红队攻题
               </td>
               <td>
-                分化 2 个量级：单 PR <b>$1.3-$56/题</b>；TB 4.0 全榜 $116K (4.1 归档 <b>$0 重评</b>)；20h 项 <b>$2.9万-$17.6万</b> + 百卡时 B200
+                差 2 个量级：单 PR <b>$1.3-$56/题</b>；TB 4.0 全榜 $116K (4.1 归档 <b>$0 重评</b>)；20h 项 <b>$2.9万-$17.6万</b> + 百卡时 B200
               </td>
               <td>
-                <span class="tag hyb">按定位分化 (1/1/1)</span><br>
-                <span class="b-sub">通用容器规范全开源；防刷榜主榜必须私有或公私混合</span>
+                <span class="tag hyb">按定位三选一</span><br>
+                <span class="b-sub">容器底座全开源；防背题主榜必须私有或公私混合</span>
               </td>
               <td>
-                直接复用开源 <b>Harbor 五件套</b>起手，先做 <b>50-70 道</b>断网容器题，强制 <code>oracle 5/5</code> 必过并永久归档产物支持 $0 重评
+                直接用开源 <b>Harbor 五件套</b>起手，先做 <b>50-70 道</b>断网容器题，强制 <code>oracle 5/5</code> 必过，同时归档产物省掉日后重跑费
               </td>
             </tr>
             <tr>
               <td>
-                科学研究<br>
+                科研任务<br>
                 <span class="b-sub">TB-Sci / BioMystery / TwinLab / BioBasics / Binder / HLE (N=6)</span>
               </td>
               <td>
-                <b>52 至 100 题</b><br>
-                <span class="b-sub">50 题是工业采用底线 (ASB 6 题 0% 采用)；实体湿测可缩至 15 靶点</span>
+                <b>52 到 100 题</b><br>
+                <span class="b-sub">50 题是采用底线 (ASB 6 题 0% 采用)；实体湿测缩到 15 靶点</span>
               </td>
               <td>
-                垂直实验用 <b>1 厂 + 1-2 家实验室/CRO</b>；跨学科计算拉 <b>10+ 校科学家众包</b>；百学科闭卷需 500+ 机构
+                垂直实验找 <b>1 厂 + 1-2 家实验室/CRO</b>；跨学科计算拉 <b>10+ 校科学家众包</b>；百学科闭卷需 500+ 机构
               </td>
               <td>
-                专家筛题与一手原件占大头：HLE <b>$50万</b>悬赏 + 2 年洗 29%-46% 错题；BioBasics 需 100% 未发表底片 + 3 博士盲审
+                贵在领域专家和一手原件：HLE <b>$50万</b>悬赏 + 2 年洗 29%-46% 错题；BioBasics 靠 100% 未发表底片 + 3 博士盲审
               </td>
               <td>
-                计算类 <b>$0.37-$44.9/题</b> (每题连跑 5 遍压方差)；湿实验为单靶 24h GPU + <b>1,320 序列商业 CRO 合成测定</b> (按周计)
+                计算类 <b>$0.37-$44.9/题</b> (每题连跑 5 遍压方差)；湿实验是单靶 24h GPU + <b>1,320 序列商业 CRO 合成测定</b> (按周计)
               </td>
               <td>
-                <span class="tag hyb">67% 设私有防线</span><br>
-                <span class="b-sub">命令行底座全开源；原始底片/生信原件只放 5 题公开、其余私有或盲测</span>
+                <span class="tag hyb">67% 含私有防线</span><br>
+                <span class="b-sub">命令行底座全开源；原始底片和生信原件只公开 5 题调环境，其余私有或盲测</span>
               </td>
               <td>
-                避开百学科静态问答；复用 <b>Harbor 断网容器</b>选 1-2 个细分学科先做 <b>60-90 题</b>，强制命题方交可执行 <code>Validation Notebook</code> 消灭错题
+                别从百学科静态问答做起；用 <b>Harbor 断网容器</b>挑 1-2 个学科先做 <b>60-90 题</b>，强制命题方交可运行的 <code>Validation Notebook</code> 消灭错题
               </td>
             </tr>
             <tr>
               <td>
-                白领办公与真实劳动<br>
+                办公与职业任务<br>
                 <span class="b-sub">AutoBench / ALE v1.1 / AA-Briefcase / RLI (N=4)</span>
               </td>
               <td>
-                <b>91 至 240 题</b><br>
-                <span class="b-sub">轻量 API 沙盒可扩至 100 公 + 657 私；重型专业软件锁在 ~120 题</span>
+                <b>91 到 240 题</b><br>
+                <span class="b-sub">轻量 API 沙盒可扩到 100 公 + 657 私；重型专业软件锁在 ~120 题</span>
               </td>
               <td>
-                绑定业务与从业者：<b>1 家产品/评测方 + 行业专家</b>；跨 23 工种外包拉 2 机构 + 真人买方；55 职业需 <b>40+ 机构 + 300 专家</b>
+                必须绑定真业务：<b>1 家产品/评测方 + 行业专家</b>；真外包拉 2 机构 + 23 工种买方；55 职业需 <b>40+ 机构 + 300 专家</b>
               </td>
               <td>
-                环境与真单最重：RLI 斥资 <b>$14.4万</b>买 240 真单 (6,000+ 工时)；AutoBench 克隆 47 SaaS；Briefcase 需数千工时造 4 企业网盘
+                五个赛道里最烧钱搭环境：RLI 花 <b>$14.4万</b>买 240 真单 (6,000+ 工时)；AutoBench 克隆 47 SaaS；Briefcase 耗数千工时建 4 企业网盘
               </td>
               <td>
-                本地 SaaS 克隆可控且免封号；长上下文企业网盘账单差数个量级；RLI 每轮需付<b>昂贵同业真人验收工时</b>，复测周期最长
+                本地 SaaS 克隆可控不封号；长上下文企业网盘账单差数个量级；RLI 每轮要付<b>昂贵真人验收工时</b>，复测周期最长
               </td>
               <td>
-                <span class="tag priv">100% 设私有防线</span><br>
+                <span class="tag priv">100% 含私有防线</span><br>
                 <span class="b-sub">唯一零全开源赛道 (连高校 ALE 也藏测)；标配 10-100 公题审计 + 私有主集</span>
               </td>
               <td>
-                切忌直连公网商业站点；从<b>本地克隆轻量 SaaS 或模拟企业网盘</b>起手做 80-120 题，双口径输出并先过白盒双向断言审查
+                千万别直连公网真实网站；从<b>本地克隆轻量 SaaS 或模拟企业网盘</b>起手做 80-120 题，拆双口径，并先过白盒双向断言审查
               </td>
             </tr>
             <tr>
               <td>
-                桌面操控与三维物理<br>
-                <span class="b-sub">Chartography / OSWorld 2.1 / RoboDojo &amp; First Exam (N=3)</span>
+                CUA 任务<br>
+                <span class="b-sub">Chartography / OSWorld 2.1 (N=2)</span>
               </td>
               <td>
-                <b>60 至 108 题</b><br>
-                <span class="b-sub">2D 图纸 100 张 (x20 遍)；桌面 108 题 (82 本地)；具身 42 仿 + 18 真机 (统考 456)</span>
+                <b>100 张图 / 108 道桌面题</b><br>
+                <span class="b-sub">2D 图纸 100 张 (x20 遍)；OSWorld 从 369 短题压缩到 108 长题 (82 本地)</span>
               </td>
               <td>
-                最依赖高校联盟共摊重基建：OSWorld 拉 <b>12+ 校</b>，RoboDojo 拉 <b>18+ 校</b>；仅纯 2D 图纸可由 1 数据方 + 12 行家完成
+                长程桌面 VM 靠 <b>12+ 高校与机构联盟</b>分摊运维 (OSWorld)；2D 专业识图只需 1 数据方 + 12 行业行家
               </td>
               <td>
-                2D 图纸最轻；OSWorld 首发验题 <b>400 人时</b> + 修 300 处环境缺陷 + 逐题录通关轨迹；真机需定制 LED 灯箱与 3D 夹具
+                2D 图纸最轻；OSWorld 首发验题耗 <b>400 人时</b> + 修 300 处环境 bug + 2.1 版真人逐题录通关录像排雷
               </td>
               <td>
-                高度两极：2D 图纸 2,000 次仅 <b>$60-$260</b> (30 分钟)；OSWorld <b>$1.2K-$8.2K</b> + KVM 集群；3D 仿真 <b>$1.2K-$5.5K</b> + 8x4090
+                两极明显：2D 图纸跑 2,000 次仅 <b>$60-$260</b> (30 分钟)；OSWorld 每题 $22-$76，全轮 <b>$1.2K-$8.2K+</b> 加 KVM 虚拟化集群
               </td>
               <td>
                 <span class="tag open">100% 全开源</span><br>
-                <span class="b-sub">唯一全开源赛道 (含商业方 Chartography CC BY)；靠社区共修 VM/仿真缺陷与清作弊</span>
+                <span class="b-sub">含商业方 Chartography (CC BY)；KVM 虚拟机极易出环境 bug，全开源靠社区共修</span>
               </td>
               <td>
-                先用 100 张零合成专业真图做低成本视力回归；桌面与具身必须<b>先全本地断网化 + 真人录通关轨迹排雷</b>，再统一 Harbor 接口区分停表与实时时钟
+                先拿 100 张零合成专业真图做便宜的高频视力回归；做桌面操作一定<b>先断网本地化 + 真人逐题录通关录像</b>，再用 Python 直查 SQL/DOM 终态
+              </td>
+            </tr>
+            <tr>
+              <td>
+                物理交互<br>
+                <span class="b-sub">RoboDojo &amp; First Exam (N=1 复合)</span>
+              </td>
+              <td>
+                <b>60 题 / 456 统考核</b><br>
+                <span class="b-sub">RoboDojo 42 仿真 + 18 真机；First Exam 用 Harbor 聚合 35 套仿真达 456 题</span>
+              </td>
+              <td>
+                最吃多校重基建：RoboDojo 拉了 <b>MIT/港大/清华/西北等 18+ 校</b>，单团队很难扛仿真加真机硬件
+              </td>
+              <td>
+                需搭 NVIDIA Isaac Sim 场景 + 定制 1.5m 恒定 LED 灯箱与 3D 打印夹具锁死真机硬件变量
+              </td>
+              <td>
+                Token 加 GPU 仿真渲染双消耗，全轮 <b>$1.2K-$5.5K+</b>，需要 <b>8xRTX 4090</b> 并发，真机测试需人工复位
+              </td>
+              <td>
+                <span class="tag open">100% 全开源</span><br>
+                <span class="b-sub">协议猫腻极易藏在控制插件与停表设定里，必须全开源接受审计（11.14 已清退作弊队）</span>
+              </td>
+              <td>
+                不要从零自造物理引擎；优先基于 <b>Harbor + 现有开源仿真</b>起步，强制把“停表规划”和“连续实时物理时钟”分开测，再补标准灯箱真机复核
               </td>
             </tr>
           </tbody>
@@ -622,89 +688,94 @@ Promise.resolve(it?.return());</span></pre>
       </div>
     </figure>
 
-    <!-- Figure 3.1: Per-Domain Real-Time Breakdown SVG (No Cross-Domain Mixing) -->
+    <!-- Figure 3.1: 5-Domain Real-Time Breakdown SVG (No Cross-Domain Mixing) -->
     <figure class="figure-card full">
       <div class="fig-header">
         <div>
-          <h4 class="fig-title">图 3.1：按赛道拆解的开放形态分化与核心构建参数（由 data.js 实时计算，不跨领域混算）</h4>
-          <div class="fig-sub">悬停任意分段查看具体基准名单；办公类 100% 含私有防线与物理/桌面类 100% 全开源形成鲜明对照</div>
+          <h4 class="fig-title">图 3.1：按五个赛道拆解的开放形态与核心规模（由 data.js 实时计算，不跨领域混算）</h4>
+          <div class="fig-sub">悬停任意色块查看对应基准；办公与职业类 100% 留私有防线，CUA 与物理交互 100% 全开源</div>
         </div>
       </div>
       <div id="chart-domain-stats"></div>
       <div class="fig-caption">
-        <span>样本口径：严格统计 16 套核心前沿基准（代码 3 / 科研 6 / 办公 4 / 物理与桌面 3），不含 3 套旧代基线。</span>
-        <span>完整 16+3 交互检索表与演进泳道见独立配套目录页 <a href="benchmarks.html">Benchmark Directory</a>。</span>
+        <span>样本口径：严格统计 16 套核心前沿基准（代码工程 3 / 科研任务 6 / 办公与职业任务 4 / CUA 任务 2 / 物理交互 1），不含 3 套旧代基线。</span>
+        <span>完整 16+3 交互目录、演进泳道与中美 10 榜跟进矩阵见独立页面 <a href="benchmarks.html">Benchmark Directory</a>。</span>
       </div>
     </figure>
 
     <div class="prose">
-      <h3 id="sec-3-2">3.2 四个赛道的实操差异与统计结论</h3>
+      <h3 id="sec-3-2">3.2 五个赛道的实操差异与统计结论</h3>
 
       <p>
-        <strong>1. 代码与系统工程：用“高密度重题 + 产物归档”替代千题题海。</strong>
-        旧代 SWE-bench Full（2,294 题）与 Pro（1,865 题）跑一次全榜账单高昂且易被 RL 刷满，2026 年代码基准整体收缩至 66 至 132 题，20 小时超长程项目压到 34 题（5 轮均值 170 次）。要不要拉多机构完全取决于定位：若做公共容器与 CLI 标准（如 Terminal-Bench），需拉 8+ 机构与百余名贡献者共摊维护，且必须全开源换取行业共识；若做防止预训练记忆的工程主榜（如 FrontierCode 2.0 / FrontierSWE v2），1 家核心团队外挂 20 余位原仓库维护者深度改写即可，但核心测试集必须私有或公私混合。控制长期复测成本最有效的工程手段，是学习 Terminal-Bench 4.1 永久归档每次运行的容器产物，一旦修复判分脚本即可实现 11,550 次历史 trial 的 <strong>$0 离线重评</strong>。
+        <strong>1. 代码工程：用几十道重题替代千题题海，务必归档产物省重跑费。</strong>
+        老一代 SWE-bench Full（2,294 题）和 Pro（1,865 题）跑一次账单很贵，还容易被 RL 刷满。2026 年代码新榜收缩到了 66 到 132 题，20 小时超长程项目更是压到 34 题（跑 5 遍一共 170 次）。要不要拉多机构只看定位：想做行业通用的容器底座（Terminal-Bench），得拉 8 家以上机构和上百名贡献者一起维护，且必须全开源换共识；想做防背题的高难主榜（FrontierCode 2.0 / FrontierSWE v2），1 支核心团队外挂 20 多位原项目维护者深度改题就够了，但计分题必须私有或公私混合。控制长期跑榜成本最管用的一招，是学 Terminal-Bench 4.1 把每次运行的容器产物永久存下来，以后发现判分脚本有 bug，修完直接对 11,550 次历史记录做 <strong>$0 离线重评</strong>。
       </p>
 
       <p>
-        <strong>2. 科学研究：跨过 50 题统计底线，用可执行脚本消灭错题墙。</strong>
-        科研基准最容易踩两个坑：一是题量过小导致工业界弃用，例如西北大学 2026 年 10 月发布的 <a class="bench-ref" data-bid="asb">ASB 0.1</a> 设计理念非常超前，但因全集仅 6 题（多对 1 题总分跳变 16.7 分），在三大厂官方报告上的采用率为 0%；38 天后多校联合补齐至 52 题的 TwinLab-Bench 才立刻促成四款旗舰同台实测。二是迷信“在职旗舰答错即留题”的对抗初筛，例如 HLE 投入 $50 万悬赏千名学者，结果对抗筛选系统性富集了人类自己算错的瑕疵题（29% 至 46% 错标）。因此科研基准起步建议锁在 <strong>52 至 100 题</strong>，优先借 Harbor 断网容器跑单学科或跨学科脚本计算，并像 BioMysteryBench 那样强制每道题提交可运行的 <code>Validation Notebook</code>；只有预算与合作 CRO 到位时，再像 De novo binder 那样引入 15 靶点级别的实体湿实验盲测终裁。
+        <strong>2. 科研任务：至少做满 50 题，用可执行验算脚本消灭错题。</strong>
+        科研基准有两个最常见的坑。第一个是题太少导致大厂根本不用：西北大学 2026 年 10 月发的 <a class="bench-ref" data-bid="asb">ASB 0.1</a> 思路很超前，但一共只有 6 题（多对 1 题总分就跳 16.7 分），三大厂官方报告采用率是 0%；38 天后多校联合补到 52 题的 TwinLab-Bench，四家旗舰立刻全来测了。第二个是迷信“旗舰模型答错就留下来”的反向筛题：HLE 花了 $50 万请来一千位学者，结果这种筛法把人类自己算错的坏题集中留了下来（29% 到 46% 错标）。所以科研基准起步建议定在 <strong>52 到 100 题</strong>，先借 Harbor 断网容器做 1 到 2 个细分学科的脚本计算题，并像 BioMysteryBench 那样要求每题交一份可运行的 <code>Validation Notebook</code>；预算和商业 CRO 资源够了，再上 15 靶点级别的实体湿实验盲测。
       </p>
 
       <p>
-        <strong>3. 白领办公与真实劳动：环境克隆优先于公网直连，必须保留私有主集与双口径。</strong>
-        办公赛道是唯一 <strong>100% 设有私有防线</strong> 的领域（连高校主导的 UC Berkeley ALE v1.1 也藏起了私有测试集），因为一旦把具体工作流与数据库断言全部公开，针对性过拟合几乎不可避免。造题成本也是四大领域最重：要么像 RLI 斥资 $14.4 万买断真实 Upwork 订单，要么像 Zapier 本地克隆 47 款 SaaS，或像 AA-Briefcase 耗费数千专家工时造高噪模拟企业网盘。若要低风险启动，最稳妥的路径不是直接连公网真实账号（极易被验证码、改版和封号毁掉复现性），而是先做 80 至 120 道本地克隆 SaaS 或模拟企业网盘任务；验收上务必拆分双口径（子目标分 vs 严格全通率，或客观 Rubric vs 匿名盲评 Elo），并预留 10 至 100 道公开题接受外部白盒脚本审计。BLE 在 AutomationBench 公开集检出 71% 纯代码脚本缺陷、Epoch 在 ALE 检出 22/122 题漏判，说明复杂业务断言脚本绝不能跳过第三方审查。
+        <strong>3. 办公与职业任务：先本地克隆环境，必须留私有主集和双口径。</strong>
+        这是五个赛道里唯一 <strong>100% 留私有防线</strong> 的领域（连高校联盟 UC Berkeley ALE v1.1 都藏起了私有测试集），因为具体业务流和数据库检查逻辑一旦全公开，很快就会被针对性刷分。造题也是最烧钱的：要么像 RLI 花 $14.4 万买断 240 个 Upwork 真单，要么像 Zapier 本地克隆 47 款 SaaS，或者像 AA-Briefcase 耗几千小时搭模拟企业网盘。想稳妥启动，千万别直连真实公网账号，而是先做 80 到 120 道本地克隆 SaaS 或模拟企业网盘题；评分一定拆成两档（目标分 vs 严格全通，或者客观 Rubric vs 匿名盲评 Elo），再留 10 到 100 道公开题给外部做白盒脚本审查。BLE 在 AutomationBench 公开集审出 71% 脚本缺陷、Epoch 在 ALE 审出 22/122 题漏判，证明复杂业务下的代码判分脚本绝对不能跳过第三方检查。
       </p>
 
       <p>
-        <strong>4. 桌面操控与三维物理世界：靠高校联盟分摊重基建，全开源与真人录轨是底线。</strong>
-        与办公赛道相反，桌面与三维物理赛道 <strong>100% 全开源</strong>（连商业数据公司 Surge AI 的 Chartography 都以 CC BY 4.0 全开源建立口碑）。原因很直接：KVM 嵌套虚拟机（OSWorld 2.1 全轮 $1.2K 至 $8.2K+）、8xRTX 4090 并发仿真（RoboDojo 全轮 $1.2K 至 $5.5K+）与恒定光箱真机平台运维极重，单队极难独自兜底，普遍由 12 至 18+ 所高校联盟共建；同时环境 bug 与协议猫腻（如私有控制插件、向 Prompt 注入分步指南、停表冻结重力）极易扭曲分数，只有全开源透明才能靠社区审计修正。起步时建议分层切入：测底座多模态识图直接用 100 张零合成专业真图 + 禁工具 + 20 遍复测（全轮仅 $60 至 $260）；进入桌面 GUI 或具身仿真则必须先剔除易失效公网页面、由人类逐题录制 Golden Trajectory 排清环境雷，再统一 Harbor 接口并显式区分“停表规划”与“连续实时物理时钟”。
+        <strong>4. CUA 任务：2D 识图便宜做回归，长程桌面必须本地化加真人录轨。</strong>
+        CUA 这边分成轻重两层：测模型底层看不看得清高密专业图纸，用 Chartography 这种 100 张零合成真图 + 禁工具 + 每题跑 20 遍就行，全轮只花 $60 到 $260、半小时跑完，很适合高频回归。一旦进到 1.6 小时跨软件桌面操作（OSWorld 2.1），单题就要 $22 到 $76、全轮 $1.2K 到 $8.2K+ 外加 KVM 嵌套虚拟化集群，一般需要 12 家以上高校联盟一起分摊运维，而且必须全开源靠社区一起修环境 bug。启动 CUA 基准最容易出问题的地方是挂公网网页和凭截图打分：正确做法是先全部离线本地化（自建本地 Docker 站点），上线前让真人把每道题完整跑通录一遍 Golden Trajectory，再用底层 Python 脚本直接查数据库和文件系统终态。
+      </p>
+
+      <p>
+        <strong>5. 物理交互：靠多校分摊仿真与真机，全开源查外挂、拆开停表与实时。</strong>
+        物理交互对硬件和算力要求最重，RoboDojo 全轮仿真跑下来要 $1.2K 到 $5.5K+ 和 8xRTX 4090 并发，真机还要搭 1.5m 恒定 LED 灯箱和 3D 打印夹具，靠单个团队很难自己扛下来，通常要拉 18 所左右高校共建。更关键的是必须全开源：具身榜单最容易在控制外挂、Prompt 塞解题提示和停表冻结重力上藏猫腻（RoboDojo 11.14 刚靠代码审计清退两支高分作弊队）。起步不要从零重造物理引擎，建议直接用 Harbor 接入现有开源仿真，同时把“允许停表思考”和“连续实时物理时钟”分成两条指标报出来，避免停表高分误导大家以为模型已经能实时控臂。
       </p>
     </div>
 
     <div class="dir-callout">
-      <span>需要逐项检索 16 核心 + 3 旧代基准的完整字段、五大家族演进泳道及中美 10 榜官测跟进矩阵？</span>
+      <span>需要按赛道、阵营、开放形态和验证方式检索完整 16+3 基准、演进泳道与中美 10 榜矩阵？</span>
       <a href="benchmarks.html">前往 Awesome Frontier Benchmarks 目录页 -></a>
     </div>
 
     <div class="prose">
       <h3 id="sec-3-3">3.3 从零起步的五步行动指南</h3>
       <p>
-        选定所属赛道与资源预算后，真正把一套 Benchmark 从构想做成可信的工业或学界标准，可按以下五个工程步骤推进：
+        定好赛道和预算之后，把一套 Benchmark 从想法做成别人真愿意拿来测模型的基准，可以按下面五步推进：
       </p>
 
       <div class="action-steps">
         <div class="action-step">
-          <div class="action-step-title"><span class="step-tag">Step 01</span>先锁定“要检验的能力边界”与一手真实数据源，拒绝靠对抗筛题凑坏题</div>
+          <div class="action-step-title"><span class="step-tag">Step 01</span>先写清要测什么短板，从真实场景采样，别靠“模型答错”反向筛题</div>
           <p>
-            不要从“别人做了 500 题所以我也要凑 500 题”开始。先写清你的 Benchmark 检验的是哪类具体短板（例如模糊工单下的改动克制、长程回滚习惯、高噪检索、或实时物理延迟），再直接从真实生产工单、未发表实验原件、真实企业工作流或已结款外包单采样。题量上，除 20h 超长程项目或湿实验外，<strong>尽量先做出 50 至 120 道高质量核心题</strong>（跨过 50 题统计底线、又控制在单轮可复测的预算内）。切忌把“在职旗舰模型答错”当成唯一留题标准，否则高分段必然撞上 30% 至 46% 的错题上限（HLE、Harbor-Index 均已验证）。
+            不要一上来就照着老榜去凑 500 题或 1,000 题。先写清这套基准要抓哪类具体问题（比如模糊工单乱改代码、长程任务不回滚、脏网盘算错账，或者实时物理跟不上），再直接从真实生产 PR、未发表实验底片、真实企业工作流或付费外包单里采样。除了 20h 超长程项目和实体湿测，<strong>先做出 50 到 120 道硬题最划算</strong>（既过 50 题统计底线，又跑得起复测账单）。千万别把“最强模型答错”当唯一留题门槛，否则高分段一定撞上 30% 到 46% 的错题上限（HLE 和 Harbor-Index 都已经吃过这个亏）。
           </p>
         </div>
 
         <div class="action-step">
-          <div class="action-step-title"><span class="step-tag">Step 02</span>按“公共底座全开源 / 防污染主榜公私混合”确定组织阵型与开放边界</div>
+          <div class="action-step-title"><span class="step-tag">Step 02</span>按定位选阵型和公私边界：公共底座全开源，防刷榜主榜公私混合</div>
           <p>
-            如果目标是建立跨厂公用的容器、虚拟机或仿真底座，优先联络 8 家以上高校或生态方分摊运维并全开源；如果目标是做高区分度垂直主榜或企业场景评测，1 至 3 家核心团队外挂 20 至 300 位一线行业专家即可，并通过严格录用率（如 HLE 3.6%、TB-Science 7.6%、ALE 8.1%）控制单题质量。开放形态默认采用 <strong>公私混合</strong>：放出 5 至 100 道公开题（附完整验证脚本）供模型方调通环境并接受类似 Epoch AI / BLE 的独立白盒审计，将核心计分集保留在受控私有侧阻断预训练泄漏。
+            要做行业公用的容器、虚拟机或仿真底座，优先拉 8 家以上高校或生态方一起分摊运维，并且全开源换透明度和社区修 bug；要做垂直高难主榜，1 到 3 家核心团队外挂 20 到 300 位一线行业专家就够了，靠严苛录用率卡质量（HLE 3.6%、TB-Science 7.6%、ALE 8.1%）。开放策略默认选 <strong>公私混合</strong>：拿出 5 到 100 道公开题连同完整判分脚本放出来，方便大家调通环境并接受像 Epoch AI、BLE 这样的白盒审查，把核心计分集留在私有侧，防止题被提前背进训练语料。
           </p>
         </div>
 
         <div class="action-step">
-          <div class="action-step-title"><span class="step-tag">Step 03</span>优先复用成熟双容器底座，把“双向断言 + 物理切场”做进验证器</div>
+          <div class="action-step-title"><span class="step-tag">Step 03</span>复用 Harbor 双容器底座，把“物理切场 + 双向断言”写进验证器</div>
           <p>
-            不要重复造隔离容器轮子。代码、科研乃至多仿真统考（First Exam）都可直接基于开源 <strong>Harbor 五件套</strong> 搭建执行与验证双容器（图 3.2）：执行阶段彻底移除答案与测试目录、按题断公网或设域名白名单；交卷后立即销毁执行机清零 <code>/tmp</code>，仅把干净产物迁入全新验证容器，测试集锁 <code>root 0700</code> 并切普通账号降权运行，防止模型通过回放 <code>.gold</code>、硬编码查表、动态拼接路径或越权读宿主机 socket 绕过检查。同时所有确定性脚本必须写<strong>双向断言</strong>（既查该改的对不对，也查不该删改的有无被破坏），需要主观判断的商业交付则拆成“客观 Rubric + 匿名盲评”双轨，不依赖单一 LLM 裁判（Apple 研究证实 9 款前沿 LLM 裁判在难题上错误高度同源，等效仅约 2 张独立选票）。
+            没必要自己从头写隔离沙盒。代码、科研甚至多仿真统考（First Exam）都能直接用开源 <strong>Harbor 五件套</strong> 搭执行和验证两个容器（图 3.2）：执行容器里彻底删掉答案和测试目录，按题断公网或配域名白名单；交卷后马上销毁执行机、清零 <code>/tmp</code>，只把干净产物导出到全新验证容器，测试目录锁 <code>root 0700</code> 并切普通账号降权跑待测代码，挡住回放 <code>.gold</code>、写 161KB 查表字典、用 <code>chr()</code> 拼路径和借宿主机 socket 越权读盘这些真实作弊手段。写确定性脚本一定写<strong>双向断言</strong>（既查该改的对不对，也查不该删改的有无被破坏）；需要主观判断的商业文档则拆成“客观 Rubric + 匿名盲评”两轨，别指望单个 LLM 裁判兜底（Apple 研究发现 9 款前沿 LLM 裁判在难题上错得几乎一样，等效只相当于 2 张独立选票）。
           </p>
         </div>
 
         <div class="action-step">
-          <div class="action-step-title"><span class="step-tag">Step 04</span>上线前强制跑通五道质检门禁，用多轮复测压住随机方差</div>
+          <div class="action-step-title"><span class="step-tag">Step 04</span>上线前强过五道质检门，高方差题目每题跑 5 到 20 遍</div>
           <p>
-            在公开榜单前，每道入库题必须同时通过五项检查：（1）<strong>可执行参考解 5/5 稳定通过</strong>（排除环境与数值抖动）；（2）<strong>空提交（no-op）必得 0 分</strong>（阻断默认放水脚本）；（3）<strong>人类专家录制或跑通 Golden Trajectory</strong>（排查损坏素材、隐藏列名与超时误杀）；（4）<strong>派红队对抗 Agent 执行 Cheat Trials 攻题</strong>（TB 3.0+ 与 FC 2.0 标配，被攻破即打回补强）；（5）<strong>保留过程轨迹与审计日志</strong>（<em>Claw-Eval</em> 证明只查终态会漏检 44% 过程安全违规）。正式出榜时对高方差任务每题连跑 5 至 20 遍（如 BioMysteryBench 超难题多数 5 试仅对 1 至 2 次、Chartography 跑 20 遍）。
+            正式发榜前，每道题都必须过完五道检查：（1）<strong>可执行参考解连跑 5/5 全过</strong>，排除环境和数值随机抖动；（2）<strong>空提交（no-op）必得 0 分</strong>，挡住默认放水脚本；（3）<strong>人类专家完整跑通或录一遍 Golden Trajectory</strong>，提前清掉坏文件、隐藏列名和超时误杀；（4）<strong>上线前派红队对抗 Agent 跑 Cheat Trials 攻题</strong>（TB 3.0+ 和 FC 2.0 标配），能被攻破就打回补洞；（5）<strong>保留完整过程日志</strong>（<em>Claw-Eval</em> 证实只看最终状态会漏掉 44% 的过程安全违规）。正式出分时，对随机性大的任务每题跑 5 到 20 遍（BioMysteryBench 超难题多数 5 次只对 1 到 2 次，Chartography 固定跑 20 遍）。
           </p>
         </div>
 
         <div class="action-step">
-          <div class="action-step-title"><span class="step-tag">Step 05</span>按软件项目持续运营：做好半年饱和准备、主动缩容并透明披露小字</div>
+          <div class="action-step-title"><span class="step-tag">Step 05</span>像维护软件一样持续运营：做好半年饱和准备，主动删题并公开小字</div>
           <p>
-            旧基准平均 10 至 18 个月饱和，高迭代赛道仅 4 至 6 个月（Chartography 4 个月破 72%，BioMysteryBench 6 个月后主动退役转交 Vals AI 专测成本效率）。“发完论文即停更”已经失效：必须预留持续修脚本与迭代预算，定期<strong>主动缩容踢掉饱和与不稳题</strong>（如 TB 4.0 从 89 题缩至 66 题、ALE v1.1 砍 30 题），预先归档容器交付物保留 $0 离线重评能力。发布榜单时务必同步公开关键小字：<strong>所用 Harness、超时上限、是否使用私有外挂、是否停表冻结时间、步骤分与严格全通率双读数，以及单题 Token 与算力成本</strong>。
+            老基准平均 10 到 18 个月饱和，热点赛道快到 4 到 6 个月（Chartography 4 个月冲破 72%，BioMysteryBench 6 个月后主动退役交给 Vals AI 专比单题成本）。“论文发完就不管”已经行不通了：必须留出长期修脚本和更新题库的预算，定期<strong>主动缩容踢掉考满和不稳定的题</strong>（TB 4.0 从 89 题缩到 66 题，ALE v1.1 砍掉 30 题），提前归档交付产物留好 $0 重评能力。发榜时把关键小字全摊开：<strong>用了什么 Harness、限时多久、有没有私有外挂、仿真停不停表、步骤分和严格全通率分别是多少、单题花了多少 Token 和算力</strong>。
           </p>
         </div>
       </div>
@@ -715,12 +786,12 @@ Promise.resolve(it?.return());</span></pre>
       <div class="fig-header">
         <div>
           <h4 class="fig-title">图 3.2：Harbor 双容器物理隔离、root 0700 降权与红队攻题防线</h4>
-          <div class="fig-sub">该五件套规范已被 FrontierSWE v2、TB-Science 0.1、ASB 与 Embodied First Exam 跨赛道复用，是新基准防作弊起步的最短路径</div>
+          <div class="fig-sub">已被 FrontierSWE v2、TB-Science 0.1、ASB 和 Embodied First Exam 跨赛道复用，是新基准防作弊最快上手的底座</div>
         </div>
       </div>
       <div id="diagram-harbor"></div>
       <div class="fig-caption">
-        <span>联网策略按赛道配置：FSWE 全程断公网防本地查表；FC 2.0 仅许查常规技术文档配 Trajectory Scanner 查偷搜原 PR；TB 4.1 按题控网。</span>
+        <span>联网策略按题配置：FSWE 全程断公网防查表；FC 2.0 只允许查常规技术文档，后台用 Trajectory Scanner 抓偷搜原 PR；TB 4.1 按题控网。</span>
       </div>
     </figure>
   </article>
@@ -734,21 +805,21 @@ Promise.resolve(it?.return());</span></pre>
     <div class="prose">
       <h3 id="sec-4-1">4.1 从评测环境到 Agentic RL 训练场</h3>
       <p>
-        当一套 Benchmark 环境做到容器物理隔离、任务贴近真实场景、参考解可执行、验证脚本可自动判分且经过红队排雷后，它与长程强化学习（Agentic RL）训练环境在工程架构上就完全同构了：评测端产出的终态检验结果，在训练端就是高信噪比的 0 至 1 奖励信号。
+        一套 Benchmark 做到容器物理隔离、任务贴近真场景、参考解能跑通、验证脚本能自动判分又过了红队排雷，它在工程上其实就已经和长程强化学习（Agentic RL）训练场长成同一套东西了：评测时吐出的终态结果，拿去训练就是干净可靠的 0 到 1 奖励信号。
       </p>
       <p>
-        Agent Economics 在 2026 年 11 月发布的开源报告 <strong>FireFlash</strong> 提供了直接对照实验：团队仅用 64 张 B300 GPU 对 GLM-5.3-Flash 做了不足 5 天的全参数强化学习，便将其在 Terminal-Bench 4.0 上的解决率提升 <strong>+10.4 个百分点</strong>（35.8% 升至 46.2%），同时将单次运行成本降至 $0.72（仅为 Claude Fable Max 档 $22.02 的三十分之一）。拆解其做法，核心全部落在环境与评测工程上：用 9 道门禁踢掉近半损坏的候选坏题、保留初始通过率 15% 至 85% 的有效梯度样本、将成本纳入奖励，且尚未更新模型参数前，<strong>仅将训练采样与评测打榜的 Harness 锁死为同一套，解决率即净增 +4.4 分</strong>（35.8% 升至 40.2%）。
+        Agent Economics 在 2026 年 11 月公开的 <strong>FireFlash</strong> 报告给了一个很直接的对照实验：团队只用 64 张 B300 GPU，对 GLM-5.3-Flash 做了不到 5 天全参数强化学习，就把它在 Terminal-Bench 4.0 上的解决率拉高了 <strong>+10.4 个百分点</strong>（35.8% 涨到 46.2%），同时把单次运行成本压到 $0.72（只有 Claude Fable Max 档 $22.02 的三十分之一）。拆开看他们做了什么，核心全在环境和评测工程上：用 9 道门禁踢掉近一半坏题、只留初始通过率 15% 到 85% 的有效训练样本、把成本算进奖励，而且在模型参数还没动之前，<strong>光是把训练采样和评测打榜的 Harness 锁死成同一套，解决率就直接涨了 +4.4 分</strong>（35.8% 涨到 40.2%）。
       </p>
       <p>
-        这一合流也让防作弊的意义发生了变化。过去防作弊是为了维护外部榜单公平；当沙盒直接接入 RL 训练后，环境里只要留着一个未封堵的漏洞，大规模采样就会把钻空子、写死查表或篡改测试的行为直接强化进模型权重。例如 <strong>PostTrainBench</strong>（Rank et al., 2026）给 Agent 一张 H100 和 10 小时让其自主后训练提升目标基准分数，轨迹审计就抓到了模型直接从 Hugging Face 下载他人已微调好的现成权重冒充训练产物的行为。
+        一旦评测和训练合在一起，防作弊的意义也变了。以前防作弊是为了让外部榜单公平；当沙盒直接接进 RL 训练，环境里只要留着一个没堵上的洞，大规模采样就会把钻空子、写死查表和篡改测试的坏习惯直接训进模型权重里。比如 <strong>PostTrainBench</strong>（Rank et al., 2026）给 Agent 一张 H100 和 10 小时让它自己做后训练提分，翻看轨迹就抓到了模型直接从 Hugging Face 下别人微调好的现成权重冒充自己训出来的结果。
       </p>
 
       <h3 id="sec-4-2">4.2 Model x Harness x Environment 共同进化</h3>
       <p>
-        早在 2025 年 4 月，Shunyu Yao 在《The Second Half》中就指出，针对静态题库刷分已有成熟套路，下一阶段真实任务定义与防作弊验证环境的重要性将与模型算法本身并列。从 2026 年底的工业界实证看，递归自我改进（RSI，即让当代最强的“模型 + Harness”直接参与自身研发，持续产出下一代系统）已经开始在工程上落地：Anthropic 披露的季度人均合并代码量在 Claude Code 部署前四年一直横在 1.0x，至 2026 Q2 升至 <strong>8.0x</strong>，内部超过 90% 的生产合并代码已由 Claude 参与编写；METR 审计测得约 1.9x 的研发提效；OpenAI 的 GPT-6.2 Astra 也触及了内部自我改进高风险阈值。
+        早在 2025 年 4 月，Shunyu Yao 在《The Second Half》里就说过，刷静态题库早就有成熟套路了，下半场真正和模型算法一样关键的，是真实任务的定义和防作弊的验证环境。看 2026 年底工业界披露的数字，递归自我改进（RSI，即让当代最强的“模型 + Harness”直接参与自身研发，持续造出下一代系统）已经在工程上动起来了：Anthropic 公布的人均季度合并代码量在部署 Claude Code 前四年一直横在 1.0x，到 2026 Q2 涨到了 <strong>8.0x</strong>，内部超过 90% 的生产合并代码已经有 Claude 参与；METR 独立审计测得约 1.9x 的研发提效；OpenAI 的 GPT-6.2 Astra 也触到了内部自我改进高风险线。
       </p>
       <p>
-        正因如此，Anthropic 在 S-1 招股书中明确表示不再迎合外部公开刷榜，而是将“真实业务场景自建任务与防作弊验证器”列为长期投入重点，并与埃森哲达成 5 年至少 20 亿美元合作建设独立评测与红队审计体系。图 4.1 概括了模型、Harness 与评测环境三者之间的共同进化关系：
+        所以 Anthropic 在 S-1 招股书里直接表态不再迎合外部公开刷榜，把“围绕真实业务自建任务和防作弊验证器”列成了长期重点，还和埃森哲签了 5 年至少 20 亿美元的协议共建独立评测和红队审计。图 4.1 概括了模型、Harness 和评测环境三者怎么一起往前迭代：
       </p>
     </div>
 
@@ -757,7 +828,7 @@ Promise.resolve(it?.return());</span></pre>
       <div class="fig-header">
         <div>
           <h4 class="fig-title">图 4.1：Model、Harness 与 Environment 的共同进化机制</h4>
-          <div class="fig-sub">Env 锚定真实需求持续更新 -> 输出干净 RL 奖励反哺模型 -> 失败轨迹回传修补 Harness -> 三者耦合演进</div>
+          <div class="fig-sub">用真实需求持续更新环境 -> 用干净奖励训练模型 -> 把失败记录回传修补框架 -> 三者一起迭代</div>
         </div>
       </div>
       <div id="diagram-coevolution"></div>
@@ -768,10 +839,10 @@ Promise.resolve(it?.return());</span></pre>
 
     <div class="prose">
       <p>
-        在这个运转结构里，容易被忽略、却最关键的环节位于最上方：<strong>Environment 的持续进化不能只靠“旧榜被模型刷穿后被动换题”来驱动，更核心的是主动把人类不断演进的真实研发与业务需求沉淀为稳定、可验证、防作弊的环境。</strong>如果环境脱离真实场景，只围绕既有公开题循环迭代，再强的 RL 算力也只会在系统内部空转。
+        在这个循环里，最容易被漏掉、却最核心的一环在最上面：<strong>Environment 的持续进化不能只靠“老榜被考满了才被迫换题”，更关键的是主动把人类不断变化的真实研发和业务需求，做成稳定、可自动验分、防作弊的环境。</strong>如果环境脱离了真场景，只围着现成公开题打转，算力再大也只是在系统内部空转。
       </p>
       <p>
-        把这一判断放回开头提到的中美差距，也能看到比较清晰的格局：在容器规范和接口开源透明的赛道（如 Terminal-Bench 4.1 仅差 6.1 分、AutomationBench 严格全通差 9 分），国内团队的工程追赶非常快，证明模型基座与开源沙盒 RL 本身并无黑箱；真正决定长期上限和实际价值的，不是追平某张静态榜单上的小数点，而是能否持续直指真需求、真场景，把高质量、防作弊、可演进的 Environment 真正建起来。
+        回头看开头的中美差距，格局其实非常清楚：在容器规范和接口开源透明的赛道（比如 Terminal-Bench 4.1 只差 6.1 分、AutomationBench 严格全通差 9 分），国内团队的工程追赶速度非常快，说明模型基座和开源沙盒 RL 本身没有什么黑箱。真正决定长期上限和实际价值的，不是去追某张静态榜单上的小数点，而是能不能持续盯着真需求、真场景，把高质量、防作弊、能不断长大的 Environment 真正建起来。
       </p>
     </div>
   </article>
@@ -782,7 +853,7 @@ Promise.resolve(it?.return());</span></pre>
   <section class="refs-wrap" id="references">
     <h2>References</h2>
     <p class="refs-sub">
-      本文引用的全部 60 条一手基准官网、论文、系统卡与独立审计来源均核验截至 2026-11-23。结构化 16+3 交互基准目录与核验底表见独立配套页面 <a href="benchmarks.html" style="color:var(--accent);text-decoration:none;font-weight:600;">Awesome Frontier Benchmarks</a>。
+      本文引用的 60 条一手基准官网、论文、系统卡与独立审计来源均核验截至 2026-11-23。完整 16+3 交互基准目录与核验底表见独立页面 <a href="benchmarks.html" style="color:var(--accent);text-decoration:none;font-weight:600;">Awesome Frontier Benchmarks</a>。
     </p>
     <div id="ref-grid-host"></div>
   </section>
@@ -791,19 +862,19 @@ Promise.resolve(it?.return());</span></pre>
     <h2>Citation</h2>
     <p>Cited as:</p>
     <div class="cite-inline">
-      Wei, Chuyang. (Nov 2026). <em>Paradigm Shifts in Frontier AI Evaluation (2026)</em>. Frontier Evaluation Notes (based on Frontier Benchmark Seminar with Zhu, Minghang). https://zgcagi.github.io/Frontier-Benchmark/
+      Wei, Chuyang, Zhu, Minghang, Guan, Haoxiang, and He, Jiyan (Zhongguancun Academy). (Nov 2026). <em>Paradigm Shifts in Frontier AI Evaluation (2026)</em>. https://zgcagi.github.io/Frontier-Benchmark/
     </div>
     <p>Or</p>
     <div class="bibtex-wrap">
       <button class="copy-btn" id="copy-bibtex">Copy BibTeX</button>
 <pre class="code-tree" id="bibtex-code">@misc{wei2026frontier_benchmark_paradigm,
   title        = {Paradigm Shifts in Frontier AI Evaluation (2026)},
-  author       = {Wei, Chuyang},
+  author       = {Wei, Chuyang and Zhu, Minghang and Guan, Haoxiang and He, Jiyan},
+  organization = {Zhongguancun Academy},
   year         = {2026},
   month        = {November},
   url          = {https://zgcagi.github.io/Frontier-Benchmark/},
-  howpublished = {Frontier Evaluation Notes (based on Frontier Benchmark Seminar with Zhu, Minghang)},
-  note         = {Verified through 2026-11-23 across 16 core frontier benchmarks and 60 primary sources}
+  note         = {Verified through 2026-11-23 (16 core benchmarks, 60 sources)}
 }</pre>
     </div>
   </section>
@@ -820,7 +891,7 @@ Promise.resolve(it?.return());</span></pre>
 
 <footer class="site-footer">
   <div class="footer-inner">
-    <span>2026 前沿 AI 评测的范式变化 | 作者：魏楚扬 | 数据核验截至 2026-11-23</span>
+    <span>2026 前沿 AI 评测的范式变化 | Zhongguancun Academy | 数据核验截至 2026-11-23</span>
     <span>
       <a href="benchmarks.html">Benchmark Directory</a>
       <span style="margin:0 8px;color:var(--border-strong);">|</span>
@@ -829,7 +900,7 @@ Promise.resolve(it?.return());</span></pre>
   </div>
 </footer>
 
-<script src="data.js?v=20261126-4"></script>
-<script src="charts.js?v=20261126-4"></script>
+<script src="data.js?v=20261126-5"></script>
+<script src="charts.js?v=20261126-5"></script>
 </body>
 </html>
