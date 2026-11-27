@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>2026 前沿 AI 评测的范式变化</title>
-  <meta name="description" content="Zhongguancun Academy 前沿评测调研：从 AA v5.0 换榜与 OpenAI、Anthropic 新重心切入，从代码仓库走向物理世界拆解五大领域 9 个代表案例，给出 16 套基准独立参数全景与跨领域构建指南，并讨论 Benchmark RSI。">
-  <link rel="stylesheet" href="styles.css?v=20261126-9">
+  <meta name="description" content="Zhongguancun Academy 前沿评测调研：从 AA v5.0 换榜与 OpenAI、Anthropic 新重心切入，从代码仓库走向物理世界拆解五大领域 10 个代表案例，给出 16 套基准独立参数全景与跨领域构建指南，并讨论 Benchmark RSI。">
+  <link rel="stylesheet" href="styles.css?v=20261126-10">
 </head>
 <body>
 
@@ -35,12 +35,12 @@
       <span>|</span>
       <span>2026-11-26</span>
       <span>|</span>
-      <span>约 2.2 万字</span>
+      <span>约 2.3 万字</span>
       <span>|</span>
       <a href="benchmarks.html" style="color:var(--accent);text-decoration:none;font-weight:500;">16+3 基准目录</a>
     </div>
     <p class="post-lead">
-      2026 年 10 月 27 日，Artificial Analysis 换掉了综合指数里的三项子基准。被测模型一行权重都没改，排名却在 24 小时内直接拉开两档。本文由 Zhongguancun Academy 整理：先说明旧静态基准考满的原因、OpenAI 与 Anthropic 现在关注的方向，再沿着“从代码仓库走向物理世界”的顺序拆解代码工程、科学研究、办公业务、Computer-Use Agent 与物理交互五大领域的 9 个代表性案例，接着给出 16 套前沿基准的独立构建参数、跨领域共性与五步上手指南，最后讨论 Benchmark RSI 下的环境与模型共同进化。
+      2026 年 10 月 27 日，Artificial Analysis 换掉了综合指数里的三项子基准。被测模型一行权重都没改，排名却在 24 小时内直接拉开两档。本文由 Zhongguancun Academy 整理：先说明旧静态基准考满的原因、OpenAI 与 Anthropic 现在关注的方向，再沿着“从代码仓库走向物理世界”的顺序拆解代码工程、科学研究、办公业务、Computer-Use Agent 与物理交互五大领域的 10 个代表性案例，接着给出 16 套前沿基准的独立构建参数、跨领域共性与五步上手指南，最后讨论 Benchmark RSI 下的环境与模型共同进化。
     </p>
   </header>
 
@@ -60,7 +60,7 @@
         <a class="toc-main" href="#part-2">二、从代码仓库走向物理世界</a>
         <ul class="toc-sub">
           <li><a href="#sec-2-1">2.1 代码工程：FrontierCode 2.0 与 FrontierSWE v2</a></li>
-          <li><a href="#sec-2-2">2.2 科学研究：TB-Science 0.1 与 De novo binder design</a></li>
+          <li><a href="#sec-2-2">2.2 科学研究：HLE-Diamond、TB-Science 0.1 与 Binder</a></li>
           <li><a href="#sec-2-3">2.3 办公业务：AutomationBench、AA-Briefcase 与 RLI</a></li>
           <li><a href="#sec-2-4">2.4 Computer-Use Agent：Chartography 与 OSWorld 2.1</a></li>
           <li><a href="#sec-2-5">2.5 物理交互：RoboDojo 与 Embodied First Exam</a></li>
@@ -219,7 +219,7 @@
   <article class="chapter" id="part-2">
     <h2>二、从代码仓库走向物理世界</h2>
     <p class="chapter-lead">
-      新一代评测不是凭空冒出来的，它沿着一条清晰的外扩路线推进：先从最容易写自动化脚本验证的代码仓库起步，再依次扩到科学研究与湿实验、办公业务与付费外包、Computer-Use Agent 桌面操作，最后撞上三维物理世界的时间和硬件约束。下面按这五个阶段，挑 9 个代表性 Benchmark 逐个拆开看原文细节、实测图和真实失误。点击正文里带下划线的基准名称，随时可以从右侧拉出完整档案。
+      新一代评测不是凭空冒出来的，它沿着一条清晰的外扩路线推进：先从最容易写自动化脚本验证的代码仓库起步，再依次扩到科学研究与湿实验、办公业务与付费外包、Computer-Use Agent 桌面操作，最后撞上三维物理世界的时间和硬件约束。下面按这五个阶段，挑 10 个代表性 Benchmark 逐个拆开看原文细节、实测图和真实失误。点击正文里带下划线的基准名称，随时可以从右侧拉出完整档案。
     </p>
 
     <!-- 2.1 CODING -->
@@ -413,58 +413,61 @@ Promise.resolve(it?.return());</span></pre>
     <div class="prose">
       <h3 id="sec-2-2">2.2 科学研究</h3>
       <p>
-        科研评测脱离静态问答，不只因为本科和博士选择题（MMLU、GPQA Diamond）已经刷到 90% 以上，更因为高难闭卷题库自身撞上了错题墙。2025 年初发布的 <a class="bench-ref" data-bid="hle">HLE</a> 用 50 万美元悬赏千名学者投稿 7 万余题，后台把当时最强模型当作守门员，只要有一款模型答对就退稿，最终按 3.6% 录用率留出 2,500 题。但“模型答错才留下”的逆向筛选规则，反而把人类算错和条件写漏的坏题集中留了下来：FutureHouse 复核 321 道生化纯文本题查出 <strong>29% +/- 3.7%</strong> 答案错误，Epoch AI 抽检 48 题更是查出 <strong>46%</strong> 存在硬伤并标为 <code>Flawed</code>。结果原版 HLE 卡死在 74% 附近，哪怕挂上搜索和代码也只涨 1 分，直到 2026 年 9 月专家洗出 1,000 题的 <strong>HLE-Diamond</strong> 才恢复区分度。
-      </p>
-      <p>
-        为了避免再掉进“静态闭卷 + 错题墙”的老坑，2026 年的科研基准全面转向可执行、可复现的真实科研工作流，沿着四级工程阶梯往前推进（核心机制与实测水位汇总见下表）：
+        科研评测从静态考卷往真实实验走，只看三套代表基准就能串起完整脉络：<strong><a class="bench-ref" data-bid="hle">HLE-Diamond</a></strong>（拆解静态闭卷题库撞上错题墙的根源与清洗方法）、<strong><a class="bench-ref" data-bid="tbs">TB-Science 0.1</a></strong>（把干实验放进断网容器做科学数值硬验收），以及 <strong><a class="bench-ref" data-bid="binder">De novo binder design</a></strong>（跳出电脑打分，靠独立商业湿实验拆穿模拟器过拟合）。三者分别对应“纸面推理 -> 干实验计算 -> 湿实验合成”三层互不重叠的科研环节：
       </p>
 
       <div class="table-scroll" style="margin:16px 0 24px;">
         <table class="ed-table">
           <thead>
             <tr>
-              <th>演进阶段</th>
+              <th>科研层级</th>
               <th>代表基准与规模</th>
-              <th>环境操作逻辑与验分机制</th>
-              <th>核心工程发现</th>
+              <th>操作逻辑与验分机制</th>
+              <th>最值得借鉴的工程教训</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td><strong>1A 原始数据排查</strong></td>
-              <td><a class="bench-ref" data-bid="biomy">BioMysteryBench</a><br><span class="b-sub">Anthropic | 90 题 x 5 遍</span></td>
-              <td>抹去真实测序、晶体、质谱文件标签，进 8GB 容器查唯一事实；白名单放行 BLAST/NCBI，封禁 GEO/SRA 原论文号，强制附可执行验算脚本防错题</td>
-              <td>常规集 77.7% 稳定 5/5 逼近饱和后转交 Vals AI；23 道专家全败超难题多数 5 次仅中 1 到 2 次，单题成本差 15 倍</td>
+              <td><strong>闭卷学术推理</strong></td>
+              <td><a class="bench-ref" data-bid="hle">HLE -> HLE-Diamond</a><br><span class="b-sub">Scale x CAIS | 2,500 洗至 1,000 题</span></td>
+              <td>76% 改精确短答 + 置信度校准；由原版多轮专家清洗为 500 推理 + 500 知识冻结核验集</td>
+              <td>“模型答错才留题”会系统性富集人类错题（审出 29%–46% 错标），必须做多轮独立文献核查</td>
             </tr>
             <tr>
-              <td><strong>1B 断网计算容器</strong></td>
+              <td><strong>干实验计算容器</strong></td>
               <td><a class="bench-ref" data-bid="tbs">TB-Science 0.1</a><br><span class="b-sub">Stanford/Laude | 70 扩至 96 题</span></td>
-              <td>五大自然科学命令行计算；复用 Harbor 断网双容器，提交后独立容器运行科学家手写 <code>pytest</code> 核查数值误差与物理守恒</td>
-              <td>海外三强 11 月唯一共测科研榜（70.5% 至 77.1%）；同一权重换简装框架掉 18.9 分，单题成本差 18 倍</td>
+              <td>五大自然科学命令行计算；复用 Harbor 断网双容器，科学家手写 <code>pytest</code> 核查科学精度与物理守恒</td>
+              <td>920 提案仅 7.6% 录用 + <code>oracle</code> 5/5 必过，最快形成海外三强共识；横向比拼必须锁死 Harness</td>
             </tr>
             <tr>
-              <td><strong>2 多轮预算规划</strong></td>
-              <td><a class="bench-ref" data-bid="asb">ASB 0.1</a> -> TwinLab<br><span class="b-sub">6 题 -> 38 天补齐 52 题</span></td>
-              <td>不再开局给齐数据，仅给低于 11% 候选空间的送检预算，多轮选配方拿读数，须同时过“高产发现”与“全局排序”双闸门</td>
-              <td>ASB 工程完赛 100% 但 48.7% 失败源于单门偏科；仅 6 题方差近 +/-20% 遭 0% 采用，补至 52 题后四旗舰最高仅 45.0 / 100</td>
-            </tr>
-            <tr>
-              <td><strong>3 与 4 湿实验终裁</strong></td>
-              <td><a class="bench-ref" data-bid="biobasics">BioBasicsBench</a> &amp; <a class="bench-ref" data-bid="binder">Binder</a><br><span class="b-sub">100 脏原图 / 15 靶点</span></td>
-              <td>100% 未发表实验台原图三博士盲审细则；单卡 24h 从零设计全新蛋白后抹去来源寄 Twist 与 Adaptyv 真做出来测亲和力</td>
-              <td>看图越准推理废话越少（字数反减一半）；从零设计蛋白在 14/15 靶点命中，但成功率从模拟 85.1% 落回湿测 22% 至 35%</td>
+              <td><strong>湿实验物理终裁</strong></td>
+              <td><a class="bench-ref" data-bid="binder">De novo binder design</a><br><span class="b-sub">Anthropic x Twist / Adaptyv | 15 靶点</span></td>
+              <td>1 张 GPU 24h 全自主跑通蛋白设计软件栈，1,320 条新序列抹去来源盲寄两家 CRO 合成并做 HT-SPR 测定</td>
+              <td>电脑重折叠模拟高达 85.1%，寄去真实细胞合成实测仅 22.6%–35.1%，缺少物理终裁时代理分必被过拟合</td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      <!-- Case 3: TB-Science 0.1 -->
+      <!-- Case 3A: HLE -> HLE-Diamond -->
       <div class="case-head">
-        <h4>Case 3：Terminal-Bench-Science 0.1 断网科学计算容器与硬验分</h4>
+        <h4>Case 3：HLE-Diamond 错题墙溯源与清洗方法论</h4>
+        <span class="case-meta-tag">Scale AI x CAIS | 500+ 机构千名学者 | 2,500 题清洗冻结为 1,000 题</span>
+      </div>
+      <p>
+        <strong>逆向筛题造出错题墙的根源：</strong>本科与博士级选择题（MMLU、GPQA Diamond）刷到 90% 以上后，CAIS 与 Scale AI 在 2025 年初用 50 万美元向全球约 1,000 位学者征集 7 万余道百学科难题，定稿 2,500 题（录用率 3.6%，76% 改精确短答并要求自报置信度）。为了保证题目够难，入库规则把当时最强模型当守门员：只要有一款模型答对就直接退稿。但在实际众包激励下，这条规则产生了严重的逆向选择：出题人为了难倒 AI，容易写出前提漏写、条件歧义甚至与最新文献矛盾的刁钻题。
+      </p>
+      <p>
+        <strong>两轮独立审计与 Diamond 清洗：</strong>2025 年中，FutureHouse 对 321 道生化纯文本题逐篇比对同行评审文献，查出 <strong>29% +/- 3.7%</strong> 的标准答案本身与文献冲突；Epoch AI 随机抽检 48 题更是查出 <strong>46%</strong> 存在硬伤（无解前提、漏给假设或答案写错）并评级 <code>Flawed</code>。结果原版 HLE 在 74% 附近彻底卡死，连 Claude Fable 5.2 挂上搜索与代码执行也只多涨 1 分。直到经历近一年滚动清理，团队在 2026 年 9 月冻结出 1,000 道高完整度子集 <strong>HLE-Diamond</strong>（严格均分为 <strong>500 道推理题 + 500 道知识题</strong>），剔除错标和歧义键后，海外三强才重新拉开 71% 至 80% 的真实梯度。它留给造榜界最硬的一条反面教材就是：绝不能把“现役最强模型答错”当成唯一留题门槛。
+      </p>
+
+      <!-- Case 3B: TB-Science 0.1 -->
+      <div class="case-head">
+        <h4>Case 4：Terminal-Bench-Science 0.1 断网科学计算容器与硬验分</h4>
         <span class="case-meta-tag">Stanford / Laude 等 10+ 机构 | 920 提案筛 70 题，扩至 96 题 | 复用 Harbor</span>
       </div>
       <p>
-        <strong>操作逻辑与入库门禁：</strong><a class="bench-ref" data-bid="tbs">Terminal-Bench-Science 0.1</a> 把生信单科排查扩到了生命、物理、数统、工程与地球五大自然科学。团队没有重造沙盒，而是直接复用从 <a class="bench-ref" data-bid="tb41">Terminal-Bench</a> 抽离出来的 <strong>Harbor 断网双容器</strong>：执行容器预装 <code>C++</code>、<code>Fortran</code>、<code>R</code>、<code>Python</code> 与学科计算库，全程断公网防查原论文，目录里彻底移除测试脚本；提交后仅单向导出产物文件进入独立验证容器，运行科学家手写的确定性 <code>pytest</code> 脚本。和常规终端题只验“服务能不能跑通”不同，TB-Science 卡死的是<strong>科学数值精度与物理约束</strong>（例如水文拟合 NSE 下限、能量守恒、遥感误差容差）。每道题从 920 份提案（7.6% 录用率）入库前必须过三道死闸：参考解（<code>oracle</code>）连跑 <strong>5/5 全过</strong>排除数值随机抖动，空提交（<code>no-op</code>）必得 <strong>0 分</strong>，再过一遍 Root 权限与对抗作弊测试（图 2.4）。
+        <strong>操作逻辑与入库门禁：</strong><a class="bench-ref" data-bid="tbs">Terminal-Bench-Science 0.1</a> 把科研评测从纸面短答推进到了真实的命令行科学计算，覆盖生命、物理、数统、工程与地球五大领域。团队直接复用从 <a class="bench-ref" data-bid="tb41">Terminal-Bench</a> 抽离的开源 <strong>Harbor 断网双容器</strong>：执行容器预装 <code>C++</code>、<code>Fortran</code>、<code>R</code>、<code>Python</code> 与学科计算库，全程断公网防查原论文，彻底移除测试脚本；提交后仅单向导出产物文件进独立验证容器，运行科学家手写的确定性 <code>pytest</code>。和常规运维题只查“服务能不能跑通”不同，TB-Science 卡死的是<strong>科学数值精度与物理守恒</strong>。每道题从 920 份提案（7.6% 录用率）入库前必须闯过三道死闸：参考解（<code>oracle</code>）连跑 <strong>5/5 全过</strong>排除数值随机波动，空提交（<code>no-op</code>）必得 <strong>0 分</strong>，再过一遍 Root 权限与对抗作弊测试（图 2.4）。
       </p>
     </div>
 
@@ -473,7 +476,7 @@ Promise.resolve(it?.return());</span></pre>
       <div class="fig-header">
         <div>
           <h4 class="fig-title">图 2.4：TB-Science 0.1 断网计算容器、黑冰真题执行链路与科学硬验收</h4>
-          <div class="fig-sub">沿用 Harbor 物理隔离规范，在执行容器内完成脏数据处理与数值建模，再单向导出产物由科学家手写 pytest 做非 0 即 1 裁决</div>
+          <div class="fig-sub">复用 Harbor 双容器隔离，在执行容器内完成脏数据处理与数值建模，再单向导出产物由科学家手写 pytest 做非 0 即 1 裁决</div>
         </div>
       </div>
       <div id="diagram-tbs-exec"></div>
@@ -484,37 +487,37 @@ Promise.resolve(it?.return());</span></pre>
 
     <div class="case-strip">
       <div class="case-box rust">
-        <div class="case-label">案例 3A 地球科学：门多塔湖 10 年遥感“黑冰”陷阱</div>
+        <div class="case-label">案例 4A 地球科学：门多塔湖 10 年遥感“黑冰”陷阱</div>
         <p>
-          真题 <code>mendota-ice-phenology</code> 给出美国门多塔湖连续 10 个冬天的 Landsat 与 MODIS 原始多波段遥感影像（含厚云遮挡、日期缺测和两星分辨率不统一），要求输出每年准确的结冰日与融冰日 CSV。
+          真题 <code>mendota-ice-phenology</code> 给出美国门多塔湖连续 10 个冬天的 Landsat 与 MODIS 原始多波段遥感影像（含厚云遮挡、日期缺测和两星分辨率不齐），要求重建每年准确的结冰日与融冰日 CSV。
         </p>
         <p>
-          <strong>典型踩坑：</strong>模型很容易写出“像素亮白=结冰积雪、暗黑=湖水”的朴素规则。但湖冰遥感里存在经典的<strong>黑冰（Black Ice）现象</strong>：刚结成的光滑透明薄冰几乎不反光，在卫星波段里和深色湖水同样发暗。代码跑得零报错、输出格式全合规，但结冰日系统性偏晚，独立容器逐年核对实测气象误差容差直接判 <strong>0 分</strong>。必须做去云、双星配准并结合多波段与时序连续性修正。
+          <strong>典型踩坑：</strong>模型习惯写出“像素亮白=积雪结冰、暗黑=湖水”的朴素亮度阈值。但湖冰遥感里存在经典的<strong>黑冰（Black Ice）现象</strong>：刚结成的光滑透明薄冰几乎不反光，在卫星波段里和深色湖水同样发暗。代码跑得零报错、输出格式全合规，但结冰日系统性偏晚，独立容器逐年核对实测气象误差容差直接判 <strong>0 分</strong>。必须完成去云、双星配准并结合多波段与时序连续性修正。
         </p>
       </div>
 
       <div class="case-box accent">
-        <div class="case-label">案例 3B 数值建模与非模型变量：水文校准、混沌反演与框架差</div>
+        <div class="case-label">案例 4B 数值建模与非模型变量：水文校准、混沌反演与框架差</div>
         <p>
-          同类真题还包括：在断网容器内用 R 语言自写全局优化程序，拿 9 年观测表校准水文模型 15 个参数并把拟合精度（NSE）压进阈值；在强放热反应釜模型下写安全温控脚本；或在 <code>Lorenz-96</code> 非线性混沌系统里，从稀疏且带时钟偏移的序列同步反推外部驱动力与传感器漂移。
+          同类真题还包括：在断网容器内用 R 语言自写全局优化程序，拿 9 年真实观测表校准水文模型 15 个参数并把拟合精度（NSE）压进阈值；在强放热反应釜模型下写安全温控脚本；或在 <code>Lorenz-96</code> 混沌系统里从稀疏带时钟偏移的观测序列同步反推外部驱动力与传感器漂移。
         </p>
         <p>
-          <strong>读榜必须拆清的两项非模型变量：</strong>第一，相同 Fable 5.2 权重从原生 Claude Code 换成公共 <code>Mini-SWE-agent</code>，解决率直接少 <strong>18.9 分</strong>；第二，单题吞吐 499 万至 1.31 亿 Tokens，Vals AI 实测成本可差近 <strong>18 倍</strong>（$2.53 对 $44.90），同时须单列安全拒答率防过度保守护栏误杀合法科研脚本（如另一科学榜 <code>SPU</code> 中 Opus 5.5 曾因误判拒答超半数题目）。
+          <strong>横向读榜须拆清的非模型变量：</strong>同一 Fable 5.2 权重从原生 Claude Code 换成公共 <code>Mini-SWE-agent</code>，得分直接少 <strong>18.9 分</strong>；单题吞吐 499 万至 1.31 亿 Tokens，Vals AI 实测成本可差近 <strong>18 倍</strong>（$2.53 对 $44.90），同时须单列安全拒答率防过度保守护栏误杀合法科研脚本。
         </p>
       </div>
     </div>
 
     <div class="prose">
-      <!-- Case 4: De novo binder design + Wet-lab verification -->
+      <!-- Case 5: De novo binder design -->
       <div class="case-head">
-        <h4>Case 4：De novo binder design 与湿实验现场校验</h4>
-        <span class="case-meta-tag">Anthropic x Twist / Adaptyv &amp; OpenAI x Ligo | 15 靶点 1,320 序列 &amp; 100 脏原图</span>
+        <h4>Case 5：De novo binder design 24 小时自主设计与 CRO 湿实验终裁</h4>
+        <span class="case-meta-tag">Anthropic x Twist Bioscience / Adaptyv Bio | 16 靶点 (15 可测) / 1,320 条实测序列</span>
       </div>
       <p>
-        <strong>为什么必须走出纯计算模拟：</strong>前两类容器题的数据都在开局第 0 秒备齐；即便像 <a class="bench-ref" data-bid="asb">ASB 0.1</a> 那样把送检预算压到候选空间的 11% 以下、强制同时过“找到高产配方”与“学会全局排序”两道闸门（并靠 38 天后补齐至 52 题的 TwinLab 解决 6 题方差过大问题），多数仍是在历史数据表里查读数。Anthropic 的 <a class="bench-ref" data-bid="binder">De novo binder design</a> 直接跨到了实体物理合成：环境只给 <strong>15 个真实疾病靶点三维结构</strong>（例如泛素连接酶亚基 <code>RBX1</code>）、一份 1.6 万字规范、开源蛋白设计软件栈以及 <strong>1 张 GPU 和 24 小时</strong>。全程无人工插手，Agent 自己解析靶点结合凹槽、写脚本并排错驱动 <code>RFdiffusion</code> 与 <code>BindCraft</code> 生成全新序列、送进 <code>Boltz</code> 和 <code>AlphaFold</code> 做电脑重折叠迭代筛选，每靶交付最优 30 条序列（图 2.5）。
+        <strong>走出纯计算容器，引入实体湿实验终裁：</strong>以 <code>TB-Science 0.1</code> 为代表的干实验容器，终裁依然停留在电脑与历史数据表里；而在真正的生命科学研发中，只要验收只看电脑模拟分数，模型就极易学会讨好折叠模型的打分偏好（Reward Hacking）。Anthropic 的 <a class="bench-ref" data-bid="binder">De novo binder design</a> 直接打通了“自主计算设计 -> 独立商业实验室真做出来测”的实体终裁链路：研究团队只给模型一份约 1.6 万字的专家操作协议、开源蛋白结构建模与设计栈（<code>RFdiffusion</code> / <code>BindCraft</code> / <code>Boltz</code> / <code>AlphaFold</code>）以及 <strong>1 张 GPU 与 24 小时单靶点（或 48 小时多靶点）</strong>时限，全程无人工干预。
       </p>
       <p>
-        <strong>盲寄独立 CRO 拆穿模拟代理过拟合：</strong>只看电脑重折叠打分，模型很容易讨好模拟器的打分偏好。因此研究团队把 AI 交出的 <strong>1,320 条全新序列</strong>彻底抹去来源，盲寄给两家商业外包实验室：先由 <strong>Twist Bioscience</strong> 在真实细胞里把蛋白合成表达出来，再由 <strong>Adaptyv Bio</strong> 用仪器实测能否粘住靶点。结果一方面证实全自主流程已在 <strong>14/15 个真实靶点</strong>造出真能结合的新蛋白（RBX1 亲和力达 <code>3.9 nM</code>），另一方面也暴露了评测方法的核心短板：<strong>电脑重折叠模拟通过率高达 85.1%，寄去真实细胞合成后的全量实测命中率却落回 22% 到 35%</strong>（前排优选 49.0%）。缺少独立物理终裁时，任何纯计算代理指标都存在被过拟合的风险。
+        <strong>执行细节与 85.1% vs 22.6%–35.1% 的代理过拟合断层：</strong>Agent 在沙盒内自主研究 16 个疾病靶点三维结构（包括泛素连接酶亚基 <code>RBX1</code>）、挑选结合表位、自写脚本并排查软件报错批量生成候选骨架，再送进重折叠模型按反馈反复换位点筛选，共产出 <strong>1,440 条</strong>自然界不存在的新序列（图 2.5）。随后 Anthropic 把其中 <strong>1,320 条</strong>可合成序列彻底抹去来源，盲寄给两家独立商业外包实验室（CRO）：先由 <strong>Twist Bioscience</strong> 在真实细胞中从零合成表达，再由 <strong>Adaptyv Bio</strong> 用高通量表面等离子共振仪（<strong>HT-SPR，Carterra</strong>）逐一定量测定结合亲和力。结果同时呈现振奋与冷静两面：AI 在 <strong>15 个可测靶点中的 14 个</strong>成功造出有效结合蛋白（RBX1 亲和力达 <code>3.9 nM</code>，追平甚至超过往届人类专家设计竞赛冠军），全量湿测命中率 <strong>22.6%–35.1%</strong>（前排优选 49.0%）远高出传统人类加工具的 10%–15%；但对照电脑端高达 <strong>85.1%</strong> 的重折叠模拟过关率，进入真实细胞表达和仪器测定后成功率直接折半。这条实证比任何纯干实验排行榜都更直白地说明：没有物理世界的独立终裁，任何模拟代理指标都不能当最终真相。
       </p>
     </div>
 
@@ -523,46 +526,18 @@ Promise.resolve(it?.return());</span></pre>
       <div class="fig-header">
         <div>
           <h4 class="fig-title">图 2.5：De novo binder design 24 小时自主设计流水线与模拟到湿测落差</h4>
-          <div class="fig-sub">从靶点 3D 结构输入、自主编排生成软件与重折叠筛选，到抹去来源盲寄两家独立商业实验室完成真实细胞合成与结合力实测</div>
+          <div class="fig-sub">从靶点 3D 结构输入、自主编排生成软件与重折叠筛选，到抹去来源盲寄 Twist 合成与 Adaptyv HT-SPR 仪器实测</div>
         </div>
       </div>
       <div id="diagram-binder-pipeline"></div>
       <div class="fig-caption">
-        <span>机制来源：Anthropic System Card &amp; Claude Science Binder Report（2026.08 与 2026.11）；盲测方 Twist Bioscience 与 Adaptyv Bio。</span>
+        <span>机制来源：Anthropic Autonomous Protein Binder Design &amp; System Card（2026.08 与 2026.11）；盲测方 Twist Bioscience 与 Adaptyv Bio。</span>
       </div>
     </figure>
 
     <div class="prose">
       <p>
-        <strong>湿实验另一面（实验台未裁剪脏原图排错）：</strong>除了向外合成，OpenAI 与 Ligo Biosciences 推出的 <a class="bench-ref" data-bid="biobasics">BioBasicsBench</a> 把镜头直接对准实验台日常排错：从内部未发表记录本挑出 100 道题（未裁剪电泳胶、反光培养皿、移液视频等 7 类原件，零网络泄露），由三位湿实验博士盲审细则连跑 5 遍。这项设计验证了一个违背直觉的机制现象：<strong>看图越准，推理废话反而越少</strong>。看不清胶图刻度的前代模型每题硬写 <strong>27,620 tokens</strong> 靠猜只拿 31.2%，视觉解析更准的 GPT-6 Astra 升到 66.7% 时，单题输出反而压到 <strong>4,704 tokens</strong>（减半以上）。下面一正一反两个现场样本，直接暴露了湿实验排错的真门槛：
-      </p>
-    </div>
-
-    <div class="case-strip">
-      <div class="case-box sage">
-        <div class="case-label">湿实验得分样本：抓出皿边手写抗生素标签与荧光废片</div>
-        <p>
-          阴性对照培养皿干净无菌落，较弱模型直接判对照成功。GPT-6 Astra 放大看清了皿边极小的手写字 <code>LB Kan50</code>（卡那霉素），发现与方案要求的氨苄青霉素冲突，当场判定对照组作废；另一起荧光显微镜排错中，它认出通道串色污染并声明废片无法下结论，没有硬编答案。
-        </p>
-<pre class="code-tree"><span class="cm">// BioBasicsBench 视觉精度与无效推理长度反向关系</span>
-<span class="hi-red">GPT-5.2     : 27,620 tok/题 -> 31.2% (看不清图靠长文硬猜)</span>
-<span class="hi-sage">GPT-6 Astra :  4,704 tok/题 -> 66.7% (看准细节，字数减半)</span></pre>
-      </div>
-
-      <div class="case-box rust">
-        <div class="case-label">湿实验失误样本：死套教材挑错菌落与琼脂反光多算 12%</div>
-        <p>
-          菌落 PCR 电泳胶排错中，模型死套教材里“条带更大等于插入成功”的惯性经验，无视旁边阳性与阴性对照泳道的真实位置，错挑 <code>4 / 6 / 7 / 8</code> 号废菌落，漏掉真正阳性的 <code>5 / 9 / 10</code> 号。
-        </p>
-        <p>
-          反光培养皿计数中，模型漏掉边缘小菌落，又把琼脂表面反光白点算成菌落，总数虚高 <strong>+12%</strong>。即便前序原理分析拿了高步骤分，最后一步挑错菌落仍会让整批后续实验报废。
-        </p>
-      </div>
-    </div>
-
-    <div class="prose">
-      <p>
-        <strong>科学研究小结：</strong>科研评测的升级路径与代码工程高度同构：第一，放弃靠“模型答错就留下”的逆向筛题，改用可执行验算代码和 Harbor 断网容器防错题墙；第二，范式再超前也要跨过约 50 题的统计置信底线（ASB 6 题 -> TwinLab 52 题）；第三，电脑模拟分与步骤均值都无法替代实体湿测或严格容差裁决，横向对比必须同步标明 Harness、算力花费与安全拒答率。
+        <strong>科学研究小结：</strong>三套基准把科研评测最关键的三条红线一次画清：第一，像 HLE 那样靠“难倒模型”攒静态题会撞上三成以上错题墙，必须做独立文献清洗；第二，干实验必须复用 Harbor 类断网容器与 <code>oracle 5/5</code> 硬校验，同时锁死 Harness 与成本口径；第三，真正面向发现型科研时，模拟打分（85.1%）与实体湿测（22.6%–35.1%）之间存在天然过拟合缺口，最终仍需外部物理验证兜底。
       </p>
     </div>
 
@@ -570,131 +545,178 @@ Promise.resolve(it?.return());</span></pre>
     <div class="prose">
       <h3 id="sec-2-3">2.3 办公业务</h3>
       <p>
-        离开编译器和命令行，进入真实公司后台与商业交付，早期依赖的对话盲评（如 Chatbot Arena）很快失真。一方面，人类投票天然偏爱篇幅长、语气礼貌、排版整齐的回复，哪怕底下的账目算错了、数据库改漏了照样容易赢票；另一方面，<em>The Leaderboard Illusion</em>（arXiv:2504.20879）指出，少数厂商曾私测多达 27 个未公开变体并只挑最高分公开，而早期连公网的网页榜又频繁遭遇验证码和发帖限流误杀。
+        在 2.1 代码工程里，编译器和 <code>pytest</code> 能一秒钟告诉你代码跑没跑通；但离开代码进入公司办公室，最大的难题恰恰在于<strong>“没有编译器”</strong>。一个 Agent 可以输出结构工整、措辞礼貌的汇报邮件，底下却把 CRM 里同名客户的账改错了、漏看一条藏在两周前群聊里的退货政策变更，或者交出一个打不开的损坏压缩包。早期依赖人类两两盲投的对话榜（如 Chatbot Arena）天然偏爱篇幅长、排版顺眼的回答，加上 <em>The Leaderboard Illusion</em>（arXiv:2504.20879）曝光的私测多变体挑高分问题，根本测不出模型到底能不能把业务活干完。
       </p>
       <p>
-        2026 年的办公业务评测因此彻底告别“看聊天回复打分”，转向查后台数据库终态、验专业软件成品、拆开算账与汇报，以及按甲方愿不愿意付款收货。下表横向拉齐四套代表基准的运作机制与核心权衡（头部严格全通率均停在 <strong>41% 到 56%</strong> 之间，远未饱和）：
+        2026 年，工业界和学界沿着四条截然不同的思路，重新拆解“怎么验收白领办公交付”这件事（头部模型在四套基准上的严格全通率均停在 <strong>41% 到 56%</strong> 之间，远未饱和）：
       </p>
 
       <div class="table-scroll" style="margin:16px 0 24px;">
         <table class="ed-table">
           <thead>
             <tr>
-              <th>基准名称</th>
-              <th>沙盒与输入形态</th>
-              <th>验证器核心机制</th>
-              <th>实测水位与暴露出的工程短板</th>
+              <th>验证思路</th>
+              <th>代表基准与发布方</th>
+              <th>工作区形态与工具接口</th>
+              <th>终裁机制与核心权衡</th>
             </tr>
           </thead>
           <tbody>
             <tr>
+              <td><strong>查后台数据库终态</strong></td>
               <td><a class="bench-ref" data-bid="autobench">AutomationBench</a><br><span class="b-sub">Zapier | 657 私 + 100 公</span></td>
-              <td>本地克隆 47 款 SaaS 与 ~500 REST API；仅开放 <code>Search</code> 与 <code>Execute</code>，禁向人提问</td>
-              <td>无视文本回复，纯代码直查后台数据库终态；拆分目标分与严格全通率</td>
-              <td>严格全通最高 56.6%，较目标分普遍掉 22–34 分；BLE 白盒审出公开集 <strong>71%</strong> 脚本缺陷</td>
+              <td>本地克隆 47 款 SaaS 与 ~500 REST API；剥掉预封装工具，仅给 <code>search</code> + <code>execute</code></td>
+              <td>零 LLM，纯代码查库（正向 Objectives + 负向 Guardrails）；可高频回归，但复杂断言脚本易藏缺陷（BLE 审出 71%）</td>
             </tr>
             <tr>
-              <td><a class="bench-ref" data-bid="ale">Agents' Last Exam v1.1</a><br><span class="b-sub">UCB RDI | 122 活跃题</span></td>
-              <td>按 O*NET 覆盖 55 个非体力职业，虚拟机内运行 After Effects、Siemens NX 等真软件</td>
-              <td>脚本对照隐藏成品核查专业软件交付件（步骤分 vs 严全通）</td>
-              <td>厂商常报 ~78% 步骤分，严全通停在 45%–48%，人类需干一周的复杂档趋近 0%；Epoch 审出 22/122 题漏判</td>
+              <td><strong>查专业软件交付件</strong></td>
+              <td><a class="bench-ref" data-bid="ale">Agents' Last Exam</a><br><span class="b-sub">UCB RDI | 55 职业 122 题</span></td>
+              <td>按美国 O*NET 覆盖 55 工种（KiCad 画 PCB、SEC 10-K 建模、Unreal 5 / Blender / DaVinci）</td>
+              <td>90%+ 确定性 Python 脚本 + Gate-and-Score 门控；步骤分常报 ~78%，严全通仅 45%–48%（Epoch 审出 22/122 题漏判）</td>
             </tr>
             <tr>
-              <td><a class="bench-ref" data-bid="briefcase">AA-Briefcase v1.1</a><br><span class="b-sub">AA | 4 企业 91 题</span></td>
-              <td>数千份历史财报、冲突制度与 2.5 万条 Slack 群聊；交付 <code>.xlsx</code> 与 <code>.pptx</code></td>
-              <td>物理双轨：轨道 1 客观 Rubric 核对公式数字；轨道 2 匿名盲评 Elo 看汇报质感</td>
-              <td>两轨冠军分家（算准账 vs 写顺眼）；100% 完美交付仅约 <strong>3%</strong>，31/91 题全员不及格</td>
+              <td><strong>算准账与写顺眼拆轨</strong></td>
+              <td><a class="bench-ref" data-bid="briefcase">AA-Briefcase v1.1</a><br><span class="b-sub">Artificial Analysis | 4 企业 91 题</span></td>
+              <td>&gt;25,000 Slack + &gt;3,500 邮件 + 冲突制度 + Python 沙盒；交付 <code>.xlsx</code> / <code>.pptx</code> / <code>.pdf</code></td>
+              <td>三支柱拆轨（Binary Rubric 核数 + 分析/呈现 Crowd-BT Elo）；两轨冠军分家，100% 完美交付仅 ~3%，成本差 800 倍</td>
             </tr>
             <tr>
-              <td><a class="bench-ref" data-bid="rli">Remote Labor Index</a><br><span class="b-sub">Scale x CAIS | 230 私单</span></td>
-              <td>$14.4 万直买 240 个 Upwork 已结款真单（23 工种），原样脏素材进虚拟桌面</td>
-              <td>同业真人专家对照人类中标稿执行商业二元验收（愿不愿意掏钱收货）</td>
-              <td>1 年从 2.5% 升至 41.3%，但 58.7% 拒付单栽在 4 类基础品控硬伤；私有锁库难做外部白盒复核</td>
+              <td><strong>甲方愿不愿意掏钱</strong></td>
+              <td><a class="bench-ref" data-bid="rli">Remote Labor Index</a><br><span class="b-sub">Scale x CAIS | 240 Upwork 真单</span></td>
+              <td>$14.4 万直买 23 工种已结款真单（中位 11.5h / $200），原样脏素材入虚拟桌面</td>
+              <td>同业专家对照人类中标稿二元判付（自动化率 41.3%）；最贴真实商业 ROI，但昂贵慢且私有锁库难过外部白盒审计</td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      <!-- Case 5: AutomationBench v1.0.6 -->
+      <!-- Deep Dive 1: AutomationBench -->
       <div class="case-head">
-        <h4>Case 5：AutomationBench 本地 47 款 SaaS 沙盒、虚假自信与脚本白盒审计</h4>
-        <span class="case-meta-tag">Zapier / AA | 100 公开 + 657 私有题 | BLE 100 题逐行代码审计</span>
+        <h4>Case 6：AutomationBench 裸接口编排 47 款 SaaS 与脚本错题审计</h4>
+        <span class="case-meta-tag">Zapier (arXiv:2604.18934) | 47 本地 SaaS / ~500 API | BLE 100 题逐行白盒审计</span>
       </div>
       <p>
-        <strong>操作架构与为什么必须本地克隆：</strong>直接连真实线上商业软件做评测，动辄封号、限流或页面改版，根本没法复现。Zapier 从数百万条真实企业自动化流程里抽题，把 CRM、电子表格、邮箱、工单和审批等 <strong>47 款常用 SaaS（约 500 个 REST API）</strong>完整克隆进本地隔离沙盒。指令像同事在 Slack 里派活一样模糊发出且<strong>禁止向人反问澄清</strong>，Agent 只能靠 <code>Search</code> 查接口文档、用 <code>Execute</code> 发读写请求，自己扛分页和 4xx 报错。任务结束后，验证器彻底无视聊天框里的工整总结，直接掀开 47 个后台数据库表逐条核验终态（图 2.6 上半部）。
+        <strong>剥掉预封装工具的真实沙盒：</strong>直接连公网商业软件测 Agent，动辄封号、限流或页面改版。Zapier 研究员 Daniel Shepard 与 Robin Salimans 在原论文（arXiv:2604.18934）里干脆把销售、市场、运营、客服、财务、HR 六大部门常用的 <strong>47 款 SaaS 应用</strong>（CRM、邮箱、电子表格、日历、工单、消息平台）全部克隆进本地有状态沙盒。更关键的设计在于刻意<strong>不提供现成的高级封装工具</strong>，全程只暴露两个极简原语：<strong><code>search</code></strong>（在 ~500 份 OpenAPI 文档上跑 <strong>BM25 关键词检索</strong>返回候选接口）和 <strong><code>execute</code></strong>（类似裸写 <code>curl</code>/<code>fetch</code>，由模型自己拼 HTTP Method、URL、分页参数和 JSON Body，并自己处理 4xx 报错）。任务像同事在 Slack 随手派活一样发出，且<strong>全程禁止向人类反问澄清</strong>。
       </p>
       <p>
-        <strong>双口径落差与白盒审计教训：</strong>这套架构把办公代理的真实断点照得很清楚：首先，在 657 道私有题上，允许按子目标拿部分分（目标分最高近 80%）和要求全部子目标 100% 零违规（严格全通率最高 56.6%）之间横跨 <strong>22 到 34 个百分点</strong>（国内新一代 Qwen4 Max 与 Kimi K3.1 Pro 严全通已追至 46%–47%，但末步收口掉分依然明显；另须留意安全分类器拒答回退脚注，如前代 Fable 5.1 曾拒答约 40% 任务靠回退 Opus 5 兜底）。更值得造榜者警醒的是图 2.6 下半部的 <strong>BLE 白盒审计</strong>：即便彻底不用 LLM 裁判，2026 年 11 月第三方机构 BLE 逐行审查公开集 v1.0.6 全部 100 道纯代码数据库断言脚本，结果只有 <strong>19 题合格</strong>，多达 <strong>71 题确认存在缺陷</strong>（28 题假阳性放水、18 题假阴性写死隐藏列名、9 题单向断言漏洞、15 题参考解本身写错）。
+        <strong>Objectives 与 Guardrails 双闸门：</strong>原论文的判分原则是彻底丢掉“聊得好听”（No vibes）：模型最后在对话框里写的总结报告<strong>一分不算</strong>，验证器只掀开 47 个后台数据库跑两类程序断言（图 2.6 上半部）。一类是正向 <strong>Objectives</strong>（该建的行、换算后的金额、发出的通知是否全部写对），另一类是负向 <strong>Guardrails</strong>（绝不能触碰的业务红线，例如不得把未授权高管列进签署人、不得向受限 Slack 频道发消息、不得误改受保护历史记录）。在严苛口径下，只要触发一条 Guardrail 或漏掉一个 Objective，整题直接清零。这也是同一套 657 道私有题上，目标分（最高近 80%）与严格全通率（最高 56.6%）之间拉开 <strong>22 到 34 个百分点</strong>的原因（另须留意脚注里的拒答回退机制，如前代 Fable 5.1 曾因安全分类器拒答约 40% 任务靠回退 Opus 5 兜底）。
       </p>
     </div>
 
-    <!-- Figure 2.6: Compact Vector AutomationBench Architecture + BLE 71% Audit -->
+    <!-- Figure 2.6: Crystal-Clear AutomationBench Architecture + BLE Audit -->
     <figure class="figure-card">
       <div class="fig-header">
         <div>
-          <h4 class="fig-title">图 2.6：AutomationBench 本地 47 款 SaaS 执行架构、终态核查与 BLE 审计拆解</h4>
-          <div class="fig-sub">上方为仅靠 Search / Execute 两原语操作本地 47 款 SaaS 并直查数据库终态的评测架构；下方为 BLE 对公开集 100 道纯代码脚本的逐行白盒审计分布</div>
+          <h4 class="fig-title">图 2.6：AutomationBench 裸接口编排 47 款 SaaS 架构与 BLE 100 题脚本审计</h4>
+          <div class="fig-sub">仅靠 BM25 Search 与裸 HTTP Execute 穿过四类脏业务陷阱，由 Objectives / Guardrails 双闸门查库裁决；下方为 BLE 对公开集 100 题纯代码脚本的逐行审计</div>
         </div>
       </div>
       <div id="diagram-autobench-arch"></div>
       <div class="fig-caption">
-        <span>机制来源：Zapier AutomationBench（arXiv:2604.18934）、AA 286 配置双口径对齐与 BLE 公开集 v1.0.6 白盒审计报告（2026.11）。</span>
+        <span>一手来源：Zapier AutomationBench（arXiv:2604.18934）、GitHub 公开审计记录与 BLE v1.0.6 白盒审计报告（2026.11）。</span>
       </div>
     </figure>
 
     <div class="case-strip">
       <div class="case-box rust">
-        <div class="case-label">案例 5A：Meridian 商机四重脏陷阱与“虚假自信”</div>
+        <div class="case-label">执行端真相：Meridian 商机四重脏陷阱与“虚假自信”</div>
         <p>
-          官方样题 <code>sales.multi_hop_lookup</code> 要求完成 Meridian Corp 成单更新与邮件路由，但库里预埋了职场常见脏陷阱：CRM 同时存在 <code>Meridian Corp</code>（€120,000）、<code>Meridian Solutions</code>（$150,000）和 <code>Meridian Corporation</code>（$95,000）三条高度同名记录；表格混着 1 月 10 日旧汇率 <code>1.10</code> 与 1 月 25 日新汇率 <code>1.30</code>（及新旧客户等级），须换算成 <strong>$156,000</strong> 与 <code>Enterprise</code>；抄送谁、绝不能抄送谁则藏在杂乱旧邮件串里。
+          官方样题 <code>sales.multi_hop_lookup</code> 要求更新 Meridian Corp 成交并按公司规矩路由通知，但本地沙盒埋了职场典型脏数据：CRM 里并排躺着 <code>Meridian Corp</code>（€120,000）、<code>Meridian Solutions</code>（$150,000）与 <code>Meridian Corporation</code>（$95,000）三条高度同名客户；表格混着 1 月 10 日旧汇率 <code>1.10</code> 和 1 月 25 日新汇率 <code>1.30</code>（必须算成 <strong>$156,000</strong> 与 <code>Enterprise</code>）；抄送谁、绝不能发谁则藏在杂乱旧邮件串里。
         </p>
         <p>
-          <strong>运行记录高频失误（False Confidence）：</strong>绝大多数失败轨迹里，模型调完写接口后<strong>从不再读库确认</strong>，却写出一份工整汇报宣称“已全部核对更新无误”，实际后台要么改错同名客户，要么沿用了过期汇率行。
+          <strong>原论文点破的高频短板（False Confidence）：</strong>绝大多数失败轨迹里，模型调完写接口后<strong>从不再发 GET 请求读库确认</strong>，就提前结束并交出一份条理分明的汇报宣称“已全部核对更新无误”，实际后台早已改错同名账户或沿用了过期汇率。
         </p>
       </div>
 
       <div class="case-box accent">
-        <div class="case-label">案例 5B：纯代码数据库断言为何也会被绕过（单向 vs 双向）</div>
+        <div class="case-label">验证端反噬：GitHub 审计与 BLE 71% 脚本缺陷实录</div>
         <p>
-          就像 2.1 节 MSW 单测只查输出不查资源清理一样，BLE 审出的 9 道单向断言漏洞题，暴露了纯代码脚本只查“状态字段”或只查“值没变坏”时的盲区：没真发邮件只改草稿标记，或干脆删掉受保护历史行让列表为空，都能拿满分。
+          不要以为放弃 LLM 裁判、全写确定性代码断言就万事大吉。BLE 逐行审查公开集 100 题检出 <strong>71 题缺陷</strong>（仅 19 题合格），社区 GitHub Issue 更曝出多类写死断言反伤评测的真实案例：
         </p>
-<pre class="code-tree"><span class="cm">// 缺陷脚本（单向断言）：改草稿状态不发信 / 删整行均通过</span>
+        <p>
+          - <strong>隐藏时间依赖（<code>finance.late_fee_calculation</code>）：</strong>算逾期滞纳金需要“当前日期”，但 <code>2026-02-15</code> 只藏在环境元数据里未暴露给模型，逼得模型去邮箱乱猜日期导致误杀；<br>
+          - <strong>未声明硬编码与脆弱字符串（<code>sales.recency_selection</code>）：</strong>Assertion 5 硬查题干没提过的次级邮件 ID <code>msg_marcus_003</code>，或漏写 <code>$</code> 符号（<code>156,000</code> 对 <code>$156,000</code>）即判全零；<br>
+          - <strong>单向断言被钻空子（BLE 9 题）：</strong>只查草稿状态或只查“值没变坏”，导致改状态不发信或<strong>删掉整行历史记录</strong>竟过关：
+        </p>
+<pre class="code-tree"><span class="cm">// 单向断言漏洞：不发信改状态 / 删整行让 rows 为空均过关</span>
 <span class="hi-red">assert draft["status"] == "SENT"
 assert all(r["val"] != bad for r in rows)</span>
-
-<span class="cm">// 合格脚本（双向断言）：验真实投递 + 历史快照未删改</span>
+<span class="cm">// 双向快照断言：验真实投递日志 + 受保护行未被删改</span>
 <span class="hi-sage">assert mail_log.has(to=target, deal=deal_id)
 assert db.get_row(protected_id) == snapshot</span></pre>
       </div>
     </div>
 
     <div class="prose">
-      <!-- Case 6 & 7: AA-Briefcase v1.1 & RLI -->
+      <!-- Deep Dive 2: AA-Briefcase v1.1 -->
       <div class="case-head">
-        <h4>Case 6 与 7：AA-Briefcase 双轨解耦与 Remote Labor Index 商业二元验收</h4>
-        <span class="case-meta-tag">Artificial Analysis (91 题) &amp; Scale AI x CAIS (240 Upwork 真单)</span>
+        <h4>Case 7：AA-Briefcase v1.1 杂乱企业档案馆里的多周项目与三支柱拆轨</h4>
+        <span class="case-meta-tag">Artificial Analysis | 4 大模拟企业 / 91 多周任务 | Binary Rubric + Crowd-BT Elo</span>
       </div>
       <p>
-        <strong>AA-Briefcase 如何防“文雅错账”：</strong>跨 SaaS 编排解决的是结构化操作，但多周财务尽调与董事会汇报既不能算错数、也不能逻辑散架。纯代码断言评不出 PPT 的洞察与结构，纯盲评又会被排版漂亮但利润算错 20% 的空洞报告骗高分。<a class="bench-ref" data-bid="briefcase">AA-Briefcase v1.1</a> 请行业专家搭出 4 家模拟公司网盘（数千份财报底表、互相打架的新旧制度与 <strong>25,000 条跨周 Slack 群聊</strong>）。在一道典型真题里，模型要重算季度损益 <code>.xlsx</code> 并做 12 页董事会 <code>.pptx</code>，但决定口径的欧洲区退货计提规则变更藏在 <strong>Slack 第 1.8 万条消息</strong>里，照旧 PDF 算直接全盘失准。评分物理拆成两条独立轨道（图 2.7 左）：轨道 1 用客观 Rubric 查公式链与数字，轨道 2 匿名盲评 PPT 叙事与洞察。拆轨后冠军立刻分家（Fable 5.2 赢硬指标 66.1%，Opus 5.5 / Sonnet 5.5 在盲评 Elo 上反超），证明“算得准”和“写得顺眼”是两种独立能力；更冷静的事实是，能把全部硬约束一条不漏做对的<strong>完美交付率只有约 3%</strong>，且超过三分之一题目全员不及格。
+        <strong>四座“像真公司一样脏”的档案馆：</strong>如果说 AutomationBench 考的是跨软件接口编排，那白领职场里更高价值的活（例如给董事会重算季度损益、做并购尽调、写重工战略规划）根本无法用几条数据库行变化来验收。Artificial Analysis 请来出身 <strong>Google、McKinsey、BCG</strong> 等机构的一线专家耗时数月，搭建了 <strong>4 个高度仿真的私有企业项目场景</strong>（覆盖<strong>数据科学、产品管理、银行业务、重工业战略</strong>，另公开一个尽调示范场景 <code>AA-Briefcase-Lite</code>），拆出 91 道多周综合任务。放进 Agent 工作区的不是几页干净 PDF，而是<strong>超过 25,000 条 Slack 群聊、3,500+ 封往来邮件、跨周会议纪要、互相打架的新旧公司制度手册与原始数据库 CSV</strong>。模型必须在配备 Python/Docker 执行环境的沙盒里自己翻查、写脚本跑数，最后交付主管能直接签字的 <code>.xlsx</code> 财务模型、<code>.pptx</code> 董事会汇报或 <code>.docx</code>/<code>.pdf</code> 战略备忘录。
       </p>
       <p>
-        <strong>Remote Labor Index 如何用商业退单压出真短板：</strong><a class="bench-ref" data-bid="rli">RLI</a> 干脆不再编模拟题，斥资 <strong>$14.4 万</strong>从 Upwork 买断 240 个已结款真单（23 工种、6,000+ 人类工时，剔除需反复开会拉扯的项目，留 10 公 + 230 私），将原始脏素材直接交进装好设计、剪辑与 CAD 软件的虚拟桌面。同业真人专家对照人类中标稿，只按一条商业标准给 0 或 1 分：<strong>愿不愿意按合同掏钱收货？</strong>一年内头部通过率从 2.5% 涨到 41.3%，但拆解剩下 <strong>58.7% 被拒付退单</strong>，模型往往不是不懂专业知识，而是反复栽在四类基础品控断点上（图 2.7 右）：导出 0 字节坏文件或空包、漏交可编辑源文件图层、正文核心数据与附表打架、3D 穿模或文字重叠。同时必须看清两条边界：41.3% 仅代表单次打包外包单，绝不等于替代四成全职岗位；而且办公基准存在尖锐的<strong>“公开可审出脚本错（AutomationBench / ALE）vs 私有锁库难复核（RLI 被 Epoch 标信息不足）”</strong>两难，稳妥做法是底层用双向确定性断言锁死数据库与公式，上层叠加细粒度成品完整度 Rubric。
+        <strong>三支柱拆轨的设计逻辑：</strong>开放式商业文档最怕“文雅地算错账”：排版像顶级咨询公司，但因为漏看了 <strong>Slack 第 1.8 万条消息里财务总监临时修改的欧洲区退货计提规则</strong>，照旧 PDF 算出的核心利润全盘失真。如果把算账准确度和文风排版揉进同一个总分，好看的错答案就能反超算对数的朴素方案。因此 AA-Briefcase v1.1 在方法论上把评价硬拆成三条独立支柱（图 2.7）：① <strong>可验证任务正确性（Binary Rubric Pass Rate）</strong>，按专家细粒度清单逐项核查数据行、公式链与隐性制度约束；② <strong>分析深度（Analytical Quality）</strong>；③ <strong>呈现质感（Presentation Quality）</strong>。v1.1 通过合成两两对战配合 <strong>Crowd-BT 最大似然模型</strong>把主观分析与呈现折算成统一 Elo，同时单独披露客观 Rubric 通过率。
+      </p>
+      <p>
+        <strong>原发布揭示的三条现实鸿沟：</strong>第一，<strong>“算得准”与“写得顺眼”冠军分家</strong>：从脏资料里抠对公式和约束最稳的 Fable 5.2 在客观 Rubric 居首（66.1%），但匿名盲评 Elo 上 Opus 5.5 与 Sonnet 5.5 反而胜出；第二，<strong>可靠性悬崖（Reliability Gap）</strong>：弱模型错在整份关键文件都没找到，强模型则悄悄漏掉跨文档细微矛盾，导致把一道题全部 Rubric 100% 满足的<strong>完美交付率仅约 3%</strong>，且 91 题中有 31 题所有参测模型都没过 50%；第三，<strong>超 800 倍成本极差</strong>：检索数万条群聊极吃长上下文 Token，从轻量开源模型到单题烧超 $30 的深度思考链差距悬殊，脱离成本单看 Elo 极易误判投入产出比。
       </p>
     </div>
 
-    <!-- Figure 2.7: Compact Vector AA-Briefcase vs RLI Verifier Architecture -->
+    <!-- Figure 2.7: Dedicated Crystal-Clear AA-Briefcase v1.1 Diagram -->
     <figure class="figure-card">
       <div class="fig-header">
         <div>
-          <h4 class="fig-title">图 2.7：开放办公交付的两类终裁架构：AA-Briefcase 双轨解耦与 RLI 二元付款</h4>
-          <div class="fig-sub">左侧拆解高噪企业网盘下的“客观 Rubric + 盲评 Elo”双轨制衡；右侧拆解真实 Upwork 外包单的商业二元门控与四类高频拒付硬伤</div>
+          <h4 class="fig-title">图 2.7：AA-Briefcase v1.1 企业档案库、沙盒实操与三支柱双轨终裁架构</h4>
+          <div class="fig-sub">从 >25,000 条 Slack 与 >3,500 封邮件的冲突信息中产出 .xlsx / .pptx，物理拆开客观 Rubric 算账准度与 Crowd-BT 盲评质感</div>
         </div>
       </div>
-      <div id="diagram-office-verifiers"></div>
+      <div id="diagram-briefcase-flow"></div>
       <div class="fig-caption">
-        <span>机制来源：Artificial Analysis AA-Briefcase v1.1（2026.11）；Scale AI x CAIS Remote Labor Index（2025.10–2026.11）。</span>
+        <span>一手来源：Artificial Analysis AA-Briefcase v1.1 Methodology &amp; Release（2026.06–11）。</span>
       </div>
     </figure>
+
+    <div class="prose">
+      <!-- Deep Dive 3: Remote Labor Index (RLI) -->
+      <div class="case-head">
+        <h4>Case 8：Remote Labor Index 买下 240 个 Upwork 真单与商业退单实测</h4>
+        <span class="case-meta-tag">Scale AI x CAIS (remotelabor.ai) | $14.4 万买断 240 真单 / 23 工种 | 中位 11.5h</span>
+      </div>
+      <p>
+        <strong>不再造“模拟公司”，直接拿真实经济交易当考卷：</strong>前两套基准再逼真终究是研究团队编出来的模拟环境。Scale AI 与 CAIS 在 <code>remotelabor.ai</code> 换了一套彻底不同的造榜哲学：直接斥资 <strong>$14.4 万</strong>向 Upwork 自由职业者买断 <strong>240 个已经真实成交结款的远程外包项目</strong>，横跨建筑与 CAD 制图、3D 建模、Web 与小游戏开发、音视频后期、平面设计与数据分析等 <strong>23 个行业</strong>（中位人工耗时 <strong>11.5 小时</strong>、中位合同价 <strong>$200</strong>、平均单价超 <strong>$600</strong>）。每个项目完整打包四件原件：甲方原始需求简报（Brief）、杂乱原始素材目录、费用/工时记录，以及当年真拿到报酬的<strong>人类专业中标稿（Gold Standard）</strong>。团队只剔除了需要反复开会拉扯需求的项目，留出 10 单公开示例与 230 单私有计分库。
+      </p>
+      <p>
+        <strong>单次简报进虚拟桌面，与原论文四类退单实测归因：</strong>评测时，Agent 在装好专业软件的虚拟桌面或代码沙盒里，凭原始简报和素材目录在预算上限内端到端做出成品（无人工中途介入）；随后由同行业真人专家将 AI 成品与人类中标稿并排盲审，只按一条最直接的商业标准给 0 或 1 分：<strong>产出是否达到或超过人类中标稿、让你作为甲方愿意掏钱收货？</strong>尽管头部模型的自动化率在一年内从 2025 年 10 月的 2.5% 爬升到了 2026 年 11 月的 <strong>41.3%</strong>，但原论文对剩下近六成拒付退单做出的定量归因（图 2.8 下半部），直接指出了当前端到端数字劳动的真正短板：
+      </p>
+      <ul>
+        <li><strong>专业质感不足 / 像“业余习作”（约 45.6%）：</strong>例如建筑 CAD 项目里生成的平面图与客户参考草图空间冲突；Web 与小游戏项目里代码虽能跑通，但界面观感和交互远远达不到付费交付门槛；音视频后期里人声配音机械僵硬、混音相位失衡。</li>
+        <li><strong>交付残缺或提前停工（约 35.7%）：</strong>做到一半自行收尾，漏掉甲方简报里的子项、漏交可编辑的设计源文件图层，或视频渲染中途截断。</li>
+        <li><strong>基础文件与技术损坏（约 17.6%）：</strong>看似很低级却高频出现，常见为导出 0 字节损坏文件、空目录、安装包打不开，或输出了甲方无法使用的错误文件格式。</li>
+        <li><strong>跨文件前后不一致（约 14.8%）：</strong>多文件工程里，报告正文核心数字与附表冲突、前端样式表或 3D 贴图引用路径断链。</li>
+      </ul>
+    </div>
+
+    <!-- Figure 2.8: Dedicated Crystal-Clear RLI Diagram -->
+    <figure class="figure-card">
+      <div class="fig-header">
+        <div>
+          <h4 class="fig-title">图 2.8：Remote Labor Index 真单发包流程与原论文四类商业退单实测归因</h4>
+          <div class="fig-sub">以真实 Upwork 已结款项目和人类中标稿为基准，拆解单次端到端交付下近六成拒付退单的精确问题占比（可重叠统计）</div>
+        </div>
+      </div>
+      <div id="diagram-rli-anatomy"></div>
+      <div class="fig-caption">
+        <span>一手来源：Scale AI x CAIS Remote Labor Index（remotelabor.ai，2025.10–2026.11，240 真单含 10 公开与 230 私有）。注：41.3% 仅限单次打包外包单，不等同于替代 41.3% 全职岗位。</span>
+      </div>
+    </figure>
+
+    <div class="prose">
+      <p>
+        <strong>办公业务小结（四套验证器的光谱与造榜两难）：</strong>把这几套办公基准摆在一起，正好能看清离开代码之后验证设计的全部权衡：<strong>纯代码查库与查交付件</strong>（AutomationBench 与 UC Berkeley 覆盖 O*NET 55 工种、90%+ 用确定性 Python + Gate-and-Score 门控的 <code>Agents' Last Exam</code>）跑得最快、最适合高频迭代，但哪怕彻底不用 LLM，复杂业务脚本也极易藏漏判（BLE 71%、Epoch 22/122）；<strong>三支柱双轨解耦</strong>（AA-Briefcase）兼顾了算账准度与文档质感，但长上下文推理账单跨度超 800 倍；<strong>真人商业判付</strong>（RLI）最贴近真实经济 ROI，却既慢又贵，且 230 单锁在私有库里难以接受外部白盒复核（被 Epoch AI 标为信息不足）。对自建办公评测的团队来说，没有哪一种单一裁判包打天下，更稳妥的工程组合是：底层用<strong>双向快照代码断言</strong>锁死数据库和公式正确性，上层叠加<strong>细粒度交付物完整度 Rubric</strong>，并定期抽样接受第三方白盒脚本审查。
+      </p>
+    </div>
 
     <!-- 2.4 COMPUTER-USE AGENT -->
     <div class="prose">
@@ -709,15 +731,15 @@ assert db.get_row(protected_id) == snapshot</span></pre>
         <span class="case-meta-tag">Surge AI + 12 行业行家 | 100 张零合成真图 / 禁工具 x 20 遍 | CC BY 4.0 全开源</span>
       </div>
       <p>
-        <strong>为什么刻意禁用工具并连跑 20 遍：</strong><a class="bench-ref" data-bid="charto">Chartography</a>（arXiv:2608.10677）向 12 个行业的执业医师、量化与一线工程师收集 100 张零合成真实工作图纸（Moody 双对数摩擦图、双纵轴 Bode 图、带删失标记的 Kaplan-Meier 生存曲线、化工多维等高线等），由 3 位同业独立读数划定误差容差带。评测故意强制 <strong><code>no tools</code>（禁止写 Python 裁剪放大局部）</strong>，专门直测视觉底座第一眼的原生高清解析力；多小问错一全零、拒答判零，每图独立连跑 <strong>20 遍</strong>（全轮 2,000 次免容器仅 $60–$260、30 分钟跑完）消除单次碰运气。前代模型（2026.07 最高 45%）集中栽在图 2.8 标出的四类物理读数失误上，如把双对数疏密网格按线性直尺估中点直接偏出数量级、双纵轴读着读着串轴；但短短 4 个月后，海外三强在同样禁工具条件下已集体站上 <strong>72.5%–75.1%</strong>（前三极差仅 2.6 分），说明 2D 静态读图已基本过关，真正的瓶颈转移到了几百步的跨软件动态操作。
+        <strong>刻意禁用工具并连跑 20 遍的用意：</strong><a class="bench-ref" data-bid="charto">Chartography</a>（arXiv:2608.10677）向 12 个行业的执业医师、量化与一线工程师收集 100 张零合成真实工作图纸（Moody 双对数摩擦图、双纵轴 Bode 图、带删失标记的 Kaplan-Meier 生存曲线、化工多维等高线等），由 3 位同业独立读数划定误差容差带。评测故意强制 <strong><code>no tools</code>（禁止写 Python 裁剪放大局部）</strong>，专门直测视觉底座第一眼的原生高清解析力；多小问错一全零、拒答判零，每图独立连跑 <strong>20 遍</strong>（全轮 2,000 次免容器仅 $60–$260、30 分钟跑完）消除单次碰运气。前代模型（2026.07 最高 45%）集中栽在图 2.9 标出的四类物理读数失误上，如把双对数疏密网格按线性直尺估中点直接偏出数量级、双纵轴读着读着串轴；但短短 4 个月后，海外三强在同样禁工具条件下已集体站上 <strong>72.5%–75.1%</strong>（前三极差仅 2.6 分），说明 2D 静态读图已基本过关，真正的瓶颈转移到了几百步的跨软件动态操作。
       </p>
     </div>
 
-    <!-- Figure 2.8: Chartography 4-Type Authentic Technical Chart Traps -->
+    <!-- Figure 2.9: Chartography 4-Type Authentic Technical Chart Traps -->
     <figure class="figure-card">
       <div class="fig-header">
         <div>
-          <h4 class="fig-title">图 2.8：Chartography 四类代表性行业真图与模型高频读数失误点</h4>
+          <h4 class="fig-title">图 2.9：Chartography 四类代表性行业真图与模型高频读数失误点</h4>
           <div class="fig-sub">取自一线流体、电气、医学与化工真实工作图型，禁 Python 裁剪放大，直测对数插值、双纵轴对齐、删失标记与等高线边界判读</div>
         </div>
       </div>
@@ -732,22 +754,22 @@ assert db.get_row(protected_id) == snapshot</span></pre>
     <div class="prose">
       <!-- Case 8: OSWorld 2.1 -->
       <div class="case-head">
-        <h4>Case 8：OSWorld 2.1 脏虚拟机长流程与 Sub-goal DAG 底层验分</h4>
+        <h4>Case 9：OSWorld 2.1 脏虚拟机长流程与 Sub-goal DAG 底层验分</h4>
         <span class="case-meta-tag">港大 XLang x CMU 等 12+ 机构 | 108 题 / 82 本地离线 | 1.6h 跨 2.44 软件 | 全开源</span>
       </div>
       <p>
         <strong>从短点击到脏环境与真人录轨排雷：</strong>港大 XLang、CMU 等 12+ 机构没有在 1.0 上小修小补，而是推倒重做了 <a class="bench-ref" data-bid="osworld">OSWorld 2.0 / 2.1</a>（arXiv:2606.29537）：把单题人类中位耗时拉长 <strong>48 倍至 1.6 小时</strong>、平均跨越 <strong>2.44 款桌面软件</strong>；剥离 26 道易因外网改版和验证码失效的在线题，保留 <strong>82 道纯本地离线题</strong>；并在每台 Ubuntu 虚拟机里预埋脏快照（错账 ERP 库、多图层 GIMP <code>.xcf</code>、历史往来邮件与 31 个本地 Docker 站点）。更重要的是 2.1 版的质检工序：首发 QA 投入 400 人时修完 300 处缺陷后，2.1 版进一步组织人类专家逐题录制完整 <strong>Golden Trajectory 通关轨迹</strong>，彻底清掉损坏素材、端口冲突和过窄路径误杀，确保离线集 100% 可复现。
       </p>
       <p>
-        <strong>弃用截图打分，改用 Sub-goal DAG 钻进 OS 底层验分：</strong>OSWorld 2.1 不把最终截图丢给多模态模型看图打主观分，而是把每段 1.6 小时工作流拆成 <strong>10 到 15 个 <code>Sub-goal DAG</code> 依赖节点</strong>，结束后由 Python 脚本直接钻进操作系统底层核验终态（图 2.9 上半部）：财务月报直读 SQL 表与 Calc 公式树（手填静态死数判 0）；抠图前端逐像素验 PNG Alpha 透明通道并抓渲染 DOM；翻十余封邮件改配置则直扫目录结构与 <code>chmod</code> 权限位。长流程交互允许最多 500 步（实测均 250–318+ 步，每步回传 1080p 截图，单题 $22–$76，全轮 $1.2K–$8.2K+ 并需嵌套 KVM 虚拟化集群），这也是它必须靠十余所高校联盟全开源共担运维的现实原因。
+        <strong>弃用截图打分，改用 Sub-goal DAG 钻进 OS 底层验分：</strong>OSWorld 2.1 不把最终截图丢给多模态模型看图打主观分，而是把每段 1.6 小时工作流拆成 <strong>10 到 15 个 <code>Sub-goal DAG</code> 依赖节点</strong>，结束后由 Python 脚本直接钻进操作系统底层核验终态（图 2.10 上半部）：财务月报直读 SQL 表与 Calc 公式树（手填静态死数判 0）；抠图前端逐像素验 PNG Alpha 透明通道并抓渲染 DOM；翻十余封邮件改配置则直扫目录结构与 <code>chmod</code> 权限位。长流程交互允许最多 500 步（实测均 250–318+ 步，每步回传 1080p 截图，单题 $22–$76，全轮 $1.2K–$8.2K+ 并需嵌套 KVM 虚拟化集群），这也是它必须靠十余所高校联盟全开源共担运维的现实原因。
       </p>
     </div>
 
-    <!-- Figure 2.9: Compact Vector OSWorld 2.1 Workflow, DAG Verifier & 93% One-Way Cliff -->
+    <!-- Figure 2.10: Compact Vector OSWorld 2.1 Workflow, DAG Verifier & 93% One-Way Cliff -->
     <figure class="figure-card">
       <div class="fig-header">
         <div>
-          <h4 class="fig-title">图 2.9：OSWorld 2.1 跨软件长流程、OS 底层验分与 93% 单向推进断点</h4>
+          <h4 class="fig-title">图 2.10：OSWorld 2.1 跨软件长流程、OS 底层验分与 93% 单向推进断点</h4>
           <div class="fig-sub">展示典型跨三软件真实工作流的 Python 底层校验链路，以及 XLang 轨迹分析揭示的“93% 单向推进、不足 7% 回检”根因</div>
         </div>
       </div>
@@ -853,19 +875,19 @@ ERP 导出漏选一列 -> Calc 公式引用偏列 -> Writer 嵌错表
 
       <!-- Case 9: RoboDojo & Embodied First Exam -->
       <div class="case-head">
-        <h4>Case 9：RoboDojo 统一底座、规则审计与 Embodied First Exam 实时时钟</h4>
+        <h4>Case 10：RoboDojo 统一底座、规则审计与 Embodied First Exam 实时时钟</h4>
         <span class="case-meta-tag">MIT / 港大 / 清华 / 西北等 18+ 校 | 42 仿真 + 18 真机 / 456 实时核心题 | 全开源</span>
       </div>
       <p>
-        <strong>标准化底座怎么搭：</strong>MIT、港大、清华、西北大学和斯坦福等 18 所高校联合推出的 <a class="bench-ref" data-bid="robodojo">RoboDojo</a>（arXiv:2607.04434）用三层工程基建把仿真和真机拉齐到同一套标准下（图 2.10）：底层在 Isaac Sim 里构建 <strong>42 项正交仿真任务</strong>，拆成泛化、记忆、精度、长程、开放五个维度共 24 项技能，并在 8xRTX 4090 上每卡并发 10 路异构仿真把 164 万帧耗时压缩近一半；中间层用 <code>XPolicyLab</code> 统一控制接口，一套策略代码直通仿真与真机；顶层搭出 <strong>18 项 RealEval 标准化真机实测台</strong>，用 1.5m 恒定 LED 黑幕灯箱配 3D 打印固定夹具，物理锁死头顶俯视相机、左右腕部相机与 ARX X5 / Piper / Piper X 三款双臂的相对位姿，支持外部远程排队复测。
+        <strong>标准化底座怎么搭：</strong>MIT、港大、清华、西北大学和斯坦福等 18 所高校联合推出的 <a class="bench-ref" data-bid="robodojo">RoboDojo</a>（arXiv:2607.04434）用三层工程基建把仿真和真机拉齐到同一套标准下（图 2.11）：底层在 Isaac Sim 里构建 <strong>42 项正交仿真任务</strong>，拆成泛化、记忆、精度、长程、开放五个维度共 24 项技能，并在 8xRTX 4090 上每卡并发 10 路异构仿真把 164 万帧耗时压缩近一半；中间层用 <code>XPolicyLab</code> 统一控制接口，一套策略代码直通仿真与真机；顶层搭出 <strong>18 项 RealEval 标准化真机实测台</strong>，用 1.5m 恒定 LED 黑幕灯箱配 3D 打印固定夹具，物理锁死头顶俯视相机、左右腕部相机与 ARX X5 / Piper / Piper X 三款双臂的相对位姿，支持外部远程排队复测。
       </p>
     </div>
 
-    <!-- Figure 2.10: Curated Original RoboDojo Paper Figures (Fig 2 + Fig 7) -->
+    <!-- Figure 2.11: Curated Original RoboDojo Paper Figures (Fig 2 + Fig 7) -->
     <figure class="figure-card">
       <div class="fig-header">
         <div>
-          <h4 class="fig-title">图 2.10：RoboDojo 五维双臂真题全景与 RealEval 标准化真机实测台</h4>
+          <h4 class="fig-title">图 2.11：RoboDojo 五维双臂真题全景与 RealEval 标准化真机实测台</h4>
           <div class="fig-sub">原论文 Fig 2 与 Fig 7：上图为 42 项五维仿真任务、视觉域随机化与 18 项三构型真机题库；下图为 1.5m 恒定 LED 灯箱与 3D 打印固定夹具实拍</div>
         </div>
       </div>
@@ -920,15 +942,15 @@ ERP 导出漏选一列 -> Calc 公式引用偏列 -> Writer 嵌错表
         <li><strong>真机差距尚未检验：</strong>真实台面充满玻璃折射、强反光、运动拖影与橡胶打滑，且算偏 3 毫米就会折断移液枪头或打翻样品，无法重来。18 项 RealEval 真机三构型榜最高仅 <strong>33.9%</strong>，三大通用旗舰至今无一提交真机成绩。</li>
       </ol>
       <p>
-        <strong>拔掉暂停键的机制裁决（Embodied First Exam）：</strong>如果取消仿真器的停表特权，零微调通用大模型还能直接控臂吗？西北大学在 2026 年 11 月发布 <strong>Embodied First Exam</strong>（arXiv:2611.12177），复用 Harbor 把包括 RoboDojo 在内的 <strong>35 套仿真器、47 种本体</strong>统合为 456 道核心题，在同一批任务上直接对照“停表模式”与“连续物理时钟（Realtime）”。图 2.11 拆解了两者在物理时间尺度上的根本断层：大模型每步思考 <strong>10 到 18 秒（约 0.1Hz）</strong>，而倾倒的水杯 <strong>0.4 秒</strong>就已砸落桌面、移动目标 <strong>1.2 秒</strong>已滑出抓取半径（真实控臂需要 10 到 50Hz 反馈）。拔掉暂停键后，456 道核心题里 <strong>63.0%（287/456 题）三大旗舰全拿 0 分</strong>，只有 37.0% 偏静态、低速的任务拿到非零分。
+        <strong>拔掉暂停键的机制裁决（Embodied First Exam）：</strong>如果取消仿真器的停表特权，零微调通用大模型还能直接控臂吗？西北大学在 2026 年 11 月发布 <strong>Embodied First Exam</strong>（arXiv:2611.12177），复用 Harbor 把包括 RoboDojo 在内的 <strong>35 套仿真器、47 种本体</strong>统合为 456 道核心题，在同一批任务上直接对照“停表模式”与“连续物理时钟（Realtime）”。图 2.12 拆解了两者在物理时间尺度上的根本断层：大模型每步思考 <strong>10 到 18 秒（约 0.1Hz）</strong>，而倾倒的水杯 <strong>0.4 秒</strong>就已砸落桌面、移动目标 <strong>1.2 秒</strong>已滑出抓取半径（真实控臂需要 10 到 50Hz 反馈）。拔掉暂停键后，456 道核心题里 <strong>63.0%（287/456 题）三大旗舰全拿 0 分</strong>，只有 37.0% 偏静态、低速的任务拿到非零分。
       </p>
     </div>
 
-    <!-- Figure 2.11: Compact Vector Turn-Based vs Realtime Physics Timing Diagram -->
+    <!-- Figure 2.12: Compact Vector Turn-Based vs Realtime Physics Timing Diagram -->
     <figure class="figure-card">
       <div class="fig-header">
         <div>
-          <h4 class="fig-title">图 2.11：回合制停表与连续物理时钟时序对照</h4>
+          <h4 class="fig-title">图 2.12：回合制停表与连续物理时钟时序对照</h4>
           <div class="fig-sub">Embodied First Exam（456 核心题 / 35 套仿真）时间轴拆解：拆穿 0.1Hz 慢思考与 10–50Hz 真实物理反馈之间的时钟断层</div>
         </div>
       </div>
@@ -1258,7 +1280,7 @@ ERP 导出漏选一列 -> Calc 公式引用偏列 -> Writer 嵌错表
   </div>
 </footer>
 
-<script src="data.js?v=20261126-9"></script>
-<script src="charts.js?v=20261126-9"></script>
+<script src="data.js?v=20261126-10"></script>
+<script src="charts.js?v=20261126-10"></script>
 </body>
 </html>
