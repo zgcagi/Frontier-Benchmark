@@ -1478,8 +1478,24 @@
     });
   }
 
+  function initHeadingAnchors() {
+    const targets = $$("article.chapter[id] > h2, .prose h3[id], section[id] > h2");
+    targets.forEach(h => {
+      if (h.querySelector(".h-anchor")) return;
+      const id = h.id || h.parentElement?.id;
+      if (!id) return;
+      const a = document.createElement("a");
+      a.className = "h-anchor";
+      a.href = `#${id}`;
+      a.textContent = "#";
+      a.setAttribute("aria-label", "链接到此小节");
+      h.appendChild(a);
+    });
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
     initUIHelpers();
+    initHeadingAnchors();
     renderAAOvernight();
     renderReleaseShiftSVG();
     renderCodeChart("fswe");
