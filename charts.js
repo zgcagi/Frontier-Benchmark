@@ -446,185 +446,446 @@
   }
 
   /* ------------------------------------------------------------------------
-     4. FIGURE 3 | OFFICE DUAL-METRIC GAP (Fixed ALE legend!)
+     4. PART 2.2 DIAGRAM | TB-SCIENCE 0.1 HARBOR EXECUTION + BLACK ICE CASE
      ------------------------------------------------------------------------ */
-  function renderOfficeDual(mode = "autobench") {
-    const host = $("#chart-office-dual");
+  function renderDiagramTBS() {
+    const host = $("#diagram-tbs-exec");
     if (!host) return;
-    const rows = D.officeDualMetrics[mode] || D.officeDualMetrics.autobench;
-    const hasCN = rows.some(r => r.cn);
-    const partialLbl = mode === "autobench" ? "AA 主榜目标分 (0 违规子目标)" : "步骤平均分 (Rubric Partial)";
-    const strictLbl = mode === "autobench" ? "严格全通率 (100% 达标且 0 违规)" : "严格全通率 (整单零失误)";
+    const svg = `<svg viewBox="0 0 860 278" style="width:100%;height:auto;display:block;font-family:var(--font-sans);">
+      <defs>
+        <marker id="tbs-arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,1 L9,5 L0,9 z" fill="#334155"/></marker>
+      </defs>
 
-    const W = 860, rowH = 46, padL = 168, padR = 102, padT = 34, padB = 30;
-    const H = padT + rows.length * rowH + padB;
-    const toX = v => padL + (v / 95) * (W - padL - padR);
+      <!-- Col 1: Disconnected Execution Container -->
+      <rect x="6" y="10" width="260" height="186" rx="7" fill="#F0F5FA" stroke="#1F4E79" stroke-width="1.2"/>
+      <rect x="6" y="10" width="260" height="28" rx="7" fill="#1F4E79"/>
+      <text x="136" y="28" text-anchor="middle" font-size="11.4" font-weight="650" fill="#FFFFFF">1. 断网执行容器 (复用 Harbor)</text>
+      <text x="18" y="56" font-size="10.8" font-weight="650" fill="#111827">学科工具链与脏输入：</text>
+      <text x="18" y="74" font-size="10.4" font-family="var(--font-mono)" fill="#1F4E79">C++ / Fortran / R / Python</text>
+      <text x="18" y="90" font-size="10.4" fill="#334155">原始卫星 GeoTIFF / 9年水文表 / 混沌序列</text>
+      <line x1="18" y1="103" x2="254" y2="103" stroke="#CBD5E1"/>
+      <text x="18" y="121" font-size="10.6" fill="#334155">- 全程断公网，阻断检索原论文</text>
+      <text x="18" y="139" font-size="10.6" fill="#334155">- 机内彻底移除 tests/ 与参考解</text>
+      <text x="18" y="157" font-size="10.6" fill="#334155">- 入库硬闸：oracle 5/5 必过</text>
+      <text x="18" y="175" font-size="10.4" fill="#64748B">  no-op 必得 0 分 + 红队攻题排雷</text>
 
-    let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block;font-family:var(--font-sans);">`;
-    [0, 20, 40, 60, 80].forEach(t => {
-      const x = toX(t);
-      svg += `<line x1="${x}" y1="${padT}" x2="${x}" y2="${H - padB}" stroke="#E5E7EB" stroke-dasharray="3,3"/>`;
-      svg += `<text x="${x}" y="${H - padB + 16}" text-anchor="middle" font-size="10.8" fill="#8A8A8A">${t}%</text>`;
-    });
+      <line x1="266" y1="103" x2="292" y2="103" stroke="#334155" stroke-width="1.6" marker-end="url(#tbs-arr)"/>
 
-    rows.forEach((r, i) => {
-      const y = padT + i * rowH + 6;
-      const gap = (r.partial - r.strict).toFixed(1);
-      const xp = toX(r.partial), xs = toX(r.strict);
-      svg += `<g class="off-pt" data-tip="<b>${r.model}</b><br>${partialLbl}: <b>${r.partial}%</b><br>${strictLbl}: <b>${r.strict}%</b><br>双口径差距: <b>-${gap} 个百分点</b>" style="cursor:pointer;">`;
-      svg += `<text x="${padL - 10}" y="${y + 19}" text-anchor="end" font-size="12.2" font-weight="600" fill="${r.cn ? "#2D6A5B" : "#1A1A1A"}">${r.model}</text>`;
-      svg += `<rect x="${padL}" y="${y + 3}" width="${xp - padL}" height="11" rx="2.5" fill="#CBD5E1"/>`;
-      svg += `<text x="${xp + 6}" y="${y + 12}" font-size="11" font-weight="600" fill="#475569">${r.partial}%</text>`;
-      svg += `<rect x="${padL}" y="${y + 17}" width="${xs - padL}" height="11" rx="2.5" fill="${r.cn ? "#2D6A5B" : "#1F4E79"}"/>`;
-      svg += `<text x="${xs + 6}" y="${y + 26}" font-size="11" font-weight="700" fill="${r.cn ? "#2D6A5B" : "#1F4E79"}">${r.strict}%</text>`;
-      svg += `<rect x="${W - padR + 12}" y="${y + 6}" width="78" height="20" rx="4" fill="#FDF3F0"/>`;
-      svg += `<text x="${W - padR + 51}" y="${y + 20}" text-anchor="middle" font-size="11" font-weight="600" fill="#A84A32">-${gap} pt</text>`;
-      svg += `</g>`;
-    });
+      <!-- Col 2: Concrete Task Execution (Black Ice Trap) -->
+      <rect x="298" y="10" width="266" height="186" rx="7" fill="#F8FAFC" stroke="#2D6A5B" stroke-width="1.2"/>
+      <rect x="298" y="10" width="266" height="28" rx="7" fill="#2D6A5B"/>
+      <text x="431" y="28" text-anchor="middle" font-size="11.4" font-weight="650" fill="#FFFFFF">2. 真题执行：门多塔湖结冰日重建</text>
+      <text x="310" y="55" font-size="10.4" fill="#334155">输入：10 年 Landsat + MODIS 多波段脏影像</text>
+      <rect x="310" y="65" width="242" height="54" rx="5" fill="#FDF3F0" stroke="#EACBC2"/>
+      <text x="320" y="82" font-size="10.5" font-weight="700" fill="#A84A32">典型失误：朴素亮度阈值掉进“黑冰”坑</text>
+      <text x="320" y="98" font-size="10" fill="#5C281A">光滑透明薄冰不反光，波段里与深水同样暗黑</text>
+      <text x="320" y="112" font-size="10" fill="#5C281A">代码零报错却把结冰日推迟，最终 0 分</text>
+      <rect x="310" y="127" width="242" height="58" rx="5" fill="#EDF6F4" stroke="#B7DDD3"/>
+      <text x="320" y="144" font-size="10.5" font-weight="700" fill="#2D6A5B">科学解法：去云 + 双星配准 + 时序修正</text>
+      <text x="320" y="160" font-size="10" fill="#1E4D42">统一坐标系与分辨率，结合多波段和连续性</text>
+      <text x="320" y="175" font-size="10" font-family="var(--font-mono)" fill="#1E4D42">-> 写出 ice_dates.csv (单向迁出)</text>
 
-    svg += `<rect x="${padL}" y="8" width="12" height="10" rx="2" fill="#CBD5E1"/>`;
-    svg += `<text x="${padL + 17}" y="17" font-size="11" fill="#666666">${partialLbl}</text>`;
-    svg += `<rect x="${padL + 228}" y="8" width="12" height="10" rx="2" fill="#1F4E79"/>`;
-    svg += `<text x="${padL + 245}" y="17" font-size="11" fill="#666666">${strictLbl}${hasCN ? "（青色为国产模型）" : ""}</text>`;
-    svg += `</svg>`;
+      <line x1="564" y1="103" x2="590" y2="103" stroke="#334155" stroke-width="1.6" marker-end="url(#tbs-arr)"/>
 
+      <!-- Col 3: Isolated Scientific Verifier -->
+      <rect x="596" y="10" width="258" height="186" rx="7" fill="#FAF5EE" stroke="#8C6239" stroke-width="1.2"/>
+      <rect x="596" y="10" width="258" height="28" rx="7" fill="#8C6239"/>
+      <text x="725" y="28" text-anchor="middle" font-size="11.4" font-weight="650" fill="#FFFFFF">3. 独立验证容器 (确定性 pytest)</text>
+      <text x="608" y="56" font-size="10.8" font-weight="650" fill="#111827">科学家手写硬验收（零主观打分）：</text>
+      <text x="608" y="75" font-size="10.5" fill="#334155">- 遥感结冰日：逐年实测误差容差</text>
+      <text x="608" y="93" font-size="10.5" fill="#334155">- 水文 15 参校准：拟合精度 NSE 下限</text>
+      <text x="608" y="111" font-size="10.5" fill="#334155">- 混沌/化工题：物理守恒与安全边界</text>
+      <rect x="608" y="128" width="234" height="56" rx="5" fill="#FFFFFF" stroke="#E5D4BE"/>
+      <text x="725" y="147" text-anchor="middle" font-size="10.8" font-weight="700" fill="#8C6239">非 0 即 1 科学硬裁决</text>
+      <text x="725" y="164" text-anchor="middle" font-size="10.1" fill="#475569">不比代码长短，只看科学数值</text>
+      <text x="725" y="177" text-anchor="middle" font-size="10.1" fill="#475569">与最终产物是否满足物理约束</text>
+
+      <!-- Bottom Compact Strip: 5-Discipline Composition + Non-Model Variables -->
+      <rect x="6" y="208" width="848" height="60" rx="6" fill="#F8FAFC" stroke="#E2E8F0"/>
+      <text x="18" y="226" font-size="10.5" font-weight="650" fill="#111827">首发 70 题学科构成（920 提案 7.6% 录用，现扩至 96 题）</text>
+      <rect x="18" y="234" width="114" height="22" rx="3" fill="#1F4E79"/><text x="75" y="249" text-anchor="middle" font-size="10" font-weight="600" fill="#FFF">生命 19</text>
+      <rect x="134" y="234" width="102" height="22" rx="3" fill="#2D6A5B"/><text x="185" y="249" text-anchor="middle" font-size="10" font-weight="600" fill="#FFF">物理 17</text>
+      <rect x="238" y="234" width="102" height="22" rx="3" fill="#4B6B8A"/><text x="289" y="249" text-anchor="middle" font-size="10" font-weight="600" fill="#FFF">数统 17</text>
+      <rect x="342" y="234" width="54" height="22" rx="3" fill="#8C6239"/><text x="369" y="249" text-anchor="middle" font-size="10" font-weight="600" fill="#FFF">工 9</text>
+      <rect x="398" y="234" width="48" height="22" rx="3" fill="#A84A32"/><text x="422" y="249" text-anchor="middle" font-size="10" font-weight="600" fill="#FFF">地 8</text>
+
+      <line x1="464" y1="216" x2="464" y2="260" stroke="#CBD5E1"/>
+      <text x="478" y="227" font-size="10.5" font-weight="700" fill="#A84A32">横向读榜不可忽略的两项非模型变量：</text>
+      <text x="478" y="244" font-size="10.2" fill="#334155">- 框架差：同一 Fable 5.2 换 Mini-SWE 直掉 18.9 分（74.6% -> 55.7%）</text>
+      <text x="478" y="259" font-size="10.2" fill="#334155">- 算力差：单题耗千万至 1.3 亿 tok，Vals 实测单题成本差 18 倍</text>
+    </svg>`;
     host.innerHTML = svg;
-    bindTooltips("#chart-office-dual .off-pt", el => el.dataset.tip);
   }
 
   /* ------------------------------------------------------------------------
-     5A. FIGURE 2.3 | CUA GAP: 2D CHART READING VS 1.6H DESKTOP GUI (PART 2.4)
+     4B. PART 2.2 DIAGRAM | DE NOVO BINDER DESIGN 24H PIPELINE & WET-LAB GAP
      ------------------------------------------------------------------------ */
-  function renderCUAGap() {
-    const host = $("#chart-cua-gap");
+  function renderDiagramBinder() {
+    const host = $("#diagram-binder-pipeline");
     if (!host) return;
-    const stages = D.embodiedAccuracy.slice(0, 3); // Chartography, OSWorld Partial, OSWorld Strict
-    const W = 720, H = 290, padL = 46, padR = 24, padT = 38, padB = 58;
-    const groupW = (W - padL - padR) / stages.length;
-    const toY = v => padT + ((100 - v) / 100) * (H - padT - padB);
+    const svg = `<svg viewBox="0 0 860 258" style="width:100%;height:auto;display:block;font-family:var(--font-sans);">
+      <defs>
+        <marker id="bnd-arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,1 L9,5 L0,9 z" fill="#334155"/></marker>
+      </defs>
 
-    let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block;font-family:var(--font-sans);">`;
-    [0, 25, 50, 75, 100].forEach(t => {
-      const y = toY(t);
-      svg += `<line x1="${padL}" y1="${y}" x2="${W - padR}" y2="${y}" stroke="#E5E7EB" stroke-dasharray="3,3"/>`;
-      svg += `<text x="${padL - 8}" y="${y + 4}" text-anchor="end" font-size="10.5" fill="#8A8A8A">${t}%</text>`;
-    });
+      <!-- 4-Step Autonomous Protein Design Pipeline -->
+      <rect x="6" y="10" width="194" height="156" rx="7" fill="#F0F5FA" stroke="#1F4E79" stroke-width="1.2"/>
+      <rect x="6" y="10" width="194" height="27" rx="7" fill="#1F4E79"/>
+      <text x="103" y="28" text-anchor="middle" font-size="11.2" font-weight="650" fill="#FFFFFF">01 | 靶点输入与限额</text>
+      <text x="18" y="55" font-size="10.5" fill="#111827" font-weight="600">15 个真实疾病靶点</text>
+      <text x="18" y="72" font-size="10.2" fill="#334155">- 三维结构（如 RBX1）</text>
+      <text x="18" y="89" font-size="10.2" fill="#334155">- 1.6 万字操作说明文档</text>
+      <text x="18" y="106" font-size="10.2" fill="#334155">- 开源蛋白设计软件栈</text>
+      <rect x="18" y="122" width="170" height="32" rx="4" fill="#FFFFFF" stroke="#BDD4E7"/>
+      <text x="103" y="142" text-anchor="middle" font-size="10.4" font-weight="700" fill="#1F4E79">1 张 GPU / 24h 无人干预</text>
 
-    const leg = [["Anthropic (Fable 5.2)", "#A84A32"], ["OpenAI (Sol / Astra)", "#1F4E79"], ["Google (Carbon)", "#2D6A5B"]];
-    leg.forEach(([lbl, col], i) => {
-      const lx = padL + i * 195;
-      svg += `<rect x="${lx}" y="9" width="10" height="10" rx="2" fill="${col}"/>`;
-      svg += `<text x="${lx + 14}" y="18" font-size="11" font-weight="600" fill="#333333">${lbl}</text>`;
-    });
+      <line x1="200" y1="88" x2="220" y2="88" stroke="#334155" stroke-width="1.6" marker-end="url(#bnd-arr)"/>
 
-    stages.forEach((st, idx) => {
-      const gx = padL + idx * groupW + groupW / 2;
-      const bw = 30, gap = 8;
-      const startX = gx - (3 * bw + 2 * gap) / 2;
-      const items = [
-        { ...st.anthropic, col: "#A84A32" },
-        { ...st.openai, col: "#1F4E79" },
-        { ...st.google, col: "#2D6A5B" }
-      ];
-      items.forEach((it, j) => {
-        const bx = startX + j * (bw + gap);
-        const y = toY(it.val), h = toY(0) - y;
-        svg += `<g class="cua-pt" data-tip="<b>${st.stage.replace("\n", " | ")}</b><br>${it.model}: <b>${it.val}%</b><br>${st.note}" style="cursor:pointer;">`;
-        svg += `<rect x="${bx}" y="${y}" width="${bw}" height="${h}" rx="3" fill="${it.col}"/>`;
-        svg += `<text x="${bx + bw / 2}" y="${y - 6}" text-anchor="middle" font-size="10.5" font-weight="650" fill="${it.col}">${it.val}%</text>`;
-        svg += `</g>`;
-      });
+      <rect x="226" y="10" width="194" height="156" rx="7" fill="#EDF6F4" stroke="#2D6A5B" stroke-width="1.2"/>
+      <rect x="226" y="10" width="194" height="27" rx="7" fill="#2D6A5B"/>
+      <text x="323" y="28" text-anchor="middle" font-size="11.2" font-weight="650" fill="#FFFFFF">02 | 自主驱动生成栈</text>
+      <text x="238" y="55" font-size="10.5" fill="#111827" font-weight="600">全程自写脚本与排错</text>
+      <text x="238" y="72" font-size="10.2" fill="#334155">- 解析靶点挑结合凹槽</text>
+      <text x="238" y="89" font-size="10.2" fill="#334155">- 编排 RFdiffusion 骨架</text>
+      <text x="238" y="106" font-size="10.2" fill="#334155">- 调 BindCraft 批量出序</text>
+      <rect x="238" y="122" width="170" height="32" rx="4" fill="#FFFFFF" stroke="#B7DDD3"/>
+      <text x="323" y="142" text-anchor="middle" font-size="10.2" font-weight="650" fill="#2D6A5B">自然界不存在的新序列</text>
 
-      st.stage.split("\n").forEach((ln, li) => {
-        svg += `<text x="${gx}" y="${H - padB + 20 + li * 15}" text-anchor="middle" font-size="${li === 0 ? "11.5" : "10.2"}" font-weight="${li === 0 ? "650" : "400"}" fill="${li === 0 ? "#1A1A1A" : "#666666"}">${ln}</text>`;
-      });
-    });
+      <line x1="420" y1="88" x2="440" y2="88" stroke="#334155" stroke-width="1.6" marker-end="url(#bnd-arr)"/>
 
-    // Drop annotation between Partial and Strict
-    const xP = padL + 1.5 * groupW;
-    const xS = padL + 2.5 * groupW;
-    svg += `<text x="${(xP + xS) / 2}" y="${toY(72)}" text-anchor="middle" font-size="10.4" font-weight="650" fill="#A84A32">严全通掉 34.7 分</text>`;
-    svg += `<text x="${(xP + xS) / 2}" y="${toY(72) + 14}" text-anchor="middle" font-size="9.6" fill="#666666">(93% 单向推进不回检)</text>`;
+      <rect x="446" y="10" width="194" height="156" rx="7" fill="#FAF5EE" stroke="#8C6239" stroke-width="1.2"/>
+      <rect x="446" y="10" width="194" height="27" rx="7" fill="#8C6239"/>
+      <text x="543" y="28" text-anchor="middle" font-size="11.2" font-weight="650" fill="#FFFFFF">03 | 计算重折叠筛选</text>
+      <text x="458" y="55" font-size="10.5" fill="#111827" font-weight="600">多轮自验与择优交付</text>
+      <text x="458" y="72" font-size="10.2" fill="#334155">- Boltz / AlphaFold 重折叠</text>
+      <text x="458" y="89" font-size="10.2" fill="#334155">- 按失败反馈换位点重算</text>
+      <text x="458" y="106" font-size="10.2" fill="#334155">- 筛除易聚集失活设计</text>
+      <rect x="458" y="122" width="170" height="32" rx="4" fill="#FFFFFF" stroke="#E5D4BE"/>
+      <text x="543" y="142" text-anchor="middle" font-size="10.4" font-weight="700" fill="#8C6239">每靶交 30 条 | 模拟 85.1%</text>
 
-    svg += `</svg>`;
+      <line x1="640" y1="88" x2="660" y2="88" stroke="#334155" stroke-width="1.6" marker-end="url(#bnd-arr)"/>
+
+      <rect x="666" y="10" width="188" height="156" rx="7" fill="#FDF3F0" stroke="#A84A32" stroke-width="1.2"/>
+      <rect x="666" y="10" width="188" height="27" rx="7" fill="#A84A32"/>
+      <text x="760" y="28" text-anchor="middle" font-size="11.2" font-weight="650" fill="#FFFFFF">04 | 盲寄 CRO 湿测终裁</text>
+      <text x="678" y="55" font-size="10.5" fill="#111827" font-weight="600">抹去来源寄两家实验室</text>
+      <text x="678" y="72" font-size="10.2" fill="#334155">- Twist：细胞表达真合成</text>
+      <text x="678" y="89" font-size="10.2" fill="#334155">- Adaptyv：仪器测结合力</text>
+      <text x="678" y="106" font-size="10.2" fill="#334155">- 14/15 靶点命中有效分子</text>
+      <rect x="678" y="122" width="164" height="32" rx="4" fill="#FFFFFF" stroke="#EACBC2"/>
+      <text x="760" y="142" text-anchor="middle" font-size="10.4" font-weight="700" fill="#A84A32">湿测 22%-35% (RBX1 3.9nM)</text>
+
+      <!-- Bottom Compact Gap Strip: Why In-Silico != Wet-Lab -->
+      <rect x="6" y="180" width="848" height="68" rx="6" fill="#F8FAFC" stroke="#E2E8F0"/>
+      <text x="18" y="200" font-size="10.8" font-weight="700" fill="#111827">核心机理落差：电脑重折叠模拟 85.1% 寄去真实细胞表达后命中率掉了一半以上</text>
+      <rect x="18" y="210" width="210" height="24" rx="4" fill="#8C6239"/>
+      <text x="123" y="226" text-anchor="middle" font-size="10.4" font-weight="650" fill="#FFFFFF">电脑重折叠模拟：85.1%</text>
+      <text x="242" y="226" font-size="12" font-weight="700" fill="#A84A32">-></text>
+      <rect x="264" y="210" width="164" height="24" rx="4" fill="#2D6A5B"/>
+      <text x="346" y="226" text-anchor="middle" font-size="10.4" font-weight="650" fill="#FFFFFF">前排优选湿测：49.0%</text>
+      <text x="440" y="226" font-size="12" font-weight="700" fill="#A84A32">-></text>
+      <rect x="462" y="210" width="186" height="24" rx="4" fill="#A84A32"/>
+      <text x="555" y="226" text-anchor="middle" font-size="10.4" font-weight="650" fill="#FFFFFF">1,320 序列湿测：22%-35%</text>
+      <rect x="660" y="210" width="182" height="24" rx="4" fill="#E2E8F0"/>
+      <text x="751" y="226" text-anchor="middle" font-size="10.2" font-weight="600" fill="#475569">人类+传统工具基线：10%-15%</text>
+    </svg>`;
     host.innerHTML = svg;
-    bindTooltips("#chart-cua-gap .cua-pt", el => el.dataset.tip);
   }
 
   /* ------------------------------------------------------------------------
-     5B. FIGURE 2.4 | PHYSICAL INTERACTION SPLIT: SIM VS REAL & REALTIME CLOCK
-     Strictly Separated Physical Units (NO Mixed Y-Axis)
+     4C. PART 2.3 DIAGRAM | AUTOMATIONBENCH 47 SAAS ARCH + BLE 71% AUDIT
      ------------------------------------------------------------------------ */
-  function renderPhysSplit() {
-    const hostA = $("#chart-phys-sim");
-    const hostB = $("#chart-first-exam");
+  function renderDiagramAutobench() {
+    const host = $("#diagram-autobench-arch");
+    if (!host) return;
+    const svg = `<svg viewBox="0 0 860 296" style="width:100%;height:auto;display:block;font-family:var(--font-sans);">
+      <defs>
+        <marker id="ab-arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,1 L9,5 L0,9 z" fill="#334155"/></marker>
+        <marker id="ab-arr-g" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,1 L9,5 L0,9 z" fill="#2D6A5B"/></marker>
+      </defs>
 
-    if (hostA) {
-      const bars = [
-        { label: "Claude Fable 5.2", sub: "Isaac Sim 停表 + 私有外挂", val: 64.9, txt: "64.9%‡", col: "#A84A32", tip: "带私有抽帧/插值外挂 + 停表冻结重力慢思考；尚未提交真机成绩" },
-        { label: "RealEval 真机最高", sub: "18 项恒定光箱真实双臂", val: 33.9, txt: "33.9%", col: "#2D6A5B", tip: "18 项真实机械臂实测台最高分，三大通用旗舰均未交真机成绩" },
-        { label: "GPT-6 Astra", sub: "Isaac Sim 停表仿真", val: 29.8, txt: "29.8%", col: "#1F4E79", tip: "无私有外挂下的停表仿真成绩，约 Fable 带外挂读数的一半" },
-        { label: "开源 VLA 机器人小模型", sub: "换光照/纹理视觉泛化后", val: 8.8, txt: "8.8%", col: "#64748B", tip: "传统微调小模型一换桌面纹理和光照，进度分大降 67%-96%" }
-      ];
-      const W = 450, H = 290, padL = 148, padR = 54, padT = 18, rowH = 62;
-      const toW = v => (v / 80) * (W - padL - padR);
+      <!-- Left: Agent Container (Only 2 primitives) -->
+      <rect x="6" y="10" width="224" height="190" rx="7" fill="#1E293B" stroke="#0F172A"/>
+      <text x="118" y="32" text-anchor="middle" font-size="11.4" font-weight="700" fill="#F8FAFC">被测 Agent (禁向人提问)</text>
+      <rect x="18" y="44" width="200" height="58" rx="5" fill="#293548" stroke="#475569"/>
+      <text x="28" y="63" font-size="10.8" font-weight="700" fill="#93C5FD">工具 1 | Search</text>
+      <text x="28" y="80" font-size="10.1" fill="#CBD5E1">关键词检索约 500 个</text>
+      <text x="28" y="94" font-size="10.1" fill="#CBD5E1">REST API 接口文档</text>
+      <rect x="18" y="112" width="200" height="74" rx="5" fill="#293548" stroke="#475569"/>
+      <text x="28" y="131" font-size="10.8" font-weight="700" fill="#86EFAC">工具 2 | Execute</text>
+      <text x="28" y="148" font-size="10.1" fill="#CBD5E1">发 REST 读写请求，自扛</text>
+      <text x="28" y="163" font-size="10.1" fill="#CBD5E1">分页、4xx 报错与写后回查</text>
+      <text x="28" y="178" font-size="9.8" fill="#FDE68A">(高频失误：写完不回读确认)</text>
 
-      let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block;font-family:var(--font-sans);">`;
-      [0, 20, 40, 60, 80].forEach(t => {
-        const x = padL + toW(t);
-        svg += `<line x1="${x}" y1="${padT}" x2="${x}" y2="${H - 28}" stroke="#E5E7EB" stroke-dasharray="3,3"/>`;
-        svg += `<text x="${x}" y="${H - 12}" text-anchor="middle" font-size="10" fill="#8A8A8A">${t}%</text>`;
-      });
+      <!-- Bidirectional arrows -->
+      <line x1="230" y1="86" x2="256" y2="86" stroke="#2D6A5B" stroke-width="1.6" marker-end="url(#ab-arr-g)"/>
+      <line x1="256" y1="118" x2="230" y2="118" stroke="#334155" stroke-width="1.6" marker-end="url(#ab-arr)"/>
 
-      bars.forEach((b, i) => {
-        const y = padT + i * rowH + 10;
-        const bw = toW(b.val);
-        svg += `<g class="phys-a-pt" data-tip="<b>${b.label} (${b.txt})</b><br>${b.tip}" style="cursor:pointer;">`;
-        svg += `<text x="${padL - 10}" y="${y + 13}" text-anchor="end" font-size="11.5" font-weight="650" fill="${b.col}">${b.label}</text>`;
-        svg += `<text x="${padL - 10}" y="${y + 27}" text-anchor="end" font-size="9.6" fill="#666666">${b.sub}</text>`;
-        svg += `<rect x="${padL}" y="${y + 4}" width="${bw}" height="22" rx="3.5" fill="${b.col}"/>`;
-        svg += `<text x="${padL + bw + 7}" y="${y + 19}" font-size="11.5" font-weight="700" fill="${b.col}">${b.txt}</text>`;
-        svg += `</g>`;
-      });
-      svg += `</svg>`;
-      hostA.innerHTML = svg;
-      bindTooltips("#chart-phys-sim .phys-a-pt", el => el.dataset.tip);
-    }
+      <!-- Center: 47 Local SaaS Sandbox with Real Dirty Traps -->
+      <rect x="262" y="10" width="326" height="190" rx="7" fill="#EDF6F4" stroke="#2D6A5B" stroke-width="1.2"/>
+      <text x="425" y="30" text-anchor="middle" font-size="11.4" font-weight="700" fill="#2D6A5B">本地隔离模拟公司 (克隆 47 款 SaaS / 657 私题)</text>
 
-    if (hostB) {
-      const f = D.firstExamCliff;
-      const W = 360, H = 290;
-      let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block;font-family:var(--font-sans);">`;
+      <rect x="274" y="42" width="146" height="68" rx="5" fill="#FFFFFF" stroke="#EACBC2"/>
+      <text x="284" y="60" font-size="10.6" font-weight="700" fill="#A84A32">CRM 客户库</text>
+      <text x="284" y="77" font-size="9.9" fill="#475569">预埋 3 条高度同名记录</text>
+      <text x="284" y="92" font-size="9.8" font-family="var(--font-mono)" fill="#A84A32">Meridian Corp / Corp.</text>
 
-      svg += `<text x="10" y="22" font-size="11.2" font-weight="650" fill="#1F4E79">1. 允许仿真暂停重力 (停表模式最高分)</text>`;
-      svg += `<rect x="10" y="34" width="340" height="24" rx="4" fill="#E5E7EB"/>`;
-      svg += `<rect x="10" y="34" width="${(f.turnBasedBest.val / 100) * 340}" height="24" rx="4" fill="#1F4E79" class="emb-b-pt" data-tip="<b>Turn-based 停表模式</b><br>${f.turnBasedBest.note}" style="cursor:pointer;"/>`;
-      svg += `<text x="${10 + (f.turnBasedBest.val / 100) * 340 + 8}" y="51" font-size="12" font-weight="700" fill="#1F4E79">34.0% (GPT-6 Astra)</text>`;
-      svg += `<text x="10" y="75" font-size="10.4" fill="#666666">开源最高 9.0%；每步允许停表思考 10-18 秒</text>`;
+      <rect x="430" y="42" width="146" height="68" rx="5" fill="#FFFFFF" stroke="#E5D4BE"/>
+      <text x="440" y="60" font-size="10.6" font-weight="700" fill="#8C6239">Sheets 电子表格</text>
+      <text x="440" y="77" font-size="9.9" fill="#475569">混杂新旧两行汇率/等级</text>
+      <text x="440" y="92" font-size="9.2" font-family="var(--font-mono)" fill="#8C6239">1/10: 1.10 -> 1/25: 1.30</text>
 
-      svg += `<line x1="10" y1="93" x2="350" y2="93" stroke="#D1D5DB" stroke-dasharray="4,3"/>`;
+      <rect x="274" y="120" width="146" height="68" rx="5" fill="#FFFFFF" stroke="#BDD4E7"/>
+      <text x="284" y="138" font-size="10.6" font-weight="700" fill="#1F4E79">Gmail 往来邮箱</text>
+      <text x="284" y="155" font-size="9.9" fill="#475569">隐性抄送与禁发规矩</text>
+      <text x="284" y="170" font-size="9.9" fill="#475569">藏在旧邮件串里</text>
 
-      svg += `<text x="10" y="114" font-size="11.2" font-weight="650" fill="#A84A32">2. 取消暂停键切回连续物理时钟 (456 题结局)</text>`;
-      const zeroW = (f.realtimeZeroPct / 100) * 340;
-      const nonZeroW = 340 - zeroW;
-      svg += `<g class="emb-b-pt" data-tip="<b>Realtime 连续物理时钟 (456 核心题)</b><br>${f.note}" style="cursor:pointer;">`;
-      svg += `<rect x="10" y="125" width="${zeroW}" height="42" rx="4" fill="#A84A32"/>`;
-      svg += `<text x="${10 + zeroW / 2}" y="144" text-anchor="middle" font-size="12.5" font-weight="700" fill="#FFFFFF">63.0% 全员 0 分</text>`;
-      svg += `<text x="${10 + zeroW / 2}" y="159" text-anchor="middle" font-size="10" fill="#FDE8E1">287 / 456 题三家全零</text>`;
-      svg += `<rect x="${10 + zeroW + 4}" y="125" width="${nonZeroW - 4}" height="42" rx="4" fill="#64748B"/>`;
-      svg += `<text x="${10 + zeroW + 4 + (nonZeroW - 4) / 2}" y="144" text-anchor="middle" font-size="11.6" font-weight="600" fill="#FFFFFF">37.0%</text>`;
-      svg += `<text x="${10 + zeroW + 4 + (nonZeroW - 4) / 2}" y="159" text-anchor="middle" font-size="9.8" fill="#E2E8F0">至少一家非零</text>`;
-      svg += `</g>`;
+      <rect x="430" y="120" width="146" height="68" rx="5" fill="#FFFFFF" stroke="#CBD5E1"/>
+      <text x="440" y="138" font-size="10.6" font-weight="700" fill="#334155">Slack / Jira 工单</text>
+      <text x="440" y="155" font-size="9.9" fill="#475569">排查未关闭升级客服单</text>
+      <text x="440" y="170" font-size="9.9" fill="#475569">按部门路由精准通知</text>
 
-      svg += `<rect x="10" y="185" width="340" height="92" rx="5" fill="#FFFFFF" stroke="#E5E7EB"/>`;
-      svg += `<text x="22" y="207" font-size="11.2" font-weight="650" fill="#1A1A1A">速度差对照 (实测时间尺度)</text>`;
-      svg += `<text x="22" y="227" font-size="10.8" fill="#333333">- 大模型思考一步：10-18 秒 (~0.1 Hz)</text>`;
-      svg += `<text x="22" y="245" font-size="10.8" fill="#333333">- 倒下的水杯落地：0.4 秒 | 目标滑出：1.2 秒</text>`;
-      svg += `<text x="22" y="264" font-size="10.8" font-weight="600" fill="#A84A32">- 实时控臂需要高频低延迟策略配合高层规划</text>`;
-      svg += `</svg>`;
-      hostB.innerHTML = svg;
-      bindTooltips("#chart-first-exam .emb-b-pt", el => el.dataset.tip);
-    }
+      <line x1="588" y1="103" x2="614" y2="103" stroke="#334155" stroke-width="1.6" marker-end="url(#ab-arr)"/>
+
+      <!-- Right: DB Final State Judge -->
+      <rect x="620" y="10" width="234" height="190" rx="7" fill="#FDF3F0" stroke="#A84A32" stroke-width="1.2"/>
+      <rect x="620" y="10" width="234" height="27" rx="7" fill="#A84A32"/>
+      <text x="737" y="28" text-anchor="middle" font-size="11.2" font-weight="650" fill="#FFFFFF">后台数据库终态裁判 (零 LLM)</text>
+      <text x="632" y="55" font-size="10.5" font-weight="650" fill="#111827">无视聊天框工整汇报，直查库表：</text>
+      <text x="632" y="73" font-size="10.2" fill="#334155">- 金额是否折算为 $156,000</text>
+      <text x="632" y="90" font-size="10.2" fill="#334155">- 另外两家同名客户有无误改</text>
+      <text x="632" y="107" font-size="10.2" fill="#334155">- 抄送对象与禁发红线全命中</text>
+      <rect x="632" y="120" width="210" height="71" rx="5" fill="#FFFFFF" stroke="#EACBC2"/>
+      <text x="642" y="137" font-size="10.4" font-weight="700" fill="#1F4E79">双口径落差 22–34 个百分点</text>
+      <text x="642" y="153" font-size="9.9" fill="#475569">目标分最高 79.3% -> 严全通 56.6%</text>
+      <text x="642" y="168" font-size="9.9" fill="#475569">国产追至 46%–47%（仅差 9–10 分）</text>
+      <text x="642" y="183" font-size="9.5" fill="#A84A32">注：Fable 5.1 曾拒答 40% 靠回退兜底</text>
+
+      <!-- Bottom Strip: BLE 100-Task White-Box Audit -->
+      <rect x="6" y="214" width="848" height="74" rx="6" fill="#F8FAFC" stroke="#E2E8F0"/>
+      <text x="18" y="233" font-size="10.6" font-weight="700" fill="#111827">BLE 白盒逐行审计公开集 v1.0.6（100 道纯代码数据库脚本）：即使放弃 LLM 裁判，仍有 71 题确认缺陷</text>
+      <rect x="18" y="242" width="156" height="22" rx="3" fill="#2D6A5B"/><text x="96" y="257" text-anchor="middle" font-size="10" font-weight="600" fill="#FFF">19 合格</text>
+      <rect x="176" y="242" width="82" height="22" rx="3" fill="#94A3B8"/><text x="217" y="257" text-anchor="middle" font-size="10" font-weight="600" fill="#FFF">10 存疑</text>
+      <rect x="260" y="242" width="230" height="22" rx="3" fill="#A84A32"/><text x="375" y="257" text-anchor="middle" font-size="10" font-weight="600" fill="#FFF">28 假阳性放水 (错账满分)</text>
+      <rect x="492" y="242" width="148" height="22" rx="3" fill="#C46B48"/><text x="566" y="257" text-anchor="middle" font-size="10" font-weight="600" fill="#FFF">18 假阴性错杀</text>
+      <rect x="642" y="242" width="74" height="22" rx="3" fill="#8C6239"/><text x="679" y="257" text-anchor="middle" font-size="9.8" font-weight="600" fill="#FFF">9 单向漏</text>
+      <rect x="718" y="242" width="124" height="22" rx="3" fill="#64748B"/><text x="780" y="257" text-anchor="middle" font-size="9.8" font-weight="600" fill="#FFF">16 参考解错/他</text>
+      <text x="18" y="280" font-size="9.9" fill="#475569">典型缺陷：只查表有新增行不核关键值（28 题）；写死题干未提隐藏列名（18 题）；改草稿为 SENT 或删整行绕过断言（9 题）。</text>
+    </svg>`;
+    host.innerHTML = svg;
+  }
+
+  /* ------------------------------------------------------------------------
+     4D. PART 2.3 DIAGRAM | AA-BRIEFCASE DUAL-TRACK vs RLI BINARY PAYOUT
+     ------------------------------------------------------------------------ */
+  function renderDiagramOfficeVerifiers() {
+    const host = $("#diagram-office-verifiers");
+    if (!host) return;
+    const svg = `<svg viewBox="0 0 860 264" style="width:100%;height:auto;display:block;font-family:var(--font-sans);">
+      <!-- Left Panel: AA-Briefcase Dual-Track -->
+      <rect x="6" y="8" width="416" height="248" rx="7" fill="#F8FAFC" stroke="#1F4E79" stroke-width="1.2"/>
+      <rect x="6" y="8" width="416" height="28" rx="7" fill="#1F4E79"/>
+      <text x="214" y="26" text-anchor="middle" font-size="11.3" font-weight="650" fill="#FFFFFF">AA-Briefcase v1.1 | 双轨解耦防“文雅错账” (4 企业 / 91 题)</text>
+
+      <rect x="18" y="46" width="392" height="44" rx="5" fill="#FFFFFF" stroke="#CBD5E1"/>
+      <text x="28" y="63" font-size="10.4" font-weight="650" fill="#111827">高噪企业网盘：数千份财务底表 + 冲突制度 + 2.5 万条 Slack</text>
+      <text x="28" y="80" font-size="9.9" fill="#475569">真题暗坑：决定口径的欧洲退货计提变更藏在第 1.8 万条群聊，交付 .xlsx + .pptx</text>
+
+      <!-- Track 1 & Track 2 -->
+      <rect x="18" y="102" width="190" height="106" rx="5" fill="#F0F5FA" stroke="#BDD4E7"/>
+      <text x="28" y="120" font-size="10.6" font-weight="700" fill="#1F4E79">轨道 1 | 客观 Rubric 核查</text>
+      <text x="28" y="138" font-size="10" fill="#334155">- 逐项查 Excel 数值与公式链</text>
+      <text x="28" y="154" font-size="10" fill="#334155">- 核查 PPT 必备结论图表</text>
+      <text x="28" y="174" font-size="10.2" font-weight="700" fill="#A84A32">冠军：Fable 5.2 (66.1%)</text>
+      <text x="28" y="191" font-size="9.8" fill="#475569">100% 完美交付率仅 ~3%</text>
+
+      <rect x="220" y="102" width="190" height="106" rx="5" fill="#FAF5EE" stroke="#E5D4BE"/>
+      <text x="230" y="120" font-size="10.6" font-weight="700" fill="#8C6239">轨道 2 | 匿名盲评 Elo</text>
+      <text x="230" y="138" font-size="10" fill="#334155">- 隐去模型署名两两并排盲评</text>
+      <text x="230" y="154" font-size="10" fill="#334155">- 评洞察深度、叙事与版面</text>
+      <text x="230" y="174" font-size="10.2" font-weight="700" fill="#8C6239">反超：Opus / Sonnet (1800+)</text>
+      <text x="230" y="191" font-size="9.8" fill="#475569">算得准与写得顺眼确实分家</text>
+
+      <rect x="18" y="218" width="392" height="28" rx="4" fill="#FDF3F0" stroke="#EACBC2"/>
+      <text x="214" y="236" text-anchor="middle" font-size="10.1" font-weight="600" fill="#A84A32">91 题中有 31 题（超 1/3）所有参测模型均不及格（&lt;50%）</text>
+
+      <!-- Right Panel: RLI Binary Payout -->
+      <rect x="438" y="8" width="416" height="248" rx="7" fill="#F8FAFC" stroke="#A84A32" stroke-width="1.2"/>
+      <rect x="438" y="8" width="416" height="28" rx="7" fill="#A84A32"/>
+      <text x="646" y="26" text-anchor="middle" font-size="11.3" font-weight="650" fill="#FFFFFF">Remote Labor Index | Upwork 真单商业二元验收 (230 私题)</text>
+
+      <rect x="450" y="46" width="392" height="44" rx="5" fill="#FFFFFF" stroke="#CBD5E1"/>
+      <text x="460" y="63" font-size="10.4" font-weight="650" fill="#111827">$14.4 万直买 240 个已结款外包单（23 工种 / 6,000+ 人类工时）</text>
+      <text x="460" y="80" font-size="9.9" fill="#475569">原样脏素材入装好设计/剪辑/CAD 的虚拟桌面，同业真人对照人类中标稿判付</text>
+
+      <!-- Binary outcome bar -->
+      <text x="450" y="109" font-size="10.3" font-weight="650" fill="#111827">二元商业验收结局（头部模型，1 年由 2.5% 涨至 41.3%）：</text>
+      <rect x="450" y="116" width="162" height="26" rx="4" fill="#2D6A5B"/>
+      <text x="531" y="133" text-anchor="middle" font-size="10.4" font-weight="700" fill="#FFFFFF">41.3% 合格收货</text>
+      <rect x="616" y="116" width="226" height="26" rx="4" fill="#A84A32"/>
+      <text x="729" y="133" text-anchor="middle" font-size="10.4" font-weight="700" fill="#FFFFFF">58.7% 一错归零整单退回</text>
+
+      <!-- 4 Root-cause boxes -->
+      <text x="450" y="160" font-size="10.2" font-weight="650" fill="#475569">剩下近六成拒付退单反复栽在四类基础品控硬伤：</text>
+      <rect x="450" y="168" width="192" height="34" rx="4" fill="#FFFFFF" stroke="#EACBC2"/>
+      <text x="459" y="183" font-size="10.1" font-weight="700" fill="#A84A32">01 | 0 字节坏文件 / 空压缩包</text>
+      <text x="459" y="196" font-size="9.4" fill="#64748B">产物损坏或格式不符约定</text>
+
+      <rect x="650" y="168" width="192" height="34" rx="4" fill="#FFFFFF" stroke="#EACBC2"/>
+      <text x="659" y="183" font-size="10.1" font-weight="700" fill="#A84A32">02 | 漏源文件图层 / 半途截断</text>
+      <text x="659" y="196" font-size="9.4" fill="#64748B">缺可编辑工程文件或渲染中断</text>
+
+      <rect x="450" y="210" width="192" height="34" rx="4" fill="#FFFFFF" stroke="#EACBC2"/>
+      <text x="459" y="225" font-size="10.1" font-weight="700" fill="#A84A32">03 | 正文与附表数字打架</text>
+      <text x="459" y="238" font-size="9.4" fill="#64748B">多文件间核心汇总数值冲突</text>
+
+      <rect x="650" y="210" width="192" height="34" rx="4" fill="#FFFFFF" stroke="#EACBC2"/>
+      <text x="659" y="225" font-size="10.1" font-weight="700" fill="#A84A32">04 | 3D 穿模与文字重叠</text>
+      <text x="659" y="238" font-size="9.4" fill="#64748B">贴图丢失、比例失调或排版溢出</text>
+    </svg>`;
+    host.innerHTML = svg;
+  }
+
+  /* ------------------------------------------------------------------------
+     4E. PART 2.4 DIAGRAM | OSWORLD 2.1 CROSS-APP DAG & 93% ONE-WAY CLIFF
+     ------------------------------------------------------------------------ */
+  function renderDiagramOSWorldDAG() {
+    const host = $("#diagram-osworld-dag");
+    if (!host) return;
+    const svg = `<svg viewBox="0 0 860 282" style="width:100%;height:auto;display:block;font-family:var(--font-sans);">
+      <defs>
+        <marker id="os-arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,1 L9,5 L0,9 z" fill="#475569"/></marker>
+      </defs>
+
+      <!-- Header context strip -->
+      <rect x="6" y="8" width="848" height="30" rx="5" fill="#F0F5FA" stroke="#BDD4E7"/>
+      <text x="430" y="27" text-anchor="middle" font-size="10.8" font-weight="650" fill="#1F4E79">82 道纯本地离线长流程：中位 1.6h（较 1.0 拉长 48 倍）| 跨 2.44 款软件 | 250-318+ 步 | 弃用截图打分，直查 OS 底层终态</text>
+
+      <!-- Example Workflow 1: Finance Report -->
+      <text x="10" y="59" font-size="10.6" font-weight="700" fill="#111827">真题链路 A | 财务月报（跨 3 软件）</text>
+      <rect x="6" y="66" width="154" height="44" rx="5" fill="#FFFFFF" stroke="#CBD5E1"/>
+      <text x="83" y="84" text-anchor="middle" font-size="10.4" font-weight="650" fill="#1F4E79">本地脏 ERP 数据库</text>
+      <text x="83" y="100" text-anchor="middle" font-size="9.6" fill="#64748B">导出含错账原始流水</text>
+      <line x1="160" y1="88" x2="180" y2="88" stroke="#475569" stroke-width="1.5" marker-end="url(#os-arr)"/>
+
+      <rect x="186" y="66" width="176" height="44" rx="5" fill="#FFFFFF" stroke="#CBD5E1"/>
+      <text x="274" y="84" text-anchor="middle" font-size="10.4" font-weight="650" fill="#1F4E79">LibreOffice Calc</text>
+      <text x="274" y="100" text-anchor="middle" font-size="9.6" fill="#64748B">清洗异常行 + 动态跨表公式</text>
+      <line x1="362" y1="88" x2="382" y2="88" stroke="#475569" stroke-width="1.5" marker-end="url(#os-arr)"/>
+
+      <rect x="388" y="66" width="144" height="44" rx="5" fill="#FFFFFF" stroke="#CBD5E1"/>
+      <text x="460" y="84" text-anchor="middle" font-size="10.4" font-weight="650" fill="#1F4E79">Writer 月报文档</text>
+      <text x="460" y="100" text-anchor="middle" font-size="9.6" fill="#64748B">嵌入图表并 Ctrl+S 落盘</text>
+      <line x1="532" y1="88" x2="554" y2="88" stroke="#475569" stroke-width="1.5" marker-end="url(#os-arr)"/>
+
+      <rect x="560" y="66" width="294" height="44" rx="5" fill="#EDF6F4" stroke="#2D6A5B"/>
+      <text x="572" y="84" font-size="10.4" font-weight="700" fill="#2D6A5B">Python 底层核验 (10–15 个 DAG 节点)</text>
+      <text x="572" y="100" font-size="9.8" fill="#1E4D42">直读 SQL 表与电子表格公式树，手填静态死数判 0</text>
+
+      <!-- Example Workflow 2: Design to Frontend -->
+      <text x="10" y="131" font-size="10.6" font-weight="700" fill="#111827">真题链路 B | 抠图改前端（跨 3 软件）</text>
+      <rect x="6" y="138" width="154" height="44" rx="5" fill="#FFFFFF" stroke="#CBD5E1"/>
+      <text x="83" y="156" text-anchor="middle" font-size="10.4" font-weight="650" fill="#8C6239">GIMP 多图层 .xcf</text>
+      <text x="83" y="172" text-anchor="middle" font-size="9.6" fill="#64748B">抠图保留透明通道导出 PNG</text>
+      <line x1="160" y1="160" x2="180" y2="160" stroke="#475569" stroke-width="1.5" marker-end="url(#os-arr)"/>
+
+      <rect x="186" y="138" width="176" height="44" rx="5" fill="#FFFFFF" stroke="#CBD5E1"/>
+      <text x="274" y="156" text-anchor="middle" font-size="10.4" font-weight="650" fill="#8C6239">VS Code 前端工程</text>
+      <text x="274" y="172" text-anchor="middle" font-size="9.6" fill="#64748B">更新样式与图片资源路径</text>
+      <line x1="362" y1="160" x2="382" y2="160" stroke="#475569" stroke-width="1.5" marker-end="url(#os-arr)"/>
+
+      <rect x="388" y="138" width="144" height="44" rx="5" fill="#FFFFFF" stroke="#CBD5E1"/>
+      <text x="460" y="156" text-anchor="middle" font-size="10.4" font-weight="650" fill="#8C6239">本地 Web 服务</text>
+      <text x="460" y="172" text-anchor="middle" font-size="9.6" fill="#64748B">重启站点并验证渲染</text>
+      <line x1="532" y1="160" x2="554" y2="160" stroke="#475569" stroke-width="1.5" marker-end="url(#os-arr)"/>
+
+      <rect x="560" y="138" width="294" height="44" rx="5" fill="#EDF6F4" stroke="#2D6A5B"/>
+      <text x="572" y="156" font-size="10.4" font-weight="700" fill="#2D6A5B">Python 底层核验 (零视觉裁判)</text>
+      <text x="572" y="172" font-size="9.8" fill="#1E4D42">逐像素校验 PNG Alpha 通道 + 抓取渲染后页面 DOM</text>
+
+      <!-- Bottom Strip: 93% Forward vs <7% Verify + Partial/Strict Cliff -->
+      <rect x="6" y="196" width="848" height="78" rx="6" fill="#F8FAFC" stroke="#E2E8F0"/>
+      <text x="18" y="216" font-size="10.6" font-weight="700" fill="#111827">XLang 轨迹动作归类：步骤均值高但严全通暴跌 34.7 分的根因</text>
+      <rect x="18" y="224" width="756" height="23" rx="4" fill="#1F4E79"/>
+      <text x="396" y="239" text-anchor="middle" font-size="10.4" font-weight="650" fill="#FFFFFF">&gt;93% 操作步数一路闷头往前推进（写完不回查、跨软件单点错沿下游滚雪球）</text>
+      <rect x="778" y="224" width="64" height="23" rx="4" fill="#A84A32"/>
+      <text x="810" y="239" text-anchor="middle" font-size="10" font-weight="700" fill="#FFFFFF">&lt;7% 回检</text>
+      <text x="18" y="264" font-size="10.1" fill="#475569">结果映射：82 题离线步骤均值（Partial）达 <tspan font-weight="700" fill="#1F4E79">89.3%</tspan>，切到 10–15 个 DAG 节点零失误（Strict）回落至 <tspan font-weight="700" fill="#A84A32">54.6% (-34.7 pt)</tspan>；常见死因是漏按 Ctrl+S 或忘重启服务。</text>
+    </svg>`;
+    host.innerHTML = svg;
+  }
+
+  /* ------------------------------------------------------------------------
+     4F. PART 2.5 DIAGRAM | TURN-BASED VS REALTIME PHYSICS CLOCK TIMING
+     ------------------------------------------------------------------------ */
+  function renderDiagramRealtimeClock() {
+    const host = $("#diagram-realtime-clock");
+    if (!host) return;
+    const svg = `<svg viewBox="0 0 860 278" style="width:100%;height:auto;display:block;font-family:var(--font-sans);">
+      <defs>
+        <marker id="rt-arr-b" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,1 L9,5 L0,9 z" fill="#1F4E79"/></marker>
+        <marker id="rt-arr-r" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,1 L9,5 L0,9 z" fill="#A84A32"/></marker>
+      </defs>
+
+      <!-- Track A: Turn-based Step-blocking -->
+      <rect x="6" y="8" width="848" height="78" rx="7" fill="#F0F5FA" stroke="#BDD4E7"/>
+      <text x="18" y="27" font-size="11" font-weight="700" fill="#1F4E79">模式 A | 回合制停表（Turn-based，Isaac Sim 默认）</text>
+      <text x="842" y="27" text-anchor="end" font-size="10.2" font-weight="600" fill="#1F4E79">只考静态空间规划，跳过推理耗时</text>
+
+      <rect x="18" y="38" width="150" height="38" rx="5" fill="#FFFFFF" stroke="#93B4D1"/>
+      <text x="93" y="54" text-anchor="middle" font-size="10.2" font-weight="700" fill="#111827">t = 0s 拍三路相机</text>
+      <text x="93" y="69" text-anchor="middle" font-size="9.6" fill="#475569">杯子刚开始向右倾倒</text>
+      <line x1="168" y1="57" x2="188" y2="57" stroke="#1F4E79" stroke-width="1.6" marker-end="url(#rt-arr-b)"/>
+
+      <rect x="194" y="38" width="388" height="38" rx="5" fill="#E0EDF8" stroke="#1F4E79" stroke-dasharray="4,3"/>
+      <text x="388" y="54" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1F4E79">[物理时钟冻结 10–18 秒] 重力暂停，杯子悬在半空等大模型思考</text>
+      <text x="388" y="69" text-anchor="middle" font-size="9.6" fill="#334155">模型从容做满思维链推演，算出 6-DoF 目标位姿与夹爪开合</text>
+      <line x1="582" y1="57" x2="602" y2="57" stroke="#1F4E79" stroke-width="1.6" marker-end="url(#rt-arr-b)"/>
+
+      <rect x="608" y="38" width="234" height="38" rx="5" fill="#EDF6F4" stroke="#2D6A5B"/>
+      <text x="725" y="54" text-anchor="middle" font-size="10.4" font-weight="700" fill="#2D6A5B">下发位姿 -> 接住成功</text>
+      <text x="725" y="69" text-anchor="middle" font-size="9.6" fill="#1E4D42">停表最高 GPT-6 Astra 34.0% / 开源 9.0%</text>
+
+      <!-- Track B: Realtime Continuous Physics Clock -->
+      <rect x="6" y="98" width="848" height="82" rx="7" fill="#FDF3F0" stroke="#EACBC2"/>
+      <text x="18" y="117" font-size="11" font-weight="700" fill="#A84A32">模式 B | 连续物理时钟（Realtime，Embodied First Exam 拔掉暂停键）</text>
+      <text x="842" y="117" text-anchor="end" font-size="10.2" font-weight="600" fill="#A84A32">0.1 Hz 慢思考 vs 10–50 Hz 物理反馈</text>
+
+      <rect x="18" y="128" width="150" height="40" rx="5" fill="#FFFFFF" stroke="#E2B9AC"/>
+      <text x="93" y="145" text-anchor="middle" font-size="10.2" font-weight="700" fill="#111827">t = 0s 拍三路相机</text>
+      <text x="93" y="160" text-anchor="middle" font-size="9.6" fill="#475569">杯子向右倾倒，时钟继续</text>
+      <line x1="168" y1="148" x2="188" y2="148" stroke="#A84A32" stroke-width="1.6" marker-end="url(#rt-arr-r)"/>
+
+      <rect x="194" y="128" width="186" height="40" rx="5" fill="#FCE7E1" stroke="#A84A32"/>
+      <text x="287" y="145" text-anchor="middle" font-size="10.4" font-weight="700" fill="#A84A32">t = 0.4s 杯子已砸落桌面</text>
+      <text x="287" y="160" text-anchor="middle" font-size="9.6" fill="#7A2E1B">大模型首步思维链刚起头</text>
+      <line x1="380" y1="148" x2="400" y2="148" stroke="#A84A32" stroke-width="1.6" marker-end="url(#rt-arr-r)"/>
+
+      <rect x="406" y="128" width="176" height="40" rx="5" fill="#FCE7E1" stroke="#A84A32"/>
+      <text x="494" y="145" text-anchor="middle" font-size="10.4" font-weight="700" fill="#A84A32">t = 1.2s 目标滑出抓取区</text>
+      <text x="494" y="160" text-anchor="middle" font-size="9.6" fill="#7A2E1B">场景态彻底失效不可逆</text>
+      <line x1="582" y1="148" x2="602" y2="148" stroke="#A84A32" stroke-width="1.6" marker-end="url(#rt-arr-r)"/>
+
+      <rect x="608" y="128" width="234" height="40" rx="5" fill="#A84A32"/>
+      <text x="725" y="145" text-anchor="middle" font-size="10.4" font-weight="700" fill="#FFFFFF">t = 10–18s 动作指令才到达</text>
+      <text x="725" y="160" text-anchor="middle" font-size="9.8" fill="#FDE8E1">彻底扑空！63.0% 题三家全拿 0 分</text>
+
+      <!-- Bottom Summary Strip: First Exam 456 Outcomes + RoboDojo 4-Metric Reality Check -->
+      <rect x="6" y="194" width="510" height="74" rx="6" fill="#F8FAFC" stroke="#E2E8F0"/>
+      <text x="18" y="213" font-size="10.5" font-weight="700" fill="#111827">First Exam 456 核心题（35 套仿真）实时时钟结局</text>
+      <rect x="18" y="222" width="306" height="24" rx="4" fill="#A84A32"/>
+      <text x="171" y="238" text-anchor="middle" font-size="10.4" font-weight="700" fill="#FFFFFF">63.0% 全员 0 分 (287 / 456 题)</text>
+      <rect x="328" y="222" width="176" height="24" rx="4" fill="#2D6A5B"/>
+      <text x="416" y="238" text-anchor="middle" font-size="10.2" font-weight="650" fill="#FFFFFF">37.0% 静态慢题非零</text>
+      <text x="18" y="261" font-size="9.7" fill="#64748B">结论：纯慢思考通用大模型直接控臂存在数量级时钟断层，必须配合高频低延迟底层策略。</text>
+
+      <rect x="528" y="194" width="326" height="74" rx="6" fill="#F8FAFC" stroke="#E2E8F0"/>
+      <text x="540" y="213" font-size="10.5" font-weight="700" fill="#111827">RoboDojo 四类口径参照（防混比）</text>
+      <text x="540" y="231" font-size="10.1" fill="#334155">- 私有插件+停表仿真 (Fable 5.2)：<tspan font-weight="700" fill="#A84A32">64.9%‡</tspan></text>
+      <text x="540" y="246" font-size="10.1" fill="#334155">- 11.14 审计清退违规后合规仿真最高：<tspan font-weight="700" fill="#1F4E79">56.4%</tspan></text>
+      <text x="540" y="261" font-size="10.1" fill="#334155">- RealEval 真机最高：<tspan font-weight="700" fill="#2D6A5B">33.9%</tspan>（三旗舰未提交真机）</text>
+    </svg>`;
+    host.innerHTML = svg;
   }
 
   /* ------------------------------------------------------------------------
@@ -1162,9 +1423,12 @@
     renderAAOvernight();
     renderReleaseShiftSVG();
     renderCodeChart("fswe");
-    renderOfficeDual("autobench");
-    renderCUAGap();
-    renderPhysSplit();
+    renderDiagramTBS();
+    renderDiagramBinder();
+    renderDiagramAutobench();
+    renderDiagramOfficeVerifiers();
+    renderDiagramOSWorldDAG();
+    renderDiagramRealtimeClock();
     renderDynamicStats();
     renderDomainStatsSVG();
     renderTimelineSVG();
@@ -1176,7 +1440,6 @@
 
     bindSegmented("adoption-seg", v => renderAdoptionMatrix(v));
     bindSegmented("code-seg", v => renderCodeChart(v));
-    bindSegmented("office-seg", v => renderOfficeDual(v));
 
     bindPillGroup("track-filters", "track");
     bindPillGroup("org-filters", "org");
