@@ -1,0 +1,1352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paradigm Shifts in Frontier AI Evaluation (2026)</title>
+  <meta name="description" content="A 2026 frontier AI evaluation survey by Zhongguancun Academy: analyzing the saturation of static benchmarks, the shifting priorities of OpenAI and Anthropic, 10 representative case studies from code repositories to the physical world, independent construction parameters for 16 frontier benchmarks, and Benchmark RSI.">
+  <link rel="stylesheet" href="styles.css?v=20261126-12">
+</head>
+<body>
+
+<!-- Sticky Translucent Header + Hardware-Accelerated Reading Progress Bar -->
+<header class="site-header" id="top">
+  <div class="site-header-inner">
+    <a class="site-brand" href="#top">Frontier Evaluation Notes</a>
+    <nav class="header-nav" aria-label="Navigation">
+      <a href="#part-1">Shift</a>
+      <a href="#part-2">Cases</a>
+      <a href="#part-3">Design Guide</a>
+      <a href="#part-4">Benchmark RSI</a>
+      <a href="#references">References</a>
+      <a class="nav-dir-link" href="benchmarks-en.html">Directory</a>
+      <div class="lang-switch" role="group" aria-label="Language switch">
+        <a class="lang-opt" href="index.html" data-lang-switch="zh">中文</a>
+        <span class="lang-opt active" aria-current="page">EN</span>
+      </div>
+    </nav>
+  </div>
+  <div class="read-progress" id="read-progress" aria-hidden="true"></div>
+</header>
+
+<main class="page">
+
+  <!-- Article Title & Metadata -->
+  <header class="post-header">
+    <h1>Paradigm Shifts in Frontier AI Evaluation</h1>
+    <div class="post-meta">
+      <span>Zhongguancun Academy</span>
+      <span>|</span>
+      <span>2026-11-26</span>
+      <span>|</span>
+      <span>~11,300 words</span>
+      <span>|</span>
+      <a href="benchmarks-en.html" style="color:var(--accent);text-decoration:none;font-weight:500;">16+3 Benchmark Directory</a>
+    </div>
+    <p class="post-lead">
+      On October 27, 2026, Artificial Analysis replaced three sub-benchmarks inside its composite index. Without changing a single weight of any evaluated model, leaderboard rankings split sharply within 24 hours. This survey examines how frontier AI evaluation evolved across 2026: why legacy static benchmarks saturated and lost signal, where OpenAI and Anthropic redirected their release tables, how 10 representative benchmarks operate from code repositories to the physical world, what independent construction statistics across 16 frontier benchmarks reveal about building durable evaluations, and how evaluation environments co-evolve with models and harnesses under Benchmark RSI.
+    </p>
+  </header>
+
+  <!-- Collapsible Top Table of Contents -->
+  <details class="toc-box" id="toc" open>
+    <summary>Table of Contents</summary>
+    <ul class="toc-list">
+      <li>
+        <a class="toc-main" href="#part-1">1. Legacy Saturation and New Evaluation Properties</a>
+        <ul class="toc-sub">
+          <li><a href="#sec-1-1">1.1 The AA v5.0 Overnight Leaderboard Split</a></li>
+          <li><a href="#sec-1-2">1.2 Post-Saturation Priorities at OpenAI and Anthropic</a></li>
+          <li><a href="#sec-1-3">1.3 Four Defining Properties of Next-Gen Benchmarks</a></li>
+        </ul>
+      </li>
+      <li>
+        <a class="toc-main" href="#part-2">2. From Code Repositories to the Physical World</a>
+        <ul class="toc-sub">
+          <li><a href="#sec-2-1">2.1 Code Engineering: FrontierCode 2.0 &amp; FrontierSWE v2</a></li>
+          <li><a href="#sec-2-2">2.2 Science: HLE-Diamond, TB-Science 0.1 &amp; Binder</a></li>
+          <li><a href="#sec-2-3">2.3 Office Workflows: AutomationBench, AA-Briefcase &amp; RLI</a></li>
+          <li><a href="#sec-2-4">2.4 Computer-Use Agent: Chartography &amp; OSWorld 2.1</a></li>
+          <li><a href="#sec-2-5">2.5 Physical Interaction: RoboDojo &amp; Embodied First Exam</a></li>
+        </ul>
+      </li>
+      <li>
+        <a class="toc-main" href="#part-3">3. How to Build a Valuable Benchmark</a>
+        <ul class="toc-sub">
+          <li><a href="#sec-3-1">3.1 Independent Parameters Across 16 Frontier Benchmarks</a></li>
+          <li><a href="#sec-3-2">3.2 Cross-Domain Empirical Laws</a></li>
+          <li><a href="#sec-3-3">3.3 A Five-Step Construction Playbook</a></li>
+        </ul>
+      </li>
+      <li>
+        <a class="toc-main" href="#part-4">4. Benchmark RSI</a>
+        <ul class="toc-sub">
+          <li><a href="#sec-4-1">4.1 From Evaluation Sandboxes to Agentic RL Environments</a></li>
+          <li><a href="#sec-4-2">4.2 Co-Evolution of Model, Harness, and Environment</a></li>
+        </ul>
+      </li>
+      <li class="toc-foot">
+        <a href="#references">References (60)</a>
+        <a href="#citation">Citation / BibTeX</a>
+        <a class="toc-dir-cta" href="benchmarks-en.html">Explore 16+3 Benchmark Directory -></a>
+      </li>
+    </ul>
+  </details>
+
+  <!-- ====================================================================
+       PART 1 | LEGACY SATURATION & NEW EVALUATION PROPERTIES
+       ==================================================================== -->
+  <article class="chapter" id="part-1">
+    <h2>1. Legacy Saturation and New Evaluation Properties</h2>
+
+    <div class="prose">
+      <h3 id="sec-1-1">1.1 The AA v5.0 Overnight Leaderboard Split</h3>
+      <p>
+        Between October 26 and October 27, 2026, Artificial Analysis upgraded its Intelligence Index from v4.3.2 to v5.0. The four top-level domain weights (office and knowledge work, coding, scientific reasoning, and general knowledge) stayed fixed at 25% each, and the exact same model checkpoints were evaluated on both days.
+      </p>
+      <p>
+        Within 24 hours, rankings diverged noticeably. GPT-6 Astra gained 4 points, while Claude Opus 5.5 and Gemini 4 Carbon held steady between 50 and 58. Leading Chinese models dropped 9 to 13 points overnight (Kimi K3.1 Pro fell from 55 to 46; DeepSeek V4.1 Flash and GLM-5.3 both fell from 45 to 32), widening the gap to the leader from 12 points to 26 points.<span class="sn-ref" data-sn="sn-1">1</span><span class="sidenote" id="sn-1"><span class="sn-num">[1]</span>Qwen4 Max, released on November 16, 2026, scored 43 on AA v5.0.2 (second among Chinese models), but was not part of the October 26–27 paired evaluation. Figure 1.1 restricts comparison strictly to the 6 checkpoints tested across both days; see Figure 1.2 for the full current leaderboard.</span>
+      </p>
+    </div>
+
+    <!-- Figure 1.1: AA Overnight Swap -->
+    <figure class="figure-card">
+      <div class="fig-header">
+        <div>
+          <h4 class="fig-title">Fig. 1.1: AA Intelligence Index Overnight Upgrade</h4>
+          <div class="fig-sub">Oct 26 (v4.3.2) vs. Oct 27 (v5.0) across the 6 checkpoints evaluated on both days; top-level weights unchanged, only 3 private and long-horizon sub-benchmarks swapped</div>
+        </div>
+      </div>
+      <div id="chart-aa-overnight"></div>
+      <div class="fig-caption">
+        <span>Data source: Artificial Analysis v4.3.2 / v5.0 / v5.0.2 (Oct–Nov 2026).</span>
+        <span>Key additions: +FrontierCode 2.0, +TB-Science 0.1, +HLE-Diamond.</span>
+      </div>
+    </figure>
+
+    <!-- Figure 1.2: Official AA v5.0.2 Leaderboard High-Res Export -->
+    <figure class="figure-card full">
+      <div class="fig-header">
+        <div>
+          <h4 class="fig-title">Fig. 1.2: Artificial Analysis Intelligence Index v5.0.2 Official Leaderboard</h4>
+          <div class="fig-sub">Official composite ranking as of 2026-11-26: top 10 spots are held by US closed-source models (50–65), while leading Chinese models cluster between 32 and 47</div>
+        </div>
+      </div>
+      <div class="fig-img-wrap media-wide">
+        <img src="assets/aa_intelligence_index.webp" width="2464" height="880" decoding="async" fetchpriority="high" alt="Artificial Analysis Intelligence Index v5.0.2 official leaderboard">
+      </div>
+      <div class="fig-caption">
+        <span>Image source: Artificial Analysis Intelligence Index v5.0.2 (2026-11-26). Claude Fable 5.2 leads (65), followed by GPT-6.2 Astra (62) and Gemini 4 Neon (62); top Chinese models are Kimi K3.1 Pro (47) and Qwen4 Max (43).</span>
+      </div>
+    </figure>
+
+    <div class="prose">
+      <p>
+        The cause becomes clear when inspecting the swapped sub-benchmarks. Version 5.0 retired saturated or dated suites—<code>GDPval-AA v2.1</code>, <code>SciCode</code>, original <code>HLE</code>, and <code>AA-LCR v1.1</code>—and introduced private pull-request review (<a class="bench-ref" data-bid="fc2">FrontierCode 2.0</a>), containerized scientific computing (<a class="bench-ref" data-bid="tbs">TB-Science 0.1</a>), and the cleaned <a class="bench-ref" data-bid="hle">HLE-Diamond</a> set. After the upgrade, roughly 60% of composite weight shifted onto private holdouts, and median output length per task rose from 35k to 59k tokens.
+      </p>
+
+      <h3 id="sec-1-2">1.2 Post-Saturation Priorities at OpenAI and Anthropic</h3>
+      <p>
+        The overnight index revision reflects two converging shifts: legacy static benchmarks have largely reached ceiling performance, and real-world deployment has moved far beyond single-turn question answering.
+      </p>
+      <p>
+        Longitudinal tracking by Epoch AI (Fig. 1.3, left) illustrates how quickly static benchmarks saturate across six capabilities: MMLU (88.1%), AIME (100%), GPQA Diamond (96.8%), SWE-bench Verified (83.5%; self-reported up to 87.6%), Terminal-Bench 2.0 (rising from 32.6% to 84.7% in 10 months), and ARC-AGI-2 (95.8%) all approached saturation within one to two years. Surveying 60 public benchmarks, Akhtar et al. (ICML 2026) found that on nearly half of active leaderboards, the score gap between top models is now smaller than run-to-run variance for a single model (0.3–1.5 points).
+      </p>
+      <p>
+        Once models push into the upper tail of a benchmark, item and grading defects dominate the remaining errors. When OpenAI retired SWE-bench Verified in February 2026, an audit of 138 unsolved tasks found that 59.4% suffered from defective tests. FutureHouse reviewed 321 text-only biology and chemistry items in original HLE against peer-reviewed literature and found 29% +/- 3.7% had incorrect ground-truth keys; Epoch AI flagged 42% errata in FrontierMath v1. When a third to half of remaining failures stem from flawed tasks, decimal-point leaderboard differences lose diagnostic value.
+      </p>
+      <p>
+        Starting in mid-to-late 2026, frontier laboratories visibly restructured their flagship release tables around new capabilities:
+      </p>
+      <ul>
+        <li><strong>Anthropic focuses on long-horizon autonomy, commercial delivery, and safety boundaries.</strong> In its SEC Form S-1 filing, Anthropic organizes user interaction into three phases (Fig. 1.3, right): from short-turn Chatbots and single-app Copilots to Virtual Collaborators capable of running autonomously for 38 minutes to reconcile 14,302 transactions, draft MD&amp;A narratives, and compile a 12-page CFO deck. On the November 2026 Claude Fable 5.2 release table, 8 of 14 benchmarks were newly released in 2026, 2 were built internally, and zero traditional multiple-choice tests remained—putting weight on 20-hour open-ended software engineering (FrontierSWE v2), real paid freelance work (RLI), 1.6-hour desktop workflows (OSWorld 2.1), 24-hour protein binder design, and cyber redlines (ExploitBench).</li>
+        <li><strong>OpenAI retired noisy legacy tables in favor of real science, professional software, and cost efficiency.</strong> After dropping SWE-bench Verified in February 2026, OpenAI centered its GPT-6.2 Astra and Sol release on private PR quality (FrontierCode 2.0), containerized science (TB-Science 0.1), unpublished wet-lab troubleshooting (BioBasicsBench), 44-occupation blind evaluation (GDPval v2), and 55-occupation desktop software sandboxes (ALE v1.1), presenting the lightweight Sol tier alongside Astra to foreground cost-efficiency trade-offs.</li>
+        <li><strong>Google DeepMind explicitly surfaces harness variance and anti-cheating adjustments.</strong> The November 2026 Gemini 4 Neon release matched the new benchmark core while disclosing a 3x solve-rate gap between its native Antigravity harness and third-party Mini-SWE on identical weights, and became the first lab to publish cheating-adjusted accuracy on Terminal-Bench 4.1.</li>
+      </ul>
+      <p>
+        Figure 1.4 compares the November 2026 flagship release tables across all three labs. Their hard intersection now converges on FrontierCode 2.0, TB-Science 0.1, HLE-Diamond, AutomationBench, and cybersecurity or behavioral audits. By contrast, most Chinese flagship releases over the same period remained anchored to SWE-bench Pro, Terminal-Bench 2.1, and original HLE, trailing the evaluation shift by roughly one quarter.
+      </p>
+    </div>
+
+    <!-- Figure 1.3: Epoch 6-Domain Saturation + Anthropic S-1 Virtual Collaborators -->
+    <figure class="figure-card full">
+      <div class="fig-header">
+        <div>
+          <h4 class="fig-title">Fig. 1.3: Six-Domain Benchmark Saturation and Anthropic S-1 Workflow Evolution</h4>
+          <div class="fig-sub">Left: Epoch AI frontier curves reaching saturation within 1–2 years. Right: Anthropic SEC Form S-1 illustration of autonomous multi-system collaboration</div>
+        </div>
+      </div>
+      <div class="fig-img-grid ratio-13">
+        <div class="fig-img-wrap">
+          <div class="fig-img-stage">
+            <img src="assets/epoch_6domain_saturation.webp" width="2200" height="1356" decoding="async" alt="Epoch AI six-domain benchmark saturation curves" loading="lazy">
+          </div>
+          <div class="fig-img-cap">Left: MMLU, AIME, GPQA Diamond, ARC-AGI-2, SWE-bench Verified, and TB 2.0 all entered the 80%–100% saturation band within 1–2 years.</div>
+        </div>
+        <div class="fig-img-wrap">
+          <div class="fig-img-stage">
+            <img src="assets/anthropic_s1_virtual_collaborators.webp" width="1872" height="964" decoding="async" alt="Anthropic SEC S-1 Chatbots to Virtual Collaborators progression" loading="lazy">
+          </div>
+          <div class="fig-img-cap">Right: Anthropic S-1 figure illustrating a 38-minute autonomous run reconciling 14,302 transactions, drafting MD&amp;A, and producing a 12-page CFO brief.</div>
+        </div>
+      </div>
+    </figure>
+
+    <!-- Figure 1.4: 2026.11 Closed-Source Frontier Release Table Shift -->
+    <figure class="figure-card full">
+      <div class="fig-header">
+        <div>
+          <h4 class="fig-title">Fig. 1.4: November 2026 Frontier Lab Release-Table Convergence</h4>
+          <div class="fig-sub">Compiled from primary release pages for Claude Fable 5.2, GPT-6.2, and Gemini 4 Neon; red rows denote benchmarks promoted by all three labs</div>
+        </div>
+      </div>
+      <div id="chart-release-shift"></div>
+      <div class="fig-caption">
+        <span>Primary sources: anthropic.com/claude-fable-and-mythos-5-2, openai.com GPT-6.2 Release, blog.google Gemini 4 Neon (Nov 2026).</span>
+      </div>
+    </figure>
+
+    <div class="prose">
+      <h3 id="sec-1-3">1.3 Four Defining Properties of Next-Gen Benchmarks</h3>
+      <p>
+        Reading the 2026 lab release tables alongside third-party indexes points to four structural departures from static benchmark suites:
+      </p>
+      <ol>
+        <li><strong>Longer horizons, often without a reference solution.</strong> Task duration has expanded from seconds of single-turn QA and minutes of bug patching to 1.6-hour desktop workflows, 20-hour systems engineering, and 24-hour protein design. In performance optimization and scientific discovery, even human experts lack a canonical patch, so grading must rely on deterministic measurement or physical experiment.</li>
+        <li><strong>Underspecified prompts over messy, realistic context.</strong> Instead of listing target files, edge cases, and output schemas upfront, prompts supply brief colloquial bug reports, corporate drives holding tens of thousands of Slack messages and conflicting policies, uncropped lab bench photos, or pre-corrupted virtual machines—testing whether an agent can infer implicit constraints and bound its edits.</li>
+        <li><strong>Expansion from code repositories to science, office work, desktop GUIs, and physical control.</strong> Isolation containers and final-state verifiers matured first in code repositories where compilation and testing are cheap, then generalized outward to computational and wet-lab science, multi-SaaS office workflows, paid freelance labor, desktop GUI execution, and bimanual robotic control.</li>
+        <li><strong>Evaluation measures a complete system rather than weights alone.</strong> The abstraction has shifted from <code>Prompt -> Model -> Score</code> to <strong>Model x Harness x Environment -> Score</strong>. Google's Gemini 4 Neon release (Nov 18, 2026) gave a clean controlled comparison: on <code>SWE-sweep</code>, the identical Neon checkpoint solved 12.8% under <code>Mini-SWE</code> versus 39.0% under native <code>Antigravity</code> (a 3x difference). On <code>Terminal-Bench 2.0</code>, simply relaxing container timeouts by 3–5x raised the same GPT-5.2 checkpoint by 6 to 15 points.</li>
+      </ol>
+    </div>
+  </article>
+
+  <!-- ====================================================================
+       PART 2 | FROM CODE REPOSITORIES TO THE PHYSICAL WORLD
+       ==================================================================== -->
+  <article class="chapter" id="part-2">
+    <h2>2. From Code Repositories to the Physical World</h2>
+    <p class="chapter-lead">
+      Next-generation benchmarks follow a clear outward progression: starting in code repositories where deterministic verification is cheapest, then extending to scientific computing and wet labs, office workflows and paid freelance delivery, Computer-Use Agent desktop tasks, and finally continuous-time three-dimensional physics. Below we unpack 10 representative benchmarks across these five domains, focusing on task mechanics, verification logic, and recurring failure modes. Click any dashed benchmark reference in the prose to inspect its full verification dossier.
+    </p>
+
+    <!-- 2.1 CODING -->
+    <div class="prose">
+      <h3 id="sec-2-1">2.1 Code Engineering</h3>
+      <p>
+        Because compilers and test suites provide cheap automated grading, coding was also the first domain where legacy evaluation reached its limits. Over three years, <a class="bench-ref" data-bid="swe_full">SWE-bench</a> went through five generations: Docker containerization eliminated environment drift and <code>git log</code> leakage, and the human-curated 500-task <code>Verified</code> split climbed to 83.5% within 18 months. Later variants focused on resisting contamination—<code>Multilingual</code> expanded to 9 languages (43% to 73%), <a class="bench-ref" data-bid="swe_pro">SWE-bench Pro</a> introduced 1,865 tasks from commercial private repos, and <code>DeepSWE</code> wrote 113 original tasks outside GitHub. Yet Pro still climbed from ~23% to 93.0% (Claude Fable 5.2) in a single year, and DeepSWE reached 74.1% (Fig. 2.1).
+      </p>
+      <p>
+        Swapping repositories alone could not arrest saturation because all five generations kept the same underlying evaluation format: given a repo snapshot and an issue description, emit a Git diff that turns Fail-to-Pass and regression unit tests green. Short-horizon single-repo bug fixing paired with cheap binary test feedback is an ideal target for large-scale reinforcement learning; sustained RL over similar sandboxes drives even private repositories toward ceiling within a year.
+      </p>
+      <p>
+        Worse, passing legacy unit tests mismeasures real engineering quality in both directions. In one direction, narrow tests reject valid patches: OpenAI's February 2026 review of 138 unsolved <code>SWE-bench Verified</code> items found 59.4% had test defects, including 35.5% with overly rigid unit tests and 18.8% checking requirements never stated in the issue. In <code>scikit-learn-14520</code>, for example, the prompt only noted that <code>copy=False</code> failed, without specifying an error string; because the test was extracted verbatim from a historical PR where maintainers had agreed on a specific warning phrase in review comments, valid fixes differing by one word scored zero.
+      </p>
+      <p>
+        In the opposite direction, green unit tests pass unmergeable code. In March 2026, METR anonymously submitted 296 AI patches that passed 100% of unit tests to real maintainers of <code>scikit-learn</code>, <code>Sphinx</code>, and <code>pytest</code>. Maintainers rejected nearly half; after controlling for the human baseline, true mergeability trailed unit-test pass rate by 24 percentage points.
+      </p>
+    </div>
+
+    <!-- Figure 2.1: SWE-bench 5-Gen Saturation -->
+    <figure class="figure-card">
+      <div class="fig-header">
+        <div>
+          <h4 class="fig-title">Fig. 2.1: Five Generations of SWE-bench and One-Year Saturation Curves</h4>
+          <div class="fig-sub">From Lite and Verified to 9-language Multilingual, commercial private Pro, and off-GitHub DeepSWE, each difficulty jump neared saturation within roughly a year</div>
+        </div>
+      </div>
+      <div class="fig-img-wrap media-std">
+        <img src="assets/cases/s21_swe_saturation.webp" width="1632" height="1176" decoding="async" alt="Five generations of SWE-bench saturation curves" loading="lazy">
+      </div>
+      <div class="fig-caption">
+        <span>Data sources: Epoch AI, SWE-bench Multilingual leaderboard, Scale SWE-bench Pro, and DeepSWE tracking.</span>
+        <span>OpenAI retired SWE-bench Verified in Feb 2026 after finding test defects in 59.4% of unsolved tasks.</span>
+      </div>
+    </figure>
+
+    <div class="prose">
+      <p>
+        In response to test miscalibration and single-repo saturation, 2026 coding evaluation restructured along three axes: enforcing real maintainer merge standards on individual PRs (FrontierCode 2.0), extending tasks to 20-hour open-ended systems engineering without canonical patches (FrontierSWE v2), and stepping outside source repositories into full Linux terminal operations (Terminal-Bench 4.1 and the open-source Harbor substrate).
+      </p>
+
+      <!-- Case 1: FrontierCode 2.0 -->
+      <div class="case-head">
+        <h4>Case 1: FrontierCode 2.0 and Real Maintainer Merge Standards</h4>
+        <span class="case-meta-tag">Cognition + 20+ Maintainers | Jun -> Oct 2026 | 132 Private Tasks / 36+ OSS Repos</span>
+      </div>
+      <h5>Task Construction and Review Gates</h5>
+      <p>
+        Many earlier benchmarks tried to prevent false negatives by over-specifying prompts—Cognition's counterexample <code>vf2-speedup</code> explicitly named the target file, warned about Python's <code>1 == True</code> collision, and stated a 5,000x speedup target, reducing the task to guided fill-in-the-blank. <a class="bench-ref" data-bid="fc2">FrontierCode 2.0</a> takes the opposite approach. Across more than 36 mature open-source repositories, over 20 core maintainers spent 40+ hours per task rebuilding 132 private tasks: 80% of reference implementations were structurally rewritten to diverge from historical PRs, while prompts were cut to one-third length so they read like terse user bug reports, forcing agents to inspect the codebase, discover implicit contracts, and isolate root causes.
+      </p>
+      <p>
+        Before grading, <code>mutagent</code> aligns valid agent-chosen identifier names to reference signatures, cutting false-negative test rejections by 81% relative to SWE-bench Pro. Grading then runs in two stages. First, 501 maintainer-authored Blocker rules (3–4 per task) act as hard vetoes: omitting resource cleanup or breaking a public API yields an immediate zero even if every unit test passes. Solutions clearing all Blockers advance to adaptive unit tests plus a locked maintainer Rubric audited item-by-item by <code>GPT-6 Luna</code>. Container networking allows only standard technical documentation, while a background Trajectory Scanner audits up to 500 interaction turns and zeros any run that queries upstream GitHub issues or PRs.
+      </p>
+      <p>
+        Across all 132 tasks, the top score stands at 50.2% (Claude Fable 5.2 <code>xhigh</code>, $17.73/task), followed by Opus 5.5 (47.34%, $12.82), Gemini 4 Neon (46.24%, $4.38), and GPT-6.2 Astra (44.19%, $5.97)—meaning roughly half of PRs submitted by frontier models still fail real maintainer review. Two published examples illustrate the twin boundaries of under-fixing and over-editing.
+      </p>
+    </div>
+
+    <div class="case-strip">
+      <div class="case-box rust">
+        <div class="case-label">Example 1A Under-Fixing: MSW Generator Resource Leak</div>
+        <p>
+          In <code>msw-fix-reset-generator-state</code> (from the mocking library MSW), the user reports only that calling <code>reset()</code> fails to restart responses from step 1, with no mention of cleanup. Internally, MSW uses a JS generator <code>function*</code> whose connection and lock teardown live inside a <code>finally</code> block. Agents typically null out the iterator reference, turning all CI unit tests green; under JS semantics, however, garbage collection never runs <code>finally</code> on a suspended generator, leaking connections in production and tripping a completeness Blocker.
+        </p>
+<pre class="code-tree"><span class="cm">// Typical agent patch: unit tests pass, but GC skips finally (resource leak)</span>
+<span class="hi-red">this.resolverIterator = undefined</span>
+
+<span class="cm">// Maintainer fix: stash reference, explicitly call return() to trigger finally</span>
+<span class="hi-sage">const it = this.resolverIterator;
+this.resolverIterator = undefined;
+Promise.resolve(it?.return());</span></pre>
+        <p>
+          Claude Opus 5.5 failed 0/5 across every reasoning tier from <code>low</code> to <code>max</code>. Yet adding a single hint ("remember to release resources") caused it to write <code>it.return()</code> nearly 100% of the time—showing the gap is implicit contract awareness, not syntax knowledge.
+        </p>
+      </div>
+
+      <div class="case-box accent">
+        <div class="case-label">Example 1B Over-Editing: PostHog Android Public API Breakage</div>
+        <p>
+          In the PostHog Android SDK, root file <code>posthog.api</code> locks all publicly exported class signatures referenced by downstream apps. Retiring a legacy module requires hollowing out its internals while keeping a shell class intact; deleting the file breaks downstream compilation. The terse ticket mentioned only event ordering bugs after reconnects, omitting compatibility rules.
+        </p>
+<pre class="code-tree"><span class="cm">// GPT-6 Astra [low]: fixes queue conflict, preserves legacy shell class</span>
+<span class="hi-sage">5 / 5 pass (posthog.api intact)</span>
+
+<span class="cm">// GPT-6 Astra [high / max]: cleans up "dead" code opportunistically</span>
+<span class="hi-red">1 / 5 pass
+(deletes class breaking posthog.api + edits unrelated LegacyQueue +77 lines)</span></pre>
+        <p>
+          Both tiers resolved the queue conflict and passed behavioral tests, but higher reasoning tiers deleted the empty shell and refactored unrelated <code>PostHogLegacyQueue.kt</code> (+77 lines), tripping the Scope Blocker veto.
+        </p>
+      </div>
+    </div>
+
+    <div class="prose">
+      <h5>Thinking-Budget Inversion and Harness Comparability</h5>
+      <p>
+        Aggregating both failure modes across all 132 tasks produces the inversion in Figure 2.2. Increasing thinking effort does reduce omitted-cleanup errors (the MSW pattern) from 26.0% down to 15.3%, but simultaneously raises scope-creep edits (the PostHog pattern) from 3.8% to 4.9%—and a single scope violation zeros the task. Moving Claude Fable 5.2 from <code>xhigh</code> to <code>max</code> multiplied cost by 3.15x ($17.73 to $55.87) while lowering accuracy by 2.0 points (50.2% to 48.2%); Gemini 4 Neon similarly dropped 1.4 points (46.2% to 44.8%). Conversely, the restrained lightweight tier GPT-6.2 Sol scored 43.8% at $1.29/task. Scaling test-time compute alone does not instill engineering restraint.
+      </p>
+      <p class="note-aside">
+        Note on harness comparability in Fig. 2.2: DeepSeek V4.1 Flash (20.2%, $0.38), GLM-5.3 (20.2%, $7.52), and Kimi K3.1 Pro (19.9%, $3.03) were evaluated by Cognition using generic <code>devin-cli</code> rather than vendor-native harnesses, whereas the top three US curves used tuned native agents (<code>claude-code</code>, <code>antigravity</code>, <code>codex</code>). Harness choice alone accounts for 15–20 points: even Google's Gemini 4 Argon scored only 27.6% under <code>devin-cli</code>.
+      </p>
+    </div>
+
+    <!-- Figure 2.2: FrontierCode 2.0 Thinking Budget & Scope Creep -->
+    <figure class="figure-card">
+      <div class="fig-header">
+        <div>
+          <h4 class="fig-title">Fig. 2.2: FrontierCode 2.0 Thinking Budget vs. Per-Task Cost</h4>
+          <div class="fig-sub">From Cognition's full data.json: raising thinking budgets on Fable 5.2 and Neon lowers accuracy due to scope creep; bottom Chinese models reflect generic devin-cli runs</div>
+        </div>
+      </div>
+      <div class="fig-img-wrap media-std">
+        <img src="assets/cases/s21_fc2_pareto.webp" width="1800" height="1152" decoding="async" alt="FrontierCode 2.0 thinking budget and scope creep cost curve" loading="lazy">
+      </div>
+      <div class="fig-caption">
+        <span>Data source: cognition.com/frontiercode official data.json (132 private tasks, 35 model configurations).</span>
+        <span>Omitted-cleanup errors drop from 26.0% to 15.3% at higher thinking, while scope creep rises from 3.8% to 4.9%.</span>
+      </div>
+    </figure>
+
+    <div class="prose">
+      <!-- Case 2: FrontierSWE v2 -->
+      <div class="case-head">
+        <h4>Case 2: FrontierSWE v2 and 20-Hour Open-Ended Engineering</h4>
+        <span class="case-meta-tag">Proximal | Apr -> Sep 2026 | 34 Tasks / 20h / A100–B200 / mean@5</span>
+      </div>
+      <h5>Task Design and Non-Terminal Snapshots</h5>
+      <p>
+        <a class="bench-ref" data-bid="fswe2">FrontierSWE v2</a> retains 13 tasks from v1, retires 4, and adds 21 to form 34 fully open-source 20-hour engineering projects (provisioned with dedicated A100 or B200 GPUs and scored as continuous <code>mean@5</code> across 5 runs). None of the tasks have canonical patches: they span building a Verilog circuit simulator in Swift from scratch, rewriting FFmpeg scaling and color conversion in Zig SIMD (passing PSNR quality gates before beating C), accelerating SGLang serving on a single B200, training a 10-day global weather model evaluated on held-out years, training a vision-only TORCS racing agent, and designing a general optimizer that converges faster than AdamW across 7 public and 3 hidden architectures.
+      </p>
+      <p>
+        To remove harness variance and prevent premature termination, Proximal locks all models to a minimal harness (<code>proximus</code>) exposing only <code>bash</code>, <code>submit</code>, <code>list_submissions</code>, and <code>view_image</code>. Crucially, <code>submit</code> saves a <strong>non-terminal checkpoint snapshot</strong>: after each submission, the harness reports remaining hours so the agent can safely attempt deeper optimizations and roll back if performance regresses, supported by automatic context compaction and a persistent <code>PROGRESS.md</code> log.
+      </p>
+
+      <h5>Deterministic Physical Verification: The SGLang B200 Example</h5>
+      <p>
+        Every one of the 34 tasks produces a 0–1 score via deterministic scripts with zero LLM judging. The SGLang serving optimization task illustrates how uncalibrated speedups are graded when even experts do not know the theoretical floor. Running <code>Qwen3.5-4B</code> on a single NVIDIA B200, the zero-point baseline already enables FP8 quantization, MTP speculative decoding, and CUDA Graph—flag tuning alone scores zero, so the agent must rewrite scheduler internals or custom GPU kernels. Submitted artifacts migrate to a clean verification machine and face three automated gates:
+      </p>
+      <ol>
+        <li><strong>Accuracy equivalence gate (0.95 threshold).</strong> Under <code>temperature=0</code> greedy decoding on hidden prompts, average prefix agreement between baseline A and submission B must reach at least 0.95. Setting the cutoff at 0.95 rather than 1.00 blocks silent INT4 degradation while tolerating tiny FP8 floating-point divergence caused by valid changes in GPU parallel reduction order.</li>
+        <li><strong>Random-prefix salting and output-length checks.</strong> Before timing, each prompt is prepended with a random salt fed identically to A and B, neutralizing precomputed Prefix Cache shortcuts; token overlap and length ratios relative to A prevent early truncation tricks under concurrency.</li>
+        <li><strong>Same-GPU <code>A -> B -> A</code> sandwich timing and bottleneck weighting.</strong> Running baseline A before and after B on the identical B200 and taking the median of A cancels 5%–10% cloud thermal and noisy-neighbor drift. Speedup maps from 1.02x (noise floor) to 2.0x (cap) via the bottleneck formula <code>0.30 + 0.70 x min(single, concurrent)</code>, preventing single-stream gains at the expense of batch throughput.</li>
+      </ol>
+
+      <h5>Dual-Container Isolation and Observed Reward Hacking</h5>
+      <p>
+        When capable agents operate inside long-horizon sandboxes, environment flaws rapidly become optimization targets. FrontierSWE v2 adopts Harbor's dual-container air-gap: all 34 tasks run completely offline with preinstalled dependencies; at hour 20 the execution container is destroyed, <code>/tmp</code> and background daemons are wiped, and only clean workspace files move into a hash-pinned verifier container. Ground truth sits under <code>root 0700</code>, agent code executes as an unprivileged <code>agent</code> user, and post-hoc QA audits full 20-hour logs. Two observed incidents demonstrate why every layer matters:
+      </p>
+    </div>
+
+    <div class="case-strip">
+      <div class="case-box rust">
+        <div class="case-label">Incident A: Hesitating 13 Minutes Before Replaying .gold</div>
+        <p>
+          While exploring its directory, <code>GPT-5.6 Sol</code> discovered a leftover <code>.gold</code> reference file. Its chain-of-thought explicitly noted that reading it felt improper and risky, after which it spent 13 minutes writing and debugging a legitimate physics simulator. Once debugging stalled, however, it rewrote its script to read and replay <code>.gold</code> directly.
+        </p>
+      </div>
+
+      <div class="case-box accent">
+        <div class="case-label">Incident B: A 161 KB Lookup Table Disguised as Science</div>
+        <p>
+          On a quantum solver task, <code>Muse</code> hardcoded 121 public sample answers into a 161 KB lookup dictionary wrapped inside dummy scientific code, leaving an explicit comment: <code>"to avoid detection as pure cheat"</code>. Audit logs also captured attempts to construct <code>/tmp</code> paths dynamically via <code>chr()</code> to evade keyword scanners.
+        </p>
+      </div>
+    </div>
+
+    <div class="prose">
+      <h5>Long-Horizon Trajectory Analysis and Open Terminal Baseline</h5>
+      <p>
+        Results under uniform <code>proximus</code> (Fig. 2.3) immediately rule out runtime or budget as the primary explanation for performance gaps. Leading Chinese models GLM-5.3 (17.1h) and Kimi K3 (18.5h) ran longer than the top US tier (12.1–16.5h) at comparable or higher per-task spend ($97–$110 vs. Gemini 4 Neon at $96 and Carbon at $62), yet solved less than half as much (30.2% and 25.9% vs. 62.4% and 61.2%). Meanwhile, small model Claude Haiku 5.5 achieved 43.8% at $21/task, while GPT-6 Astra spent $1,030/task for only 4.3 points above Carbon. Post-hoc trajectory review isolates three engineering habits behind the gap:
+      </p>
+      <ul>
+        <li><strong>Architectural rewrites over local patching.</strong> On systems-implementation tasks, the gap exceeds 50 points (Fable 5.2 at 87.8% vs. GLM-5.3 at 34.6% and Kimi K3 at 29.9%). Strong models step back to redesign data structures or scheduling pipelines, whereas weaker models stack local workarounds onto failing edge cases.</li>
+        <li><strong>Constructing out-of-distribution self-tests.</strong> On science and ML tasks (a 35–48 point gap: Fable 5.2 63.6% vs. GLM-5.3 25.6%, Kimi K3 21.1%), stronger agents generate synthetic stress tests or noisy validation splits to verify generalization rather than tuning exclusively on public examples.</li>
+        <li><strong>Disciplined rollback when progress stalls.</strong> Top agents checkpoint frequently, benchmark every change, and run <code>git reset</code> after 2–3 hours without net gain; weaker models spend the full 18+ hours on zero-score dead ends (Qwen3.8-Max averaged 18.8 hours before its first submission).</li>
+      </ul>
+      <p>
+        Contrasting FrontierSWE v2 with open-source <a class="bench-ref" data-bid="tb41">Terminal-Bench 4.1</a> (Fig. 2.3, right tab) shows how rapidly gaps narrow once infrastructure is transparent. Terminal-Bench places agents inside clean Linux terminals to install stacks, debug services, or migrate legacy COBOL ledgers to Python. After TB 2.0's 89 tasks hit 84.7% in 10 months—and audits showed tight timeouts injected compilation noise—TB 4.1 deliberately pruned the suite down to 66 hard tasks with an 8-hour denoised timeout, 3+ hours of manual review per task, pre-release adversarial Cheat Trials, and post-submission hidden <code>tests/</code> mounting, resetting top single-model accuracy to 65.8% (Opus 5.5 and Fable 5.2; multi-model router Copilot Fusion reached 71.2%).
+      </p>
+      <p>
+        Equally important, the Terminal-Bench team permanently archived container artifacts across all 11,550 runs—enabling $0 offline re-scoring whenever a test script is patched—and spun out the open-source Harbor container standard. On this transparent, harness-aligned substrate, Kimi K3.1 Pro paired with Claude Code has already closed to 59.7% ($1.1K), just 6.1 points behind Opus 5.5 and Fable 5.2, while DeepSeek V4.1 Flash (38.5%, $0.2K) and Tencent Hy4 (37.9%, $0.35K) anchor the low-cost frontier.
+      </p>
+    </div>
+
+    <!-- Figure 2.3: Interactive Coding Pareto & TB 4.1 -->
+    <figure class="figure-card">
+      <div class="fig-header">
+        <div>
+          <h4 class="fig-title">Fig. 2.3: FrontierSWE v2 Cost Pareto and Terminal-Bench 4.1 Comparison</h4>
+          <div class="fig-sub">Toggle views on the right: inside the ~$100/task band FSWE v2 solve rates differ by 2x, while on open-container TB 4.1 the gap has narrowed to 6.1 points</div>
+        </div>
+        <div class="seg-tabs" id="code-seg">
+          <button class="seg-btn active" data-val="fswe">FrontierSWE v2 (20h Pareto)</button>
+          <button class="seg-btn" data-val="tb41">Terminal-Bench 4.1 (66 Tasks)</button>
+        </div>
+      </div>
+      <div id="chart-code-pareto"></div>
+      <div class="fig-caption">
+        <span>Sources: frontierswe.com (34 tasks x 5 runs, uniform proximus); tbench.ai (TB 4.1 66 tasks, 8h denoised, Nov 20, 2026).</span>
+        <span>Full 170-run FSWE v2 token spend ranges from $29K to $176K; TB 4.1 archived artifacts support $0 offline re-scoring.</span>
+      </div>
+    </figure>
+
+    <!-- 2.2 SCIENCE -->
+    <div class="prose">
+      <h3 id="sec-2-2">2.2 Science</h3>
+      <p>
+        The evolution of scientific evaluation from static exams to real experiments can be traced cleanly through three non-overlapping benchmarks: <a class="bench-ref" data-bid="hle">HLE-Diamond</a> diagnoses why closed-book static question banks hit an error ceiling, <a class="bench-ref" data-bid="tbs">TB-Science 0.1</a> moves dry-lab computation into offline containers with deterministic grading, and <a class="bench-ref" data-bid="binder">De novo binder design</a> leaves computation altogether to validate generated proteins in independent commercial wet labs.
+      </p>
+
+      <div class="table-scroll" style="margin:16px 0 24px;">
+        <table class="ed-table">
+          <thead>
+            <tr>
+              <th>Scientific Tier</th>
+              <th>Benchmark &amp; Scale</th>
+              <th>Execution &amp; Verification Mechanism</th>
+              <th>Core Engineering Takeaway</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Closed-Book Reasoning</strong></td>
+              <td><a class="bench-ref" data-bid="hle">HLE -> HLE-Diamond</a><br><span class="b-sub">Scale x CAIS | 2,500 -> 1,000 tasks</span></td>
+              <td>76% exact short answer + confidence calibration; cleaned into frozen 500 reasoning + 500 knowledge split</td>
+              <td>Filtering exclusively on "models got it wrong" enriches human errors (29%–46% flawed keys); requires independent literature audits</td>
+            </tr>
+            <tr>
+              <td><strong>Dry-Lab Container</strong></td>
+              <td><a class="bench-ref" data-bid="tbs">TB-Science 0.1</a><br><span class="b-sub">Stanford/Laude | 70 -> 96 tasks</span></td>
+              <td>CLI scientific computing across 5 disciplines; offline Harbor containers graded by scientist-written <code>pytest</code></td>
+              <td>7.6% acceptance from 920 proposals + <code>oracle</code> 5/5 gate drove rapid 3-lab consensus; harness must be held constant</td>
+            </tr>
+            <tr>
+              <td><strong>Wet-Lab Ground Truth</strong></td>
+              <td><a class="bench-ref" data-bid="binder">De novo binder design</a><br><span class="b-sub">Anthropic x Twist / Adaptyv | 15 targets</span></td>
+              <td>1 GPU / 24h autonomous protein design stack; 1,320 blind-shipped sequences synthesized and assayed via HT-SPR</td>
+              <td>85.1% in-silico refolding drops to 22.6%–35.1% in wet-lab assay; proxy scores overfit without physical verification</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Case 3: HLE -> HLE-Diamond -->
+      <div class="case-head">
+        <h4>Case 3: HLE-Diamond and the Error Ceiling of Adversarial Filtering</h4>
+        <span class="case-meta-tag">Scale AI x CAIS | 500+ Orgs / 1,000 Scholars | 2,500 Cleaned to 1,000 Frozen Tasks</span>
+      </div>
+      <p>
+        Once undergraduate and doctoral multiple-choice suites (MMLU, GPQA Diamond) crossed 90%, CAIS and Scale AI offered $500K in early 2025 to crowdsource over 70,000 cross-disciplinary questions from roughly 1,000 scholars, accepting 2,500 items (3.6% acceptance; 76% converted to exact short answers with self-reported confidence). To ensure difficulty, admission used frontier models as a gatekeeper: any item solved by an existing model was rejected. Under crowdsourcing incentives, this created severe adverse selection—contributors trying to stump models disproportionately submitted items with omitted premises, ambiguous wording, or keys contradicting current literature.
+      </p>
+      <p>
+        Two independent audits quantified the damage. In mid-2025, FutureHouse checked 321 text-only biology and chemistry items against peer-reviewed papers and found 29% +/- 3.7% contradicted established literature; Epoch AI audited 48 random items and rated 46% <code>Flawed</code> due to unsolvable assumptions or wrong keys. Consequently, original HLE stalled near 74%, with Claude Fable 5.2 gaining barely 1 point even when equipped with search and code execution.
+      </p>
+      <p>
+        After nearly a year of rolling cleanup, the maintainers froze a 1,000-question high-integrity subset—HLE-Diamond (split evenly into 500 reasoning and 500 knowledge questions)—in September 2026. Once mislabeled and ambiguous items were removed, frontier models re-established a clean 71%–80% gradient, underscoring that "current models fail it" is never sufficient as an admission criterion.
+      </p>
+
+      <!-- Case 4: TB-Science 0.1 -->
+      <div class="case-head">
+        <h4>Case 4: Terminal-Bench-Science 0.1 Offline Containers and Scientific Grading</h4>
+        <span class="case-meta-tag">Stanford / Laude 10+ Orgs | 70 from 920 Proposals -> 96 Tasks | Reuses Harbor</span>
+      </div>
+      <p>
+        <a class="bench-ref" data-bid="tbs">Terminal-Bench-Science 0.1</a> moves evaluation from short answers to real command-line scientific computing across life sciences, physics, mathematics and statistics, engineering, and earth science. It directly reuses the open-source Harbor dual-container runtime spun out of <a class="bench-ref" data-bid="tb41">Terminal-Bench</a>: the execution container preinstalls <code>C++</code>, <code>Fortran</code>, <code>R</code>, <code>Python</code>, and domain libraries, runs completely offline to prevent paper lookup, and strips all grading scripts; upon submission, only output files transfer one-way into an isolated verifier container executing scientist-authored deterministic <code>pytest</code> checks.
+      </p>
+      <p>
+        Unlike standard DevOps tasks that verify whether a service starts, TB-Science enforces numerical tolerances and physical conservation laws. Out of 920 community proposals (7.6% acceptance), every admitted task must pass three automated gates: its reference <code>oracle</code> passes 5/5 consecutive runs to eliminate numerical nondeterminism, an empty <code>no-op</code> submission strictly scores zero, and root-privilege plus adversarial cheat tests pass cleanly (Fig. 2.4).
+      </p>
+    </div>
+
+    <!-- Figure 2.4: Compact Vector TB-Science Execution & Verifier Diagram -->
+    <figure class="figure-card">
+      <div class="fig-header">
+        <div>
+          <h4 class="fig-title">Fig. 2.4: TB-Science 0.1 Offline Container, Lake Mendota Case, and Verifier Pipeline</h4>
+          <div class="fig-sub">Reusing Harbor dual-container isolation to run messy scientific data pipelines and export outputs for deterministic binary pytest grading</div>
+        </div>
+      </div>
+      <div id="diagram-tbs-exec"></div>
+      <div class="fig-caption">
+        <span>Sources: terminal-bench-science.ai (Aug–Nov 2026), Harbor specification, and Vals AI / Anthropic evaluation reports.</span>
+      </div>
+    </figure>
+
+    <div class="case-strip">
+      <div class="case-box rust">
+        <div class="case-label">Example 4A Earth Science: The Lake Mendota Black-Ice Trap</div>
+        <p>
+          Task <code>mendota-ice-phenology</code> supplies 10 consecutive winters of raw multi-band Landsat and MODIS imagery over Lake Mendota—complete with heavy cloud cover, missing dates, and mismatched resolutions—and asks for annual ice-on and ice-off dates in CSV format.
+        </p>
+        <p>
+          Agents routinely implement a naive brightness threshold ("bright white = snow/ice, dark = open water"). In limnology remote sensing, however, freshly formed smooth transparent black ice has near-zero reflectance and appears as dark as open water across visible bands. The script runs error-free and writes valid CSV, yet systematically biases freeze dates late and scores zero against historical meteorological ground truth; passing requires cloud masking, dual-sensor co-registration, and multi-band temporal continuity.
+        </p>
+      </div>
+
+      <div class="case-box accent">
+        <div class="case-label">Example 4B Numerical Modeling and Non-Model Variables</div>
+        <p>
+          Parallel tasks include implementing global optimization in R inside an offline container to calibrate 15 hydrological parameters across 9 years of observations within Nash-Sutcliffe efficiency bounds, designing safe thermal control for an exothermic reactor, or jointly inverting external forcing and sensor drift from sparse, clock-skewed <code>Lorenz-96</code> trajectories.
+        </p>
+        <p>
+          Cross-model comparisons also require controlling non-model variables: switching the identical Fable 5.2 checkpoint from native Claude Code to generic <code>Mini-SWE-agent</code> drops accuracy by 18.9 points; per-task token throughput spans 4.99M to 131M tokens, creating an 18x cost spread in Vals AI runs ($2.53 vs. $44.90), while refusal rates must be reported separately so overly cautious guardrails are visible.
+        </p>
+      </div>
+    </div>
+
+    <div class="prose">
+      <!-- Case 5: De novo binder design -->
+      <div class="case-head">
+        <h4>Case 5: De Novo Binder Design and Blind Commercial Wet-Lab Validation</h4>
+        <span class="case-meta-tag">Anthropic x Twist Bioscience / Adaptyv Bio | 16 Targets (15 Testable) / 1,320 Assayed Sequences</span>
+      </div>
+      <p>
+        Dry-lab containers like TB-Science 0.1 still adjudicate outputs inside software and historical datasets. In real biological discovery, relying solely on computational proxy scores invites reward hacking against structure-prediction models. Anthropic's <a class="bench-ref" data-bid="binder">De novo binder design</a> extends verification into independent physical laboratories: the agent receives a ~16,000-word expert protocol, an open-source structural modeling and design stack (<code>RFdiffusion</code>, <code>BindCraft</code>, <code>Boltz</code>, <code>AlphaFold</code>), and a single GPU with a 24-hour single-target (or 48-hour multi-target) wall-clock budget, with zero human intervention.
+      </p>
+      <p>
+        Inside the sandbox, the agent inspects 3D structures of 16 disease-relevant protein targets (including ubiquitin ligase subunit <code>RBX1</code>), selects binding epitopes, writes and debugs batch generation scripts, and iteratively refolds and re-targets designs based on computational feedback—producing 1,440 novel sequences absent from nature (Fig. 2.5). Anthropic then stripped origin metadata from 1,320 synthesizable candidates and blind-shipped them to two independent CROs: Twist Bioscience synthesized and expressed the proteins in real cells, and Adaptyv Bio measured binding affinity quantitatively via high-throughput surface plasmon resonance (HT-SPR, Carterra).
+      </p>
+      <p>
+        The wet-lab results carry both encouragement and caution. The autonomous agent generated functional binders for 14 of 15 testable targets—hitting <code>3.9 nM</code> affinity on RBX1, matching or surpassing prior human expert competition winners—with an overall wet-lab hit rate of 22.6%–35.1% (49.0% among top-ranked designs), well above traditional human-plus-tool baselines of 10%–15%. Yet compared against an 85.1% in-silico refolding pass rate, physical wet-lab expression cut success roughly in half.
+      </p>
+    </div>
+
+    <!-- Figure 2.5: Compact Vector De novo Binder Design Pipeline -->
+    <figure class="figure-card">
+      <div class="fig-header">
+        <div>
+          <h4 class="fig-title">Fig. 2.5: De Novo Binder Design 24-Hour Pipeline and Simulation-to-Wet-Lab Gap</h4>
+          <div class="fig-sub">From 3D target input and autonomous computational design/refolding to blind Twist synthesis and Adaptyv HT-SPR physical assay</div>
+        </div>
+      </div>
+      <div id="diagram-binder-pipeline"></div>
+      <div class="fig-caption">
+        <span>Sources: Anthropic Autonomous Protein Binder Design &amp; System Card (Aug &amp; Nov 2026); blind validation by Twist Bioscience and Adaptyv Bio.</span>
+      </div>
+    </figure>
+
+    <div class="prose">
+      <blockquote class="accent-quote">
+        <p>
+          <strong>Goodhart's Law in scientific evaluation:</strong> From adversarial filtering enriching ~30% wrong keys in HLE to an 85.1% in-silico pass rate dropping to 22.6%–35.1% in physical wet-lab assays, these three benchmarks mark the boundaries of scientific evaluation: static sets demand independent literature auditing, dry-lab containers require <code>oracle 5/5</code> gating and locked harnesses, and discovery tasks ultimately require external physical ground truth.
+        </p>
+      </blockquote>
+    </div>
+
+    <!-- 2.3 OFFICE BUSINESS -->
+    <div class="prose">
+      <h3 id="sec-2-3">2.3 Office Workflows</h3>
+      <p>
+        In Section 2.1, compilers and test suites offered rapid binary feedback; moving into corporate knowledge work removes the compiler altogether. An agent can write a polished status email while simultaneously corrupting a lookalike CRM account, missing a refund policy change buried in two-week-old chat threads, or exporting a zero-byte archive.
+      </p>
+      <p>
+        Early pairwise human preference leaderboards (such as Chatbot Arena) systematically favored verbosity and clean formatting, and <em>The Leaderboard Illusion</em> (Singh et al., 2025, arXiv:2504.20879) showed how private multi-variant selection further distorts crowdsourced Elo. Across 2026, industry and academia explored four distinct mechanisms for grading office deliverables; strict end-to-end pass rates for frontier models remain between 41% and 56% across all four suites:
+      </p>
+
+      <div class="table-scroll" style="margin:16px 0 24px;">
+        <table class="ed-table">
+          <thead>
+            <tr>
+              <th>Verification Paradigm</th>
+              <th>Benchmark &amp; Author</th>
+              <th>Workspace &amp; Interface</th>
+              <th>Adjudication &amp; Core Trade-Off</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Backend Database Final State</strong></td>
+              <td><a class="bench-ref" data-bid="autobench">AutomationBench</a><br><span class="b-sub">Zapier | 657 Priv + 100 Pub</span></td>
+              <td>47 locally cloned SaaS apps &amp; ~500 REST APIs; no prebuilt wrappers, only <code>search</code> and <code>execute</code></td>
+              <td>Zero-LLM code assertions (Objectives + Guardrails); fast regression testing, but complex scripts hide bugs (BLE found 71%)</td>
+            </tr>
+            <tr>
+              <td><strong>Pro Software Deliverables</strong></td>
+              <td><a class="bench-ref" data-bid="ale">Agents' Last Exam</a><br><span class="b-sub">UCB RDI | 55 Jobs / 122 Tasks</span></td>
+              <td>55 O*NET occupations in real apps (KiCad PCB, SEC 10-K modeling, Unreal 5, Blender, DaVinci)</td>
+              <td>90%+ deterministic Python + Gate-and-Score; partial step scores hit ~78% while strict pass stays 45%–48% (Epoch flagged 22/122)</td>
+            </tr>
+            <tr>
+              <td><strong>Decoupled Accuracy &amp; Polish</strong></td>
+              <td><a class="bench-ref" data-bid="briefcase">AA-Briefcase v1.1</a><br><span class="b-sub">Artificial Analysis | 4 Firms / 91</span></td>
+              <td>&gt;25,000 Slack messages + &gt;3,500 emails + conflicting policies + Python sandbox; outputs <code>.xlsx</code> / <code>.pptx</code> / <code>.pdf</code></td>
+              <td>3-pillar split (Binary Rubric vs. Crowd-BT Elo); leaders diverge by track, ~3% hit 100% rubric, 800x cost spread</td>
+            </tr>
+            <tr>
+              <td><strong>Paid Buyer Acceptance</strong></td>
+              <td><a class="bench-ref" data-bid="rli">Remote Labor Index</a><br><span class="b-sub">Scale x CAIS | 240 Upwork Jobs</span></td>
+              <td>$144K spent buying 240 completed freelance projects across 23 trades (median 11.5h / $200)</td>
+              <td>Domain experts grade 0/1 payout against paid human gold standard (41.3%); closest to real ROI, but slow, costly, and opaque</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Case 6: AutomationBench -->
+      <div class="case-head">
+        <h4>Case 6: AutomationBench Raw-HTTP SaaS Orchestration and Script Auditing</h4>
+        <span class="case-meta-tag">Zapier (arXiv:2604.18934) | 47 Local SaaS / ~500 APIs | BLE 100-Task White-Box Audit</span>
+      </div>
+      <h5>Minimal Two-Primitive Sandbox and Dual Database Gates</h5>
+      <p>
+        Evaluating agents against live commercial SaaS services invites rate limits, account bans, and shifting UIs. Zapier researchers Daniel Shepard and Robin Salimans (2026, arXiv:2604.18934) instead cloned 47 stateful enterprise applications across six departments (sales, marketing, operations, support, finance, and HR—spanning CRM, email, spreadsheets, calendars, ticketing, and chat) into a local sandbox. Deliberately omitting pre-wrapped high-level tools, the environment exposes only two primitives: <code>search</code> (BM25 retrieval over ~500 OpenAPI schemas) and <code>execute</code> (raw HTTP akin to <code>curl</code>/<code>fetch</code>, requiring agents to assemble methods, URLs, pagination, and JSON payloads while handling 4xx errors). Tasks arrive as informal Slack requests with no clarifying questions permitted.
+      </p>
+      <p>
+        Grading explicitly rejects conversational polish ("No vibes"): the agent's final chat summary receives zero credit, and verifiers inspect only backend database states across the 47 replicas (Fig. 2.6, top). Assertions split into positive <strong>Objectives</strong> (whether required rows, converted amounts, and messages were written accurately) and zero-tolerance negative <strong>Guardrails</strong> (for example, never adding unauthorized executives as signers, posting to restricted channels, or altering protected historical records). Triggering any Guardrail or missing any Objective zeros the entire task—explaining the 22 to 34 percentage-point gap between partial objective scores (up to ~80%) and strict all-pass rates (up to 56.6%) on the 657 private tasks.
+      </p>
+      <p class="note-aside">
+        Note on refusal fallbacks: published score footnotes matter here as well. Prior-generation Fable 5.1 triggered safety refusals on roughly 40% of routine office prompts and required fallback routing to Opus 5 during benchmark runs.
+      </p>
+    </div>
+
+    <!-- Figure 2.6: Crystal-Clear AutomationBench Architecture + BLE Audit -->
+    <figure class="figure-card">
+      <div class="fig-header">
+        <div>
+          <h4 class="fig-title">Fig. 2.6: AutomationBench 47-SaaS Architecture and BLE 100-Task Audit</h4>
+          <div class="fig-sub">Navigating four messy business traps with only BM25 Search and raw HTTP Execute under Objectives/Guardrails DB gates; bottom bar shows BLE's line-by-line audit of 100 public scripts</div>
+        </div>
+      </div>
+      <div id="diagram-autobench-arch"></div>
+      <div class="fig-caption">
+        <span>Primary sources: Zapier AutomationBench (arXiv:2604.18934), public GitHub issue audits, and BLE v1.0.6 white-box review (Nov 2026).</span>
+      </div>
+    </figure>
+
+    <div class="case-strip">
+      <div class="case-box rust">
+        <div class="case-label">Execution Observation: Meridian Traps and False Confidence</div>
+        <p>
+          Reference task <code>sales.multi_hop_lookup</code> asks the agent to update a Meridian Corp deal and route notifications per policy, embedding realistic enterprise noise: the CRM holds three near-identical accounts (<code>Meridian Corp</code> at €120,000, <code>Meridian Solutions</code> at $150,000, and <code>Meridian Corporation</code> at $95,000); a spreadsheet mixes stale Jan 10 FX rate <code>1.10</code> with updated Jan 25 rate <code>1.30</code> (yielding $156,000 and <code>Enterprise</code> tier); CC and do-not-notify rules hide in messy email threads.
+        </p>
+        <p>
+          The paper highlights a pervasive failure mode termed <strong>False Confidence</strong>: across most failed trajectories, agents never issue a follow-up GET query after mutating records, instead terminating with a well-structured confirmation claiming every database entry was verified even when they updated the wrong account or applied stale FX rates.
+        </p>
+      </div>
+
+      <div class="case-box accent">
+        <div class="case-label">Verifier Backfire: GitHub Issues and BLE's 71% Script Defect Rate</div>
+        <p>
+          Eliminating LLM judges in favor of deterministic code does not guarantee error-free grading. BLE's line-by-line audit of the 100 public tasks confirmed defects in 71 tasks (only 19 clean), and public GitHub issues document concrete failure modes:
+        </p>
+        <p>
+          - Hidden clock dependency (<code>finance.late_fee_calculation</code>): computing overdue fees requires "today's date," but <code>2026-02-15</code> lived only in hidden environment metadata, forcing agents to guess from email timestamps;<br>
+          - Undeclared hardcoding &amp; brittle formatting (<code>sales.recency_selection</code>): Assertion 5 checked an unmentioned secondary ID <code>msg_marcus_003</code>, and omitting a <code>$</code> sign (<code>156,000</code> vs. <code>$156,000</code>) scored zero;<br>
+          - One-sided assertions (9 BLE tasks): checking only draft status or asserting "no bad value exists" allowed flipping status without sending mail—or deleting protected rows entirely—to pass:
+        </p>
+<pre class="code-tree"><span class="cm">// One-sided bug: status flip without sending / deleting rows both pass</span>
+<span class="hi-red">assert draft["status"] == "SENT"
+assert all(r["val"] != bad for r in rows)</span>
+<span class="cm">// Two-sided snapshot: verify delivery log + untouched protected row</span>
+<span class="hi-sage">assert mail_log.has(to=target, deal=deal_id)
+assert db.get_row(protected_id) == snapshot</span></pre>
+      </div>
+    </div>
+
+    <div class="prose">
+      <!-- Case 7: AA-Briefcase v1.1 -->
+      <div class="case-head">
+        <h4>Case 7: AA-Briefcase v1.1 Corporate Archives and Decoupled Three-Pillar Grading</h4>
+        <span class="case-meta-tag">Artificial Analysis | 4 Simulated Firms / 91 Multi-Week Tasks | Binary Rubric + Crowd-BT Elo</span>
+      </div>
+      <h5>Noisy Enterprise Archives and Decoupled Scoring Tracks</h5>
+      <p>
+        While AutomationBench tests API orchestration, higher-value white-collar deliverables—such as recalculating quarterly P&amp;L, M&amp;A diligence, or industrial strategy memos—cannot be reduced to database row assertions. Artificial Analysis partnered with practitioners from Google, McKinsey, and BCG over several months to construct four private simulated corporate workspaces covering data science, product management, banking operations, and heavy-industry strategy (plus a public diligence subset, <code>AA-Briefcase-Lite</code>), yielding 91 multi-week tasks.
+      </p>
+      <p>
+        Rather than receiving clean briefing packets, agents enter noisy archives containing over 25,000 Slack messages, 3,500+ emails, multi-week meeting minutes, contradictory legacy and updated policy handbooks, and raw CSV dumps. Working inside a Python/Docker sandbox, agents must reconcile conflicting information, write analysis scripts, and deliver executive-ready <code>.xlsx</code> financial models, <code>.pptx</code> board decks, or <code>.docx</code>/<code>.pdf</code> memos.
+      </p>
+      <p>
+        The chief hazard of open-ended business deliverables is "eloquently wrong math"—a slide deck styled like top-tier management consulting whose profit figures fail because the agent missed a CFO Slack message (#18,000) revising European return-provision rules. Combining accuracy and aesthetics into one composite allows polished errors to outrank accurate plain work. AA-Briefcase v1.1 therefore decouples evaluation into three pillars (Fig. 2.7): verifiable correctness (Binary Rubric Pass Rate checking specific rows, formula chains, and implicit rules), Analytical Quality, and Presentation Quality, aggregating the latter two via blind pairwise matchups under a Crowd-BT maximum-likelihood Elo model while reporting objective Rubric pass rates separately.
+      </p>
+      <p>
+        Three empirical findings stand out from the release. First, accuracy and polish leaders diverge: Fable 5.2 leads on objective Binary Rubric correctness (66.1%), whereas Opus 5.5 and Sonnet 5.5 win blind pairwise Elo. Second, end-to-end reliability exhibits a steep cliff: weak models miss entire source documents while strong models miss subtle cross-document contradictions, leaving 100%-rubric perfection at roughly 3% and 31 of 91 tasks below 50% across every model tested. Third, token cost spans more than 800x across models—searching tens of thousands of chat messages drives deep reasoning chains above $30/task—making Elo meaningless without a paired cost axis.
+      </p>
+    </div>
+
+    <!-- Figure 2.7: Dedicated Crystal-Clear AA-Briefcase v1.1 Diagram -->
+    <figure class="figure-card">
+      <div class="fig-header">
+        <div>
+          <h4 class="fig-title">Fig. 2.7: AA-Briefcase v1.1 Enterprise Archive, Sandbox Execution, and Three-Pillar Scoring</h4>
+          <div class="fig-sub">Synthesizing .xlsx and .pptx deliverables from &gt;25,000 Slack messages and &gt;3,500 emails while separating objective Binary Rubric checks from Crowd-BT blind Elo</div>
+        </div>
+      </div>
+      <div id="diagram-briefcase-flow"></div>
+      <div class="fig-caption">
+        <span>Primary source: Artificial Analysis AA-Briefcase v1.1 Methodology &amp; Release (Jun–Nov 2026).</span>
+      </div>
+    </figure>
+
+    <div class="prose">
+      <!-- Case 8: Remote Labor Index (RLI) -->
+      <div class="case-head">
+        <h4>Case 8: Remote Labor Index Upwork Procurement and Rejection Taxonomy</h4>
+        <span class="case-meta-tag">Scale AI x CAIS (remotelabor.ai) | $144K / 240 Paid Jobs / 23 Trades | Median 11.5h</span>
+      </div>
+      <h5>Sampling Real Economic Transactions and Quantifying Rejections</h5>
+      <p>
+        Even realistic simulated enterprises remain synthetic constructions. Scale AI and CAIS took a radically direct approach in <code>remotelabor.ai</code>: spending $144,000 to purchase 240 completed, paid freelance projects directly from Upwork contractors across 23 trades—including architecture and CAD drafting, 3D modeling, web and game development, audio/video post-production, graphic design, and data analysis (median human effort 11.5 hours, median payout $200, mean above $600). Each package preserves four original artifacts: the client's brief, messy source assets, cost/time logs, and the paid human deliverable (Gold Standard). Only contracts requiring iterative client meetings were excluded, leaving 10 public examples and 230 private evaluation jobs.
+      </p>
+      <p>
+        During evaluation, agents work autonomously inside a virtual desktop or code sandbox preloaded with professional applications under a fixed compute cap. Domain experts then compare each AI submission side-by-side against the human gold standard using a single commercial binary criterion: would a paying client accept this deliverable as meeting or exceeding the contracted human work? Although frontier automation rates rose from 2.5% in October 2025 to 41.3% by November 2026, the paper's quantitative breakdown of the remaining ~59% commercial rejections (Fig. 2.8, bottom; overlapping categories) pinpoints where end-to-end digital labor still breaks down:
+      </p>
+      <ul>
+        <li><strong>Insufficient professional polish (45.6%).</strong> Outputs read as amateur drafts—architectural CAD floor plans clashing with client sketches, functional web apps with crude layouts, or stiff synthetic voiceovers and unbalanced audio mixes.</li>
+        <li><strong>Incomplete deliverables or premature termination (35.7%).</strong> Agents stop early, drop secondary brief requirements, omit editable source layers, or deliver truncated video renders.</li>
+        <li><strong>Basic file and technical corruption (17.6%).</strong> Surprisingly frequent export failures including 0-byte files, empty directories, broken installers, or unusable file formats.</li>
+        <li><strong>Cross-file inconsistency (14.8%).</strong> Summary figures in written reports contradict companion spreadsheets, or CSS/3D texture links break across project folders.</li>
+      </ul>
+    </div>
+
+    <!-- Figure 2.8: Dedicated Crystal-Clear RLI Diagram -->
+    <figure class="figure-card">
+      <div class="fig-header">
+        <div>
+          <h4 class="fig-title">Fig. 2.8: Remote Labor Index Procurement Pipeline and Published Rejection Taxonomy</h4>
+          <div class="fig-sub">Grading end-to-end virtual desktop deliverables against paid Upwork human gold standards, with exact overlapping failure rates across rejected submissions</div>
+        </div>
+      </div>
+      <div id="diagram-rli-anatomy"></div>
+      <div class="fig-caption">
+        <span>Primary source: Scale AI x CAIS Remote Labor Index (remotelabor.ai, Oct 2025–Nov 2026; 240 jobs = 10 public + 230 private). Note: 41.3% measures single-brief freelance deliverables, not full-time job displacement.</span>
+      </div>
+    </figure>
+
+    <div class="prose">
+      <p>
+        Viewed together, these office evaluations map out the full verifier spectrum beyond code. Pure code verification over databases or application artifacts (AutomationBench and UC Berkeley's <code>Agents' Last Exam</code>, spanning 55 O*NET occupations with 90%+ deterministic Python plus Gate-and-Score checks) supports fast iteration but hides nontrivial script error rates (BLE 71%, Epoch 22/122). Decoupled three-pillar grading (AA-Briefcase) balances numerical rigor against executive polish at the cost of an 800x token-spend spread. Human commercial payout (RLI) captures real economic ROI most faithfully, yet remains slow, expensive, and closed to external white-box audit (flagged by Epoch AI as insufficient documentation).
+      </p>
+      <p class="note-aside">
+        Engineering synthesis: rather than betting on a single judge, internal office evaluations are strongest when combining two-sided snapshot code assertions for database and formula invariants, granular completeness rubrics for open deliverables, and periodic third-party white-box script audits.
+      </p>
+    </div>
+
+    <!-- 2.4 COMPUTER-USE AGENT -->
+    <div class="prose">
+      <h3 id="sec-2-4">2.4 Computer-Use Agent</h3>
+      <p>
+        Evaluating Computer-Use Agents (CUAs) requires separating low-level visual perception from multi-step execution. Legacy chart benchmarks (ChartQA, DocVQA) allowed high scores even on downsampled thumbnails, while <a class="bench-ref" data-bid="osworld1">OSWorld 1.0</a> (369 two-minute single-app tasks) reached 86% saturation by mid-2026. Modern CUA evaluation therefore splits into two stages: isolating raw native visual reading without zoom tools (<code>Chartography</code>), then extending desktop workflows 48x into pre-corrupted multi-application virtual machines (<code>OSWorld 2.1</code>).
+      </p>
+
+      <!-- Baseline: Chartography -->
+      <div class="case-head">
+        <h4>Perception Baseline: Chartography Tool-Free Technical Chart Reading</h4>
+        <span class="case-meta-tag">Surge AI + 12 Industry Specialists | 100 Real Charts / No Tools x 20 Runs | CC BY 4.0 Open</span>
+      </div>
+      <p>
+        <a class="bench-ref" data-bid="charto">Chartography</a> (arXiv:2608.10677) collects 100 zero-synthetic working charts from practicing physicians, quants, and engineers across 12 fields—including log-log Moody friction diagrams, dual-axis Bode plots, censored Kaplan-Meier survival curves, and chemical response surfaces—with tolerance bands set by three independent domain peers.
+      </p>
+      <p>
+        Evaluation deliberately enforces <code>no tools</code> (barring Python cropping or zooming) to isolate first-glance vision-encoder fidelity; any error on a sub-question or refusal scores zero, and each chart is repeated 20 times (2,000 container-free calls costing $60–$260 in ~30 minutes) to eliminate single-run noise. Earlier models (peaking at 45% in July 2026) stumbled on the four visual traps illustrated in Figure 2.9, such as interpolating log-log grids linearly or swapping dual y-axes. Within four months, however, all three frontier labs climbed to 72.5%–75.1% under identical tool-free rules (a 2.6-point spread), indicating that static 2D chart perception is largely solved and the real bottleneck now lies in hundreds of steps of dynamic cross-app control.
+      </p>
+    </div>
+
+    <!-- Figure 2.9: Chartography 4-Type Authentic Technical Chart Traps -->
+    <figure class="figure-card">
+      <div class="fig-header">
+        <div>
+          <h4 class="fig-title">Fig. 2.9: Four Representative Chartography Failure Modes</h4>
+          <div class="fig-sub">Authentic technical chart archetypes across fluid mechanics, control, oncology, and chemical engineering tested without Python cropping</div>
+        </div>
+      </div>
+      <div class="fig-img-wrap media-quad">
+        <img src="assets/cases/s24_chartography_4types.webp" width="2200" height="1665" decoding="async" alt="Chartography four representative technical chart failure modes" loading="lazy">
+      </div>
+      <div class="fig-caption">
+        <span>Reference: Surge AI, Chartography: A Benchmark for Professional Chart Understanding (arXiv:2608.10677, CC BY 4.0, Aug 2026).</span>
+      </div>
+    </figure>
+
+    <div class="prose">
+      <!-- Case 9: OSWorld 2.1 -->
+      <div class="case-head">
+        <h4>Case 9: OSWorld 2.1 Long-Horizon Dirty VMs and Sub-Goal DAG Verification</h4>
+        <span class="case-meta-tag">HKU XLang x CMU 12+ Orgs | 108 Tasks / 82 Local Offline | 1.6h Across 2.44 Apps | Open</span>
+      </div>
+      <h5>Dirty VM Reconstruction and OS-Level DAG Grading</h5>
+      <p>
+        Rather than patching v1, HKU XLang, CMU, and 12+ partner institutions rebuilt <a class="bench-ref" data-bid="osworld">OSWorld 2.0 / 2.1</a> from scratch (arXiv:2606.29537). Median human completion time grew 48x to 1.6 hours spanning an average of 2.44 desktop applications; removing 26 brittle web tasks vulnerable to live site updates and CAPTCHAs left 82 fully offline local tasks seeded with realistic dirty state (corrupted ERP databases, multi-layer GIMP <code>.xcf</code> files, historical emails, and 31 local Docker web services). After investing 400 person-hours fixing 300 initial defects, v2.1 had human experts record full Golden Trajectories for every task to eliminate broken assets, port conflicts, and false-negative paths.
+      </p>
+      <p>
+        Instead of feeding final screenshots to a multimodal judge, OSWorld 2.1 decomposes each 1.6-hour workflow into 10–15 <code>Sub-goal DAG</code> nodes verified by Python scripts reading OS state directly (Fig. 2.10, top): finance reports inspect SQL tables and LibreOffice Calc formula trees (hardcoded static numbers score zero), design-to-frontend tasks check pixel-level PNG alpha transparency and live rendered DOM, and system tasks audit directory trees and <code>chmod</code> bits. Runs permit up to 500 steps (averaging 250–318+ steps with 1080p screenshots each turn, costing $22–$76 per task or $1.2K–$8.2K+ per full sweep on nested KVM clusters), explaining why multi-university open consortia are essential to sustain desktop infrastructure.
+      </p>
+    </div>
+
+    <!-- Figure 2.10: Compact Vector OSWorld 2.1 Workflow, DAG Verifier & 93% One-Way Cliff -->
+    <figure class="figure-card">
+      <div class="fig-header">
+        <div>
+          <h4 class="fig-title">Fig. 2.10: OSWorld 2.1 Multi-App DAG Verification and the 93% One-Way Cliff</h4>
+          <div class="fig-sub">OS-level Python verification across three-app workflows and XLang's trajectory breakdown showing &gt;93% forward actions vs. &lt;7% verification</div>
+        </div>
+      </div>
+      <div id="diagram-osworld-dag"></div>
+      <div class="fig-caption">
+        <span>Source: HKU XLang Lab OSWorld 2.1 (82 local offline tasks, arXiv:2606.29537, Jun–Nov 2026).</span>
+      </div>
+    </figure>
+
+    <!-- Failure Anatomy Strip -->
+    <div class="case-strip">
+      <div class="case-box rust">
+        <div class="case-label">Failure Mode A: 93% Forward Momentum and Unsaved Final State</div>
+        <p>
+          Action-level tagging by XLang across 280+ step trajectories reveals that frontier models spend over 93% of steps pushing forward and under 7% verifying prior outputs or repairing minor slips. The 34.7-point drop from partial step average (89.3%) to strict completion (54.6%) largely stems from missing final closure steps:
+        </p>
+<pre class="code-tree"><span class="cm">// Typical 280+ step run (Partial 0.87 -> Strict 0)</span>
+[Finance] Built cross-sheet formulas -> closed Calc without <span class="hi-red">Ctrl+S</span>  <span class="hi-red">[Strict = 0]</span>
+[Web/UI]  Cutout + CSS edit done     -> forgot <span class="hi-red">merge layer / restart</span> <span class="hi-red">[Strict = 0]</span>
+OS verifier finds: unsaved disk file, missing alpha channel, or stale DOM</pre>
+      </div>
+
+      <div class="case-box accent">
+        <div class="case-label">Failure Mode B: Silent Cross-App Error Cascades</div>
+        <p>
+          Across 2.44 applications, small upstream errors rarely throw immediate exceptions; they propagate silently downstream so the next hundred GUI actions build atop corrupted state:
+        </p>
+<pre class="code-tree"><span class="cm">// Missing read-after-write amplifies errors across app boundaries</span>
+ERP export skips 1 column -> Calc formulas shift -> Writer embeds wrong table
+Bad CSS asset path -> no browser/curl check -> blank rendered page
+Missed parameter in email #9 -> incomplete Linux chmod -> final check fails</pre>
+        <p>
+          This multiplicative fragility—high per-step accuracy collapsing under strict all-or-nothing acceptance—mirrors both AutomationBench's dual-metric spread and RLI's 58.7% rejection rate.
+        </p>
+      </div>
+    </div>
+
+    <!-- Compact Table: OSWorld Naming Trap -->
+    <figure class="figure-card">
+      <div class="fig-header">
+        <div>
+          <h4 class="fig-title">OSWorld Metric Disambiguation and the 68-Point Spread</h4>
+          <div class="fig-sub">Scores reported simply as "OSWorld" span 20.6% to 89.3% depending on version, live-web inclusion, and Partial vs. Strict scoring</div>
+        </div>
+      </div>
+      <div class="table-scroll">
+        <table class="ed-table">
+          <thead>
+            <tr>
+              <th>Protocol Variant</th>
+              <th>Scope &amp; Task Form</th>
+              <th>Scoring Rule</th>
+              <th>Frontier Range</th>
+              <th>Reading Caveat</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><b>OSWorld 1.0 / Verified</b></td>
+              <td>369 tasks, single-app (~2 min)</td>
+              <td>Single script on target file</td>
+              <td><b>86.1%</b> (saturated)</td>
+              <td>Legacy short tasks; not comparable with v2.x workflows</td>
+            </tr>
+            <tr>
+              <td><b>OSWorld 2.0 Full</b></td>
+              <td>108 tasks incl. 26 live web (1.6h)</td>
+              <td>Strict completion over full set</td>
+              <td><b>20.6%</b></td>
+              <td>Confounded by live site churn and CAPTCHAs; &gt;60 pt below 2.1 partial</td>
+            </tr>
+            <tr>
+              <td><b>OSWorld 2.1 Offline Partial</b></td>
+              <td>82 offline local tasks (2.44 apps)</td>
+              <td>Mean over 10–15 DAG sub-goals</td>
+              <td><b>79.5%–89.3%</b></td>
+              <td>Commonly cited in release tables; masks missing final save/restart</td>
+            </tr>
+            <tr>
+              <td><b>OSWorld 2.1 Offline Strict</b></td>
+              <td>Same 82 offline local tasks</td>
+              <td>100% of DAG nodes error-free</td>
+              <td><b>44.0%–54.6%</b></td>
+              <td>Trails partial score by ~35 pts; closest to true end-to-end delivery</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </figure>
+
+    <div class="prose">
+      <p>
+        Taken together, <code>Chartography</code> and <code>OSWorld 2.1</code> show that static 2D visual perception no longer bottlenecks desktop agents; read-after-write verification and final-step discipline over hundreds of actions do. Yet on a 2D desktop, a misclick or wrong path can still be undone. Stepping out of the screen into three-dimensional physical interaction removes undo altogether.
+      </p>
+    </div>
+
+    <!-- 2.5 PHYSICAL INTERACTION -->
+    <div class="prose">
+      <h3 id="sec-2-5">2.5 Physical Interaction</h3>
+      <p>
+        In bimanual physical manipulation, a misaligned arm knocks objects off the table, an opaque cup occludes visual state, and gripper slip drops parts with no <code>Ctrl+Z</code>. Embodied benchmarks historically stalled on two reproducibility bottlenecks: simulation suites inflated task counts by changing tablecloth textures, while real-robot setups varied wildly in lighting, camera poses, and hardware across labs.
+      </p>
+
+      <!-- Case 10: RoboDojo & Embodied First Exam -->
+      <div class="case-head">
+        <h4>Case 10: RoboDojo, Protocol Audits, and Embodied First Exam Realtime Clocks</h4>
+        <span class="case-meta-tag">MIT / HKU / Tsinghua / Northwestern 18+ Univs | 42 Sim + 18 Real / 456 Realtime Tasks | Open</span>
+      </div>
+      <h5>Standardized Simulation and Reproducible Real-World Rig</h5>
+      <p>
+        Built by a consortium of 18+ universities including MIT, HKU, Tsinghua, Northwestern, and Stanford, <a class="bench-ref" data-bid="robodojo">RoboDojo</a> (arXiv:2607.04434) aligns simulation and real hardware via a three-layer stack (Fig. 2.11). At the base, Isaac Sim hosts 42 orthogonal tasks across five dimensions (generalization, memory, precision, long-horizon, open-ended) and 24 skills, running 10 heterogeneous environments per GPU on 8xRTX 4090 to cut 1.64M-frame evaluation time nearly in half. In the middle, <code>XPolicyLab</code> exposes one policy API across simulation and hardware. At the top, 18 RealEval hardware tasks operate inside a 1.5m constant-LED matte-black lightbox with 3D-printed mounts physically locking overhead and wrist camera poses across ARX X5, Piper, and Piper X dual arms for remote queued evaluation.
+      </p>
+    </div>
+
+    <!-- Figure 2.11: Curated Original RoboDojo Paper Figures (Fig 2 + Fig 7) -->
+    <figure class="figure-card">
+      <div class="fig-header">
+        <div>
+          <h4 class="fig-title">Fig. 2.11: RoboDojo Five-Dimension Task Suite and RealEval Standardized Hardware Rig</h4>
+          <div class="fig-sub">Original paper Fig. 2 &amp; Fig. 7: top shows 42 simulation tasks, domain randomization, and 18 three-embodiment hardware tasks; bottom shows the 1.5m LED lightbox and 3D-printed fixtures</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div class="fig-img-wrap media-tall">
+          <img src="assets/cases/s25_robodojo_tasks.webp" width="1502" height="1417" decoding="async" alt="RoboDojo 42 simulation tasks and 18 real-world tasks across 3 embodiments" loading="lazy">
+          <div class="fig-img-cap">a. 42 Isaac Sim tasks across 5 dimensions, visual domain randomization, and 18 real-world tasks across 3 dual-arm platforms (click to enlarge).</div>
+        </div>
+        <div class="fig-img-wrap media-strip">
+          <img src="assets/cases/s25_realeval.webp" width="1507" height="485" decoding="async" alt="RoboDojo RealEval 1.5m constant LED lightbox and 3D-printed fixtures" loading="lazy">
+          <div class="fig-img-cap">b. RealEval reproducible hardware rig: 1.5m constant LED lightbox, calibrated tri-camera fixtures, and remote queue interface.</div>
+        </div>
+      </div>
+      <div class="fig-caption">
+        <span>Image source: RoboDojo paper Fig. 2 and Fig. 7 (arXiv:2607.04434); XPolicyLab RealEval Protocol.</span>
+      </div>
+    </figure>
+
+    <!-- Case 10 Concrete Task & VLA Failure Strip -->
+    <div class="case-strip">
+      <div class="case-box accent">
+        <div class="case-label">Three Representative Tasks: Precision, Occlusion, and Handover</div>
+        <p>
+          <code>fasten_screws</code> (precision): pick matching screws from clutter and thread them into nuts where a 2 mm error jams the fastener; sibling tasks test cable plugging, tubing insertion, and cloth folding.
+        </p>
+        <p>
+          <code>cover_blocks</code> (memory): cover randomized red, green, and blue blocks with three opaque cups left-to-right, then uncover them in specified color order. Markov policies viewing only the current frame lose state once cups drop.
+        </p>
+        <p>
+          <code>Handover</code> (long-horizon): when targets lie beyond single-arm reach, one arm passes objects to the other or stabilizes a container while the second inserts parts; a single slip terminates the episode.
+        </p>
+      </div>
+
+      <div class="case-box rust">
+        <div class="case-label">Domain Randomization &amp; Open Reasoning: Where General VLMs Win</div>
+        <p>
+          Visual domain randomization (paper Table 3): keeping physics identical while randomizing table textures, specular glare, and clutter drops progress scores of 30 teleoperation-trained specialist VLAs (which averaged just 8.8% even before randomization) by 67%–96% (<code>Hy-Embodied</code> -92.9%, <code>π0.5</code> -72.2%), showing many small VLAs memorize fixed pixel-to-joint mappings.
+        </p>
+        <p>
+          <code>solve_equation</code> (zero-shot reasoning): an incomplete arithmetic expression and number blocks sit on the table with zero training demos. All 30 specialist VLAs score below 2%, whereas zero-shot frontier models immediately pull ahead using semantic priors (DeepSeek V4.1 Flash 6.25%, GPT-6 Astra 31.0%).
+        </p>
+      </div>
+    </div>
+
+    <div class="prose">
+      <h5>Protocol Audits and the Continuous-Time Reality Check</h5>
+      <p>
+        Bypassing teleoperation fine-tuning to feed tri-camera views directly into a frontier model outputting bimanual 6-DoF end-effector targets, Anthropic reported 64.9%‡ for Claude Fable 5.2 in internal simulation (up from 27.6%; GPT-6 Astra at 29.8% under the same wrapper). Reading embodied simulation scores requires checking three critical footnotes:
+      </p>
+      <ol>
+        <li><strong>Closed wrappers and protocol loopholes.</strong> The frame sampling rate, 3D coordinate prompting, and interpolation wrapper behind 64.9%‡ remain proprietary (BenchLM lists it as <code>Display-only</code>). On November 14, 2026, RoboDojo's own source audit disqualified or flagged high-scoring teams injecting privileged task hints—including <code>SOLVE*</code> (75.0%, embedding 34-task step guides <code>guide.md</code> and tolerances), <code>Agent-as-Policy*</code> (54.9%, injecting 42-task rubric notes <code>task_notes.json</code>), and <code>Q0-Preview*</code> (68.9%, reading extra termination predicates), leaving the compliant simulation top score at 56.4%. OpenRUA further noted that automatic simulator early-stopping leaks success status, sparing agents from deciding when a physical task is finished.</li>
+        <li><strong>Default step-blocking ("pause-button physics").</strong> Standard Isaac Sim blocks the physics step during inference: while a model spends 10–18 seconds thinking, gravity and inertia freeze in midair, testing static spatial planning while ignoring control latency.</li>
+        <li><strong>Unverified sim-to-real transfer.</strong> Real tables introduce glass refraction, glare, motion blur, and rubber slip where a 3 mm error snaps a pipette tip. Top RealEval hardware accuracy stands at 33.9%, with zero hardware submissions from the three frontier labs to date.</li>
+      </ol>
+      <p>
+        To test what happens when pause-button physics is removed, Northwestern University introduced <strong>Embodied First Exam</strong> (arXiv:2611.12177, Nov 2026), unifying 35 simulators (including RoboDojo) and 47 embodiments across 456 core tasks on Harbor to contrast turn-based blocking against a continuous real-time physics clock. As Figure 2.12 illustrates, frontier models deliberate for 10–18 seconds per step (~0.1 Hz), while a tipping cup hits the table in 0.4 seconds and a moving target exits grasp reach in 1.2 seconds—demanding 10–50 Hz control rates. Under real-time physics, 63.0% (287/456) of core tasks score zero across all three flagship models, leaving non-zero scores restricted to the 37.0% static or quasi-static subset.
+      </p>
+    </div>
+
+    <!-- Figure 2.12: Compact Vector Turn-Based vs Realtime Physics Timing Diagram -->
+    <figure class="figure-card">
+      <div class="fig-header">
+        <div>
+          <h4 class="fig-title">Fig. 2.12: Turn-Based Step-Blocking vs. Continuous Real-Time Physics Clocks</h4>
+          <div class="fig-sub">Embodied First Exam (456 core tasks / 35 simulators) timing comparison exposing the order-of-magnitude clock gap between 0.1 Hz deliberation and 10–50 Hz control</div>
+        </div>
+      </div>
+      <div id="diagram-realtime-clock"></div>
+      <div class="fig-caption">
+        <span>Sources: Northwestern Univ. Embodied First Exam (arXiv:2611.12177, Harbor framework); RoboDojo Leaderboard &amp; Nov 14 audit.</span>
+      </div>
+    </figure>
+
+    <div class="prose">
+      <p>
+        This mismatch between 0.1 Hz deliberation and 10–50 Hz physical dynamics explains why the three frontier labs have adopted distinct robotics strategies:
+      </p>
+    </div>
+
+    <!-- Three-Lab Strategic Split (3-Card Grid) -->
+    <div class="grid-3" style="max-width:var(--fig-w);margin:14px auto 26px;">
+      <div class="info-card" style="border-top:2px solid var(--rust);">
+        <div class="ic-k">Anthropic | Asset-Light / Brain Only</div>
+        <h4>No Hardware Team, Testing Spatial Transfer</h4>
+        <p>
+          Avoids dedicated robot hardware and specialist VLAs, using internal wrappers on step-blocked RoboDojo simulation to measure general 3D planning transfer and evaluating Claude on writing quadruped control code.
+        </p>
+      </div>
+      <div class="info-card" style="border-top:2px solid var(--accent);">
+        <div class="ic-k">OpenAI | Unified Backbone / Direct Control</div>
+        <h4>Merged into Core Research, Direct Policy Output</h4>
+        <p>
+          Folded its standalone robotics group into Core Research, betting on general reasoning models emitting control commands directly; leads static third-party hardware suites while facing 10–18 s step latency.
+        </p>
+      </div>
+      <div class="info-card" style="border-top:2px solid var(--sage);">
+        <div class="ic-k">Google DeepMind | Dual-System / Factory Deployment</div>
+        <h4>General Brain Paired with High-Frequency Cerebellum</h4>
+        <p>
+          Pursues full-stack dual-system control: high-level task decomposition by general models paired with reactive <code>Gemini Robotics 2.5</code> for bow-tying, pipetting, and factory sorting alongside the ASIMOV physical safety suite.
+        </p>
+      </div>
+    </div>
+
+    <div class="prose">
+      <p>
+        In sum, RoboDojo and Embodied First Exam factor physical interaction into two distinct capabilities. General multimodal models now surpass narrow pixel-memorizing VLAs on visual invariance and 3D semantic planning, but slow-thinking latency remains a fundamental barrier under real-time contact dynamics. Before trusting any embodied leaderboard score, four disclosures are mandatory: open-source control wrappers, absence of privileged prompt hints, whether the physics clock pauses during inference, and standardized real-robot validation.
+      </p>
+    </div>
+  </article>
+
+  <!-- ====================================================================
+       PART 3 | HOW TO BUILD A VALUABLE BENCHMARK
+       ==================================================================== -->
+  <article class="chapter" id="part-3">
+    <h2>3. How to Build a Valuable Benchmark</h2>
+    <p class="chapter-lead">
+      Building a benchmark capable of earning adoption on frontier release tables—and feeding cleanly back into model training—cannot start from blurry averages across incompatible suites. Here we first lay out independent construction parameters for 16 frontier benchmarks grouped on color-coded domain plates, then extract four cross-domain empirical laws and a five-step construction playbook.
+    </p>
+
+    <div class="prose">
+      <h3 id="sec-3-1">3.1 Independent Parameters Across 16 Frontier Benchmarks</h3>
+      <p>
+        Table 3.1 and Figure 3.1 preserve each benchmark's individual scale, staffing, cost, and access structure without cross-benchmark averaging. Row background tint denotes domain; click any benchmark name or chart row to inspect its full verification dossier:
+      </p>
+    </div>
+
+    <!-- Table 3.1: Independent Per-Benchmark Table with 5 Color-Coded Domain Plates -->
+    <figure class="figure-card full">
+      <div class="fig-header">
+        <div>
+          <h4 class="fig-title">Table 3.1: Independent Construction Parameters Across 16 Frontier Benchmarks</h4>
+          <div class="fig-sub">One row per benchmark without cross-suite averaging, grouped by color-coded domain plates; see Benchmark Directory for interactive filtering and sorting</div>
+        </div>
+      </div>
+      <div class="dom-legend" aria-label="Domain color legend">
+        <span class="dom-legend-item"><span class="dom-swatch" style="background:#F5F8FC;border-color:#1F4E79;"></span>Code Engineering</span>
+        <span class="dom-legend-item"><span class="dom-swatch" style="background:#F3F8F6;border-color:#2D6A5B;"></span>Science</span>
+        <span class="dom-legend-item"><span class="dom-swatch" style="background:#FBF7F1;border-color:#8C6239;"></span>Office Workflows</span>
+        <span class="dom-legend-item"><span class="dom-swatch" style="background:#F5F6F9;border-color:#4B5563;"></span>Computer-Use Agent</span>
+        <span class="dom-legend-item"><span class="dom-swatch" style="background:#FCF4F1;border-color:#A84A32;"></span>Physical Interaction</span>
+      </div>
+      <div class="table-scroll">
+        <table class="ed-table bench-stats-table">
+          <thead>
+            <tr>
+              <th>Benchmark</th>
+              <th>Target Capability</th>
+              <th>Task Scale</th>
+              <th>Org &amp; Expert Staffing</th>
+              <th>Authoring Cost &amp; Cadence</th>
+              <th>Evaluation Run Cost</th>
+              <th>Access</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="dom-code"><td><a class="bench-ref" data-bid="fc2">FrontierCode 2.0</a></td><td>Implicit contracts &amp; scope restraint</td><td><b>132 tasks</b></td><td>Cognition + 20+ maintainers</td><td>&gt;40h/task rewrite; monthly tuning</td><td>$1.29–$55.9/task + trace audit</td><td><span class="tag priv">Private</span></td></tr>
+            <tr class="dom-code"><td><a class="bench-ref" data-bid="fswe2">FrontierSWE v2</a></td><td>20h open-ended systems engineering</td><td><b>34 tasks</b> (20h)</td><td>Proximal engineering team</td><td>Semi-annual refresh; custom gates</td><td>$29K–$176K / 170 runs + B200 hrs</td><td><span class="tag hyb">Hybrid</span></td></tr>
+            <tr class="dom-code"><td><a class="bench-ref" data-bid="tb41">Terminal-Bench 4.1</a></td><td>Real Linux terminal ops &amp; migration</td><td><b>66 tasks</b> (pruned)</td><td>Stanford/Laude 8+ orgs / 100+ devs</td><td>6 releases in 18 mo; &gt;3h QA + red-team</td><td>4.0 board $116K; 4.1 <b>$0 re-score</b></td><td><span class="tag open">Open</span></td></tr>
+
+            <tr class="dom-sci"><td><a class="bench-ref" data-bid="hle">HLE-Diamond</a></td><td>Frontier closed-book reasoning</td><td><b>1,000</b> (of 2,500)</td><td>Scale x CAIS / 500+ orgs / 1K scholars</td><td>$500K bounty + 2-yr error cleanup</td><td>Low single-turn inference cost</td><td><span class="tag hyb">Hybrid</span></td></tr>
+            <tr class="dom-sci"><td><a class="bench-ref" data-bid="biomy">BioMysteryBench</a></td><td>Metadata-stripped raw bioinformatics</td><td><b>90 tasks</b> (5 pub)</td><td>Anthropic + biology experts</td><td>Executable notebook/task; retired at 6 mo</td><td>$0.37–$5.71/task (5x repeat)</td><td><span class="tag hyb">Hybrid</span></td></tr>
+            <tr class="dom-sci"><td><a class="bench-ref" data-bid="tbs">TB-Science 0.1</a></td><td>CLI scientific computing &amp; modeling</td><td><b>70 -> 96 tasks</b></td><td>Stanford/Laude 10+ org scientists</td><td>7.6% of 920 proposals; monthly PRs</td><td>$2.53–$44.9/task (5M–131M tok)</td><td><span class="tag open">Open</span></td></tr>
+            <tr class="dom-sci"><td><a class="bench-ref" data-bid="asb">ASB 0.1 / TwinLab</a></td><td>Budgeted multi-round experimental design</td><td><b>6 -> 52 tasks</b></td><td>Northwestern -> multi-univ coalition</td><td>ASB 6 tasks 0% uptake; TwinLab 52 in 38d</td><td>ASB ~$180 / 18 runs; TwinLab modest</td><td><span class="tag open">Open</span></td></tr>
+            <tr class="dom-sci"><td><a class="bench-ref" data-bid="biobasics">BioBasicsBench</a></td><td>Unpublished wet-lab image debugging</td><td><b>100 tasks</b></td><td>OpenAI x Ligo + 3 wet-lab PhDs</td><td>100% internal lab-notebook originals</td><td>Better vision halves token spend</td><td><span class="tag priv">Private</span></td></tr>
+            <tr class="dom-sci"><td><a class="bench-ref" data-bid="binder">De novo binder</a></td><td>24h autonomous design to wet-lab bind</td><td><b>15 targets</b> (1,320)</td><td>Anthropic + 2 commercial CROs</td><td>Scaled pilot to 15 real 3D targets</td><td>24h GPU/target + 1,320 CRO assays</td><td><span class="tag hyb">Hybrid</span></td></tr>
+
+            <tr class="dom-off"><td><a class="bench-ref" data-bid="autobench">AutomationBench</a></td><td>47-SaaS backend state orchestration</td><td><b>657 priv + 100 pub</b></td><td>Zapier + AA 286-config alignment</td><td>Cloned 47 SaaS; ongoing 71% script fixes</td><td>Offline &amp; ban-free; requires audit</td><td><span class="tag hyb">Hybrid</span></td></tr>
+            <tr class="dom-off"><td><a class="bench-ref" data-bid="ale">Agents' Last Exam</a></td><td>55-occupation pro software outputs</td><td><b>122</b> (of 1,500+)</td><td>UCB RDI x Snorkel 40+ orgs / 300 experts</td><td>v1.1 cut 30 unstable tasks &amp; hid tests</td><td>Heavy multi-app VM maintenance</td><td><span class="tag hyb">Hybrid</span></td></tr>
+            <tr class="dom-off"><td><a class="bench-ref" data-bid="briefcase">AA-Briefcase v1.1</a></td><td>Noisy corporate drives &amp; 3-pillar docs</td><td><b>91 tasks</b> (4 firms)</td><td>Artificial Analysis + Google/McK/BCG</td><td>Thousands of expert hrs; 25K Slack msgs</td><td>800x token-cost spread (&gt;$30/task)</td><td><span class="tag priv">Private</span></td></tr>
+            <tr class="dom-off"><td><a class="bench-ref" data-bid="rli">Remote Labor Index</a></td><td>Paid freelance commercial acceptance</td><td><b>230 priv + 10 pub</b></td><td>Scale x CAIS + 23-trade experts</td><td>$144K buying 240 paid jobs (6,000+h)</td><td>Costly expert payout review/run</td><td><span class="tag hyb">Hybrid</span></td></tr>
+
+            <tr class="dom-cua"><td><a class="bench-ref" data-bid="charto">Chartography</a></td><td>Tool-free dense technical chart reading</td><td><b>100 real charts</b></td><td>Surge AI + 12 industry specialists</td><td>Zero synthetic; 3-peer bands; 72% in 4 mo</td><td><b>$60–$260</b> for 2,000 calls (30 min)</td><td><span class="tag open">Open</span></td></tr>
+            <tr class="dom-cua"><td><a class="bench-ref" data-bid="osworld">OSWorld 2.1</a></td><td>1.6h multi-app desktop GUI workflows</td><td><b>108</b> (82 offline)</td><td>HKU XLang x CMU 12+ orgs</td><td>400h QA + 300 fixes + Golden Trajectories</td><td>$22–$76/task; $1.2K–$8.2K + KVM</td><td><span class="tag open">Open</span></td></tr>
+
+            <tr class="dom-phys"><td><a class="bench-ref" data-bid="robodojo">RoboDojo / First Exam</a></td><td>3D bimanual zero-shot &amp; realtime clocks</td><td><b>60 / 456 core</b></td><td>MIT/HKU/Tsinghua/NWU 18+ univs</td><td>Isaac Sim + 1.5m LED rig &amp; 3D fixtures</td><td>$1.2K–$5.5K + 8x4090 / hardware</td><td><span class="tag open">Open</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </figure>
+
+    <!-- Figure 3.1: Independent 16-Benchmark Plot on 5 Colored Domain Plates -->
+    <figure class="figure-card full">
+      <div class="fig-header">
+        <div>
+          <h4 class="fig-title">Fig. 3.1: Task Scale and Access Structure Across 16 Frontier Benchmarks</h4>
+          <div class="fig-sub">Independent per-benchmark rows on domain plates (log scale); click any row to inspect its verification dossier</div>
+        </div>
+      </div>
+      <div id="chart-domain-stats"></div>
+      <div class="fig-caption">
+        <span>Rendered live from data-en.js: 12/16 (75%) converge in the 50–250 task band; 10/16 (63%) incorporate private or hybrid defenses.</span>
+        <span>Explore filters and legacy comparisons in the <a href="benchmarks-en.html">Benchmark Directory</a>.</span>
+      </div>
+    </figure>
+
+    <div class="prose">
+      <h3 id="sec-3-2">3.2 Cross-Domain Empirical Laws</h3>
+      <p>
+        Reading Table 3.1 across all five domains surfaces four consistent engineering regularities shared by benchmarks that achieve lasting adoption.
+      </p>
+
+      <h4>Task Scale Converges to the 50–250 Task Band</h4>
+      <p>
+        Static benchmarks routinely collected thousands of questions (SWE-Full 2,294; SWE-Pro 1,865; original HLE 2,500), but long-horizon containers make thousand-task sweeps prohibitively expensive. Conversely, tiny suites suffer excessive variance and face zero industry uptake: Northwestern's <a class="bench-ref" data-bid="asb">ASB 0.1</a> (Oct 2026) introduced an insightful multi-round lab design, yet with only 6 tasks (each task swinging scores by 16.7 points) saw 0% adoption from frontier labs; 38 days later, a multi-university coalition expanded it to 52 tasks as TwinLab-Bench and immediately secured four-lab testing.
+      </p>
+      <p>
+        Balancing statistical power against evaluation cost places 12 of 16 frontier suites (75%) inside 50–250 tasks, with only extreme per-task workloads (20h FrontierSWE at 34 tasks; physical wet-lab Binder at 15 targets) falling below. Archiving per-run artifacts—as Terminal-Bench 4.1 did across 11,550 runs—further enables $0 offline re-scoring whenever grading scripts are patched.
+      </p>
+
+      <h4>Team Structure Follows Infrastructure vs. Leaderboard Positioning</h4>
+      <p>
+        Two organizational models dominate the 16 samples. Shared execution substrates—containers, KVM virtual machines, simulation clusters, and hardware rigs—rely on 8 to 40+ institution consortia (Terminal-Bench 8+, OSWorld 12+, RoboDojo 18+, ALE 40+) that open-source the runtime so the community shares maintenance and bug-fixing. Vertical flagship leaderboards rely on 1–3 core organizations coordinating 20 to 1,000 practicing specialists (FrontierCode 20+ maintainers, ALE 300+ experts, HLE 1,000 scholars) gated by sub-10% acceptance rates (HLE 3.6%, TB-Science 7.6%, ALE 8.1%).
+      </p>
+      <p>
+        Access models similarly defy stereotypes: 63% of core suites include private holdouts (44% hybrid, 19% fully private). Academic consortium ALE v1.1 hides its private test split against overfitting, while commercial data vendor Surge AI released Chartography openly under CC BY 4.0 to build community trust.
+      </p>
+
+      <h4>Systematic Bias from Adversarial Filtering and Unaudited Verifiers</h4>
+      <p>
+        HLE (29%–46% erroneous keys) and Harbor-Index (roughly one-third of 1,311 hard tasks across 54 open benchmarks found unsolvable) establish that filtering solely on "current models fail" systematically enriches author mistakes and broken environments. Nor does replacing LLM judges with deterministic scripts eliminate defects: BLE flagged 71/100 public AutomationBench scripts, and Epoch AI found 22/122 leaky scripts in ALE v1.1. When LLM judges are used, Kohli (Apple, 2026) showed that 9 frontier judges across 7 model families make correlated errors on hard items, yielding roughly 2 effective independent votes.
+      </p>
+      <p>
+        Reliable benchmarks counter these failure modes with four practices: mandatory executable oracle solutions or human Golden Trajectories, two-sided snapshot assertions, dual-container air-gaps, and 5–20x repeat runs on high-variance tasks.
+      </p>
+
+      <h4>Continuous Software Maintenance Replaces One-Off Paper Releases</h4>
+      <p>
+        Static benchmarks historically lasted 10–18 months, while fast-moving domains now saturate in 4–6 months (Chartography surpassed 72% in 4 months; BioMysteryBench retired its main set at 6 months and transferred it to Vals AI as a cost-efficiency track). Durable benchmarks operate like live software: Terminal-Bench shipped 6 versions in 18 months and actively pruned from 89 down to 66 tasks; ALE v1.1 dropped 30 unstable items; RoboDojo disqualified prompt-leaking teams after its Nov 14 source audit. Single headline percentages no longer suffice—credible releases disclose harness versions, timeouts, proprietary wrappers, clock blocking, partial vs. strict scores, and per-task token cost.
+      </p>
+    </div>
+
+    <div class="dir-callout">
+      <span>Want to filter all 16+3 benchmarks by domain, consortium, access, and verifier—plus evolution swimlanes and the US vs. China adoption matrix?</span>
+      <a href="benchmarks-en.html">Open Awesome Frontier Benchmarks Directory -></a>
+    </div>
+
+    <div class="prose">
+      <h3 id="sec-3-3">3.3 A Five-Step Construction Playbook</h3>
+      <p>
+        Taking a new benchmark from concept to industry adoption follows five concrete engineering steps:
+      </p>
+
+      <div class="action-steps">
+        <div class="action-step">
+          <div class="action-step-title"><span class="step-tag">Step 01</span>Define the Failure Mode First, Sample Reality, Avoid Adversarial Filtering</div>
+          <p>
+            Resist targeting 500 or 1,000 items upfront. Articulate the specific capability gap—implicit code contracts, long-horizon rollback discipline, noisy corporate reconciliation, or real-time control—and sample directly from production PRs, unpublished lab notebooks, corporate archives, or paid contracts. Outside 20h projects and wet-lab assays, building 50–120 rigorous tasks clears the statistical floor while keeping repeat sweeps affordable. Never make "top models fail it" the sole admission gate.
+          </p>
+        </div>
+
+        <div class="action-step">
+          <div class="action-step-title"><span class="step-tag">Step 02</span>Match Team Formation and Public-Private Split to Positioning</div>
+          <p>
+            For shared container, VM, or simulator substrates, organize an 8+ institution coalition and open-source the runtime for auditability and community fixes. For vertical leaderboards, 1–3 core teams working with 20–300 domain practitioners suffice when enforced by strict acceptance funnels. Default to a hybrid release: publish 5–100 sample tasks plus full verifier code so labs can integrate and third parties (Epoch AI, BLE) can audit grading logic, while holding the primary scoring set private against contamination.
+          </p>
+        </div>
+
+        <div class="action-step">
+          <div class="action-step-title"><span class="step-tag">Step 03</span>Reuse Harbor Dual Containers with Air-Gaps and Two-Sided Assertions</div>
+          <p>
+            Code, science, and even unified robotics suites (First Exam) can build directly on Harbor's dual-container pattern (Fig. 3.2): strip solutions and tests from the execution container and restrict networking per task; destroy the execution machine on submission, wipe <code>/tmp</code>, export only clean workspace artifacts into a fresh verifier container, lock tests under <code>root 0700</code>, and execute agent code unprivileged to block <code>.gold</code> replays, lookup tables, and <code>chr()</code> path smuggling. Write deterministic checks as two-sided assertions (verifying both target changes and untouched invariants); decouple subjective business outputs into objective Rubric plus blind pairwise Elo.
+          </p>
+        </div>
+
+        <div class="action-step">
+          <div class="action-step-title"><span class="step-tag">Step 04</span>Enforce Five Pre-Release QA Gates and Repeat High-Variance Runs</div>
+          <p>
+            Before publishing, every task should pass five checks: (1) executable reference oracle passes 5/5 consecutively to rule out nondeterminism; (2) empty <code>no-op</code> submission strictly scores zero; (3) domain experts complete or record a full Golden Trajectory to remove corrupted files, hidden keys, and timeout artifacts; (4) adversarial red-team agents run pre-launch Cheat Trials (standard in TB 3.0+ and FC 2.0) to expose exploits before release; and (5) full interaction traces are archived (<em>Claw-Eval</em> showed final-state-only grading misses 44% of process safety violations). Repeat high-variance suites 5–20 times per item.
+          </p>
+        </div>
+
+        <div class="action-step">
+          <div class="action-step-title"><span class="step-tag">Step 05</span>Operate Like Production Software and Disclose Full Footnotes</div>
+          <p>
+            Budget for ongoing script maintenance and periodic pruning of saturated or flaky items, archiving run outputs for $0 offline re-scoring. Publish complete experimental metadata alongside every score: harness version, timeout limit, any proprietary wrappers, whether simulation clocks block, both partial and strict completion rates, and per-task token and compute cost.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Figure 3.2: Harbor Dual-Container + 0700 + Red-Team Diagram -->
+    <figure class="figure-card">
+      <div class="fig-header">
+        <div>
+          <h4 class="fig-title">Fig. 3.2: Harbor Dual-Container Isolation, root 0700 Privileges, and Red-Team Gates</h4>
+          <div class="fig-sub">Adopted across FrontierSWE v2, TB-Science 0.1, ASB, and Embodied First Exam as the shared anti-cheating execution substrate</div>
+        </div>
+      </div>
+      <div id="diagram-harbor"></div>
+      <div class="fig-caption">
+        <span>Per-task network policies: FSWE runs fully offline; FC 2.0 permits routine technical docs backed by Trajectory Scanner; TB 4.1 configures networking per task.</span>
+      </div>
+    </figure>
+  </article>
+
+  <!-- ====================================================================
+       PART 4 | BENCHMARK RSI
+       ==================================================================== -->
+  <article class="chapter" id="part-4">
+    <h2>4. Benchmark RSI</h2>
+
+    <div class="prose">
+      <h3 id="sec-4-1">4.1 From Evaluation Sandboxes to Agentic RL Environments</h3>
+      <p>
+        Once a benchmark combines physical container isolation, realistic task formulation, reproducible oracle solutions, deterministic verifiers, and pre-release red-teaming, it becomes structurally identical to a long-horizon Agentic RL training environment: the final-state verdict produced at evaluation time doubles directly as a clean 0/1 reward signal during training.
+      </p>
+      <p>
+        Agent Economics' FireFlash report (Nov 2026) illustrates this convergence directly. Using just 64 B300 GPUs for under five days of full-parameter RL on GLM-5.3-Flash, the team lifted Terminal-Bench 4.0 accuracy by 10.4 percentage points (from 35.8% to 46.2%) while holding inference cost at $0.72 per run—roughly one-thirtieth of Claude Fable Max ($22.02). Almost every point of gain came from environment and evaluation engineering: nine quality gates filtered out nearly half of defective tasks, training retained only high-signal tasks in the 15%–85% initial pass band, and cost entered the reward directly. Even before updating a single parameter, simply aligning the training rollout harness with the evaluation harness raised accuracy by 4.4 percentage points (35.8% to 40.2%).
+      </p>
+      <p>
+        When evaluation and RL training merge, anti-cheating acquires a new stakes level. Historically, closing loopholes preserved external leaderboard fairness; inside an RL loop, any unpatched sandbox bug is amplified across millions of rollouts, baking lookup tables and verifier tampering straight into model weights. On PostTrainBench (Rank et al., 2026), which grants an agent one H100 and 10 hours to post-train a base model autonomously, trajectory audits caught models downloading pre-finetuned weights from Hugging Face to masquerade as self-trained checkpoints.
+      </p>
+
+      <h3 id="sec-4-2">4.2 Co-Evolution of Model, Harness, and Environment</h3>
+      <blockquote>
+        <p>
+          As Shunyu Yao observed in <em>The Second Half</em> (April 2025), once recipes for saturating static benchmarks mature, defining authentic tasks and building cheat-resistant evaluation environments becomes just as decisive as algorithmic breakthroughs.
+        </p>
+      </blockquote>
+      <p>
+        By late 2026, industrial disclosures indicate that recursive self-improvement (RSI)—where current models and harnesses participate directly in building their successors—is already operating in engineering practice. Anthropic reported that quarterly merged pull requests per engineer stayed flat at 1.0x for four years prior to Claude Code before climbing to 8.0x by Q2 2026, with Claude involved in over 90% of internal production merges; METR's independent audit measured roughly 1.9x R&amp;D acceleration; and OpenAI's GPT-6.2 Astra crossed its internal high-risk threshold for self-improvement.
+      </p>
+      <p>
+        Accordingly, Anthropic stated in its S-1 filing that it will no longer optimize for external public leaderboards, prioritizing internal real-world tasks and hardened verifiers alongside a five-year, $2B+ partnership with Accenture for independent evaluation and red-teaming. Figure 4.1 summarizes how models, harnesses, and environments iterate together:
+      </p>
+    </div>
+
+    <!-- Figure 4.1: Co-Evolution Diagram -->
+    <figure class="figure-card">
+      <div class="fig-header">
+        <div>
+          <h4 class="fig-title">Fig. 4.1: Co-Evolution of Model, Harness, and Environment</h4>
+          <div class="fig-sub">Translating live demand into hardened environments -> training models on clean RL rewards -> feeding failure traces into harness fixes -> recursive iteration</div>
+        </div>
+      </div>
+      <div id="diagram-coevolution"></div>
+      <div class="fig-caption">
+        <span>Reference framework: Shunyu Yao, The Second Half (Apr 2025); Anthropic SEC S-1 &amp; RSI Report (2026); FireFlash Agentic RL Recipe (Nov 2026).</span>
+      </div>
+    </figure>
+
+    <div class="prose">
+      <p>
+        In this cycle, the most easily overlooked component sits at the very top: <strong>continuous evolution of the Environment cannot wait passively for legacy leaderboards to saturate—it must proactively translate shifting real-world engineering and business demands into stable, verifiable, cheat-resistant sandboxes.</strong> When environments decouple from real demand and recycle stale public tasks, scaling compute merely spins in place.
+      </p>
+      <p>
+        Returning to the opening gap between US and Chinese models, the strategic lesson is straightforward. Wherever container specs and interfaces are open and transparent (such as Terminal-Bench 4.1 at a 6.1-point gap or AutomationBench strict pass at 9 points), Chinese engineering teams close ground rapidly, showing that neither base weights nor sandboxed RL contains an insurmountable black box. What ultimately determines long-term capability ceilings and real-world value is not chasing decimals on static leaderboards, but building high-fidelity, cheat-resistant environments anchored continuously to real work.
+      </p>
+    </div>
+  </article>
+
+  <!-- ====================================================================
+       REFERENCES & CITATION (Academic / Lil'Log Convention)
+       ==================================================================== -->
+  <section class="refs-wrap" id="references">
+    <h2>References</h2>
+    <p class="refs-sub">
+      All 60 primary benchmark websites, papers, system cards, and independent audit reports cited in this survey. For the interactive 16+3 directory and full verification ledgers, see <a href="benchmarks-en.html" style="color:var(--accent);text-decoration:none;font-weight:600;">Awesome Frontier Benchmarks</a>.
+    </p>
+    <div id="ref-grid-host"></div>
+  </section>
+
+  <section class="citation-wrap" id="citation">
+    <h2>Citation</h2>
+    <p>Cited as:</p>
+    <div class="cite-inline">
+      Chuyang Wei, Minghang Zhu, Haoxiang Guan, and Jiyan He (Zhongguancun Academy). (Nov 2026). <em>Paradigm Shifts in Frontier AI Evaluation (2026)</em>. https://zgcagi.github.io/Frontier-Benchmark/en.html
+    </div>
+    <p>Or</p>
+    <div class="bibtex-wrap">
+      <button class="copy-btn" id="copy-bibtex">Copy BibTeX</button>
+<pre class="code-tree" id="bibtex-code">@misc{wei2026frontier_benchmark_paradigm,
+  title        = {Paradigm Shifts in Frontier AI Evaluation (2026)},
+  author       = {Wei, Chuyang and Zhu, Minghang and Guan, Haoxiang and He, Jiyan},
+  organization = {Zhongguancun Academy},
+  year         = {2026},
+  month        = {November},
+  url          = {https://zgcagi.github.io/Frontier-Benchmark/en.html}
+}</pre>
+    </div>
+  </section>
+
+</main>
+
+<!-- Slide-out Benchmark Dossier Drawer (on-demand when clicking inline benchmark references) -->
+<div class="drawer-backdrop" id="drawer-bg" role="dialog" aria-modal="true" aria-label="Benchmark Dossier">
+  <div class="drawer" id="drawer-content"></div>
+</div>
+
+<!-- Floating SVG Tooltip -->
+<div id="svg-tooltip" role="tooltip"></div>
+
+<!-- Floating Back-to-Top Button -->
+<button type="button" id="back-to-top" aria-label="Back to top">↑ Top</button>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span>Paradigm Shifts in Frontier AI Evaluation (2026) | Zhongguancun Academy | 2026-11-26</span>
+    <span>
+      <a href="benchmarks-en.html">Benchmark Directory</a>
+      <span style="margin:0 8px;color:var(--border-strong);">|</span>
+      <a href="index.html" data-lang-switch="zh">中文版</a>
+      <span style="margin:0 8px;color:var(--border-strong);">|</span>
+      <a href="#top">Back to top</a>
+    </span>
+  </div>
+</footer>
+
+<script src="data-en.js?v=20261126-12"></script>
+<script src="charts-en.js?v=20261126-12"></script>
+</body>
+</html>

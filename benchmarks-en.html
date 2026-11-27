@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Awesome Frontier Benchmarks (2026) | 16+3 Frontier Benchmark Directory &amp; Verification Ledgers</title>
+  <meta name="description" content="Independent 2026 frontier AI benchmark directory: four-dimensional filtering across 16 core frontier benchmarks and 3 legacy baselines, five-family evolution swimlanes, US vs. China 10-benchmark adoption matrix, and verified lab ledgers.">
+  <link rel="stylesheet" href="styles.css?v=20261126-12">
+</head>
+<body>
+
+<header class="site-header" id="top">
+  <div class="site-header-inner" style="max-width:1120px;">
+    <a class="site-brand" href="en.html">Frontier Evaluation Notes</a>
+    <nav class="header-nav" aria-label="Directory navigation">
+      <a href="en.html" class="nav-dir-link">Back to Essay</a>
+      <a href="#sec-explorer">16+3 Directory</a>
+      <a href="#sec-timeline">Evolution</a>
+      <a href="#sec-adoption">US vs. CN Matrix</a>
+      <a href="#sec-ledgers">Verification Ledgers</a>
+      <div class="lang-switch" role="group" aria-label="Language"><a class="lang-opt" href="benchmarks.html" data-lang-switch="zh">中文</a><span class="lang-opt active" aria-current="page">EN</span></div>
+    </nav>
+  </div>
+  <div class="read-progress" id="read-progress" aria-hidden="true"></div>
+</header>
+
+<main class="page-wide">
+  <header class="dir-header">
+    <h1>Awesome Frontier Benchmarks 2026</h1>
+    <p>
+      Compiled by Zhongguancun Academy as the structured benchmark directory and verification workbench accompanying <em>Paradigm Shifts in Frontier AI Evaluation (2026)</em>. Covers 16 core frontier benchmarks (3 Code Engineering / 6 Science / 4 Office Workflows / 2 Computer-Use Agent / 1 Physical Interaction) plus 3 legacy baselines, with four-dimensional filtering, full-text search, sortable columns, and slide-out dossiers. Data cutoff: 2026-11-26.
+    </p>
+    <a class="dir-back" href="en.html">&lt;- Read Full Essay: Paradigm Shifts in Frontier AI Evaluation (2026)</a>
+  </header>
+
+  <!-- Live SSOT Overview Bars -->
+  <section class="figure-card full" style="margin-top:0;border-top:none;padding-top:0;">
+    <div class="grid-2" id="dynamic-dist-bars"></div>
+  </section>
+
+  <!-- 1. Interactive 16+3 Master Directory -->
+  <section class="figure-card full" id="sec-explorer">
+    <div class="fig-header">
+      <div>
+        <h4 class="fig-title">Interactive 16+3 Frontier Benchmark Directory</h4>
+        <div class="fig-sub">Four-dimensional filters, live search, sortable columns, and slide-out dossiers; defaults to the 16 core benchmarks, with one-click switching to the 3 legacy baselines</div>
+      </div>
+    </div>
+
+    <div class="explorer-toolbar">
+      <div class="filter-group" id="track-filters">
+        <span class="filter-label">Track:</span>
+        <button class="pill active" data-val="all">All Core (16)</button>
+        <button class="pill" data-val="code">Code Engineering (3)</button>
+        <button class="pill" data-val="sci">Science (6)</button>
+        <button class="pill" data-val="off">Office Workflows (4)</button>
+        <button class="pill" data-val="cua">Computer-Use Agent (2)</button>
+        <button class="pill" data-val="phys">Physical Interaction (1)</button>
+        <button class="pill" data-val="legacy">Legacy Baselines (3)</button>
+      </div>
+      <div class="filter-group" id="org-filters">
+        <span class="filter-label">Builder:</span>
+        <button class="pill active" data-val="all">All</button>
+        <button class="pill" data-val="acad">Academic Consortium</button>
+        <button class="pill" data-val="data">Data / Eval Org</button>
+        <button class="pill" data-val="lab">Frontier Lab</button>
+        <button class="pill" data-val="prod">Product Company</button>
+      </div>
+      <div class="filter-group" id="access-filters">
+        <span class="filter-label">Access:</span>
+        <button class="pill active" data-val="all">All</button>
+        <button class="pill" data-val="hyb">Hybrid</button>
+        <button class="pill" data-val="priv">Private</button>
+        <button class="pill" data-val="open">Open-Source</button>
+      </div>
+      <div class="filter-group" id="eval-filters">
+        <span class="filter-label">Verifier:</span>
+        <button class="pill active" data-val="all">All</button>
+        <button class="pill" data-val="code">Code / Exact</button>
+        <button class="pill" data-val="rubric">Rubric / Checklist</button>
+        <button class="pill" data-val="human">Human Review</button>
+        <button class="pill" data-val="phys">Sim / Wet-Lab</button>
+      </div>
+      <input type="text" id="search-box" class="search-input" placeholder="Search benchmarks, Harbor, 71%, 0700...">
+    </div>
+
+    <div class="hint-bar">
+      <span id="row-count-label">Showing 16 benchmarks</span>
+      <span>Click column headers to sort; click any row to open its full dossier</span>
+    </div>
+
+    <div class="table-scroll">
+      <table class="master">
+        <thead>
+          <tr>
+            <th data-sort="name">Benchmark &amp; Track</th>
+            <th data-sort="orgType">Builder &amp; Team Scale</th>
+            <th data-sort="releaseYear">Release &amp; Evolution</th>
+            <th data-sort="countNum">Task Scale</th>
+            <th data-sort="access">Access</th>
+            <th>Verification &amp; Scoring</th>
+            <th>Leading Scores &amp; Protocol Notes</th>
+            <th>Design Takeaway</th>
+          </tr>
+        </thead>
+        <tbody id="master-tbody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 2. Five-Family Version Timeline -->
+  <figure class="figure-card full" id="sec-timeline">
+    <div class="fig-header">
+      <div>
+        <h4 class="fig-title">Five-Family Version Evolution Swimlanes</h4>
+        <div class="fig-sub">2023.10 to 2026.11; hover any node for revision rationale: code and script suites focus on verifier fixes and pruning, while lab and embodied suites focus on clearing the 50-task floor and removing sim pausing</div>
+      </div>
+    </div>
+    <div id="chart-timeline"></div>
+  </figure>
+
+  <!-- 3. US vs China 10-Benchmark Adoption Matrix -->
+  <figure class="figure-card full" id="sec-adoption">
+    <div class="fig-header">
+      <div>
+        <h4 class="fig-title">US vs. China 10-Benchmark Official Adoption Matrix</h4>
+        <div class="fig-sub">Summer/Fall 2026 to Nov 2026; all three US frontier labs cover 10/10 benchmarks; click any linked row to open its full dossier</div>
+      </div>
+      <div class="seg-tabs" id="adoption-seg">
+        <button class="seg-btn active" data-val="all">All 10</button>
+        <button class="seg-btn" data-val="gap">CN Official Gaps (7)</button>
+        <button class="seg-btn" data-val="ok">CN Adopted (3)</button>
+      </div>
+    </div>
+    <div class="table-scroll">
+      <table class="ed-table">
+        <thead>
+          <tr>
+            <th>Frontier Benchmark &amp; Track</th>
+            <th style="text-align:center;">OpenAI<br><span style="font-weight:400;color:var(--faint);">5.6/6 -&gt; 6.2</span></th>
+            <th style="text-align:center;">Anthropic<br><span style="font-weight:400;color:var(--faint);">Opus 5 -&gt; Fable 5.2</span></th>
+            <th style="text-align:center;">Google<br><span style="font-weight:400;color:var(--faint);">Argon -&gt; Neon</span></th>
+            <th style="text-align:center;">China 3-6 Mos Ago<br><span style="font-weight:400;color:var(--faint);">0 / 10</span></th>
+            <th style="text-align:center;">China Current (Nov 16)<br><span style="font-weight:400;color:var(--faint);">3 / 10</span></th>
+            <th>Observed Gap Notes</th>
+          </tr>
+        </thead>
+        <tbody id="adoption-tbody"></tbody>
+      </table>
+    </div>
+  </figure>
+
+  <!-- 4. Verification Ledgers & Fine-Print Quick Check -->
+  <section id="sec-ledgers" style="margin-top:26px;">
+    <details class="deep-dive wide" open>
+      <summary>
+        <span>Quick Check: Footnotes &amp; Protocol Fine Print Behind 6 High-Profile Scores</span>
+        <span class="dd-chevron">Expand / Collapse</span>
+      </summary>
+      <div class="dd-body">
+        <div class="table-scroll">
+          <table class="ed-table">
+            <thead>
+              <tr><th>Headline Reported Score</th><th>Footnote &amp; Protocol Reality</th><th>Invalid Extrapolation</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><b>WANDR 82.1%</b></td><td>Uses relaxed soft F1 with internally modified search environment and grading scripts</td><td style="color:var(--rust);font-weight:600;">Not comparable to the official end-to-end Hard F1 leaderboard (13.3%)</td></tr>
+              <tr><td><b>OSWorld 2.1 89.3%</b></td><td>Step average on 82 local offline tasks (same set strict pass: 54.6%; v2.0 full set: ~20.6%)</td><td style="color:var(--rust);font-weight:600;">Does not mean ~90% automation of 1.6-hour online multi-app workflows</td></tr>
+              <tr><td><b>Binder 85.1%</b></td><td>24h single-GPU in-silico refolding pass rate; blind commercial CRO wet-lab validation is 22%-35%</td><td style="color:var(--rust);font-weight:600;">Does not mean 85% of designed sequences express and bind in real cells</td></tr>
+              <tr><td><b>RLI 41.3%</b></td><td>Binary acceptance rate on 230 discrete single-brief Upwork freelance orders (iterative-meeting projects excluded)</td><td style="color:var(--rust);font-weight:600;">Does not mean 41.3% of full-time white-collar jobs can be automated</td></tr>
+              <tr><td><b>RoboDojo 64.9%‡</b></td><td>Proprietary control scaffold + Max thinking budget in paused-clock sim; no real-robot submission (real peak: 33.9%)</td><td style="color:var(--rust);font-weight:600;">Does not indicate real-time robotic control (63% score 0 under First Exam realtime clock)</td></tr>
+              <tr><td><b>Max / xhigh Tiers</b></td><td>FC 2.0 burns 3.15x compute yet drops 2.0 pts from over-editing; SPU burns 5.3x cost for flat accuracy</td><td style="color:var(--rust);font-weight:600;">Higher thinking budgets do not monotonically improve engineering or scientific outcomes</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </details>
+
+    <details class="deep-dive wide">
+      <summary>
+        <span>Verification Ledger A: Official Release Table Intersection Across US Frontier Labs (Anthropic / OpenAI / Google DeepMind, Nov 2026)</span>
+        <span class="dd-chevron">Expand / Collapse</span>
+      </summary>
+      <div class="dd-body">
+        <div class="table-scroll">
+          <table class="ed-table">
+            <thead>
+              <tr><th>Intersection Tier</th><th>Capability Domain</th><th>Core Benchmark</th><th>Nov 2026 Primary Disclosed Scores &amp; Emphasis</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><b>3-Lab Consensus</b></td><td>Software Engineering</td><td>FrontierCode 2.0</td><td>Fable 5.2 50.2% (launch post 49.1%), Opus 5.5 47.3%, Neon 46.2%, GPT-6.2 Astra 44.2% / Sol 43.8%</td></tr>
+              <tr><td><b>3-Lab Consensus</b></td><td>CLI Science</td><td>TB-Science 0.1</td><td>GPT-6.2 Astra 77.1%, Mythos 5.2 75.3%, Fable 5.2 74.6%, Neon 70.5% (separately lists 0% refusal rate)</td></tr>
+              <tr><td><b>3-Lab Consensus</b></td><td>Cyber Redlines</td><td>ExploitBench / Gym</td><td>Anthropic jumped 40%-&gt;78%-&gt;91% in 4 mos (S-1); OpenAI GPT-6.2 hit Critical (V8-bench 100% / 0-day 53.5%); Google tiered controlled access</td></tr>
+              <tr><td><b>3-Lab Consensus</b></td><td>Behavioral Safety</td><td>Audit / Escape / RSI</td><td>Anthropic 1,800-scenario escape cut 39%-&gt;3.1%; OpenAI Astra reached RSI High; Google Gray Swan indirect prompt injection (IPI) 0%</td></tr>
+              <tr><td><b>2-Lab / Cross-Eval</b></td><td>Cross-SaaS Office</td><td>AutomationBench v1.0.6</td><td>Strict pass rate: Gemini 4 Neon 56.6% (prior snapshot 56.3%), Carbon 55.3%, Fable 5.2 51.6%, GPT-6.2 Astra 50.7%</td></tr>
+              <tr><td><b>2-Lab / Cross-Eval</b></td><td>Multi-Occupation Apps</td><td>Agents' Last Exam v1.1</td><td>55-occupation sandbox: GPT-6.2 Astra step 78.3% (strict ~47.5%), Neon 75.8% (~46.0%), Fable ~74.5% (~45.2%)</td></tr>
+              <tr><td><b>2-Lab / Cross-Eval</b></td><td>Cleaned Acad &amp; Vision</td><td>HLE-Diamond / Chartography</td><td>HLE-Diamond: Fable 80.2% / Astra 72.2% / Neon 71.3%; Chartography: Sol 75.1% / Fable 73.4% / Carbon 72.5%</td></tr>
+              <tr><td><b>Single-Lab Focus</b></td><td>Anthropic</td><td>FSWE v2 / RLI / OSWorld / RoboDojo</td><td>20h eng 69.9%, Upwork freelance 41.3%, OSWorld 2.1 step 89.3% (strict 54.6%), RoboDojo Sim 64.9%‡</td></tr>
+              <tr><td><b>Single-Lab Focus</b></td><td>OpenAI</td><td>DeepSWE / BioBasics / GDPval</td><td>Light tier Sol cost-efficiency, wet-lab troubleshooting Astra 66.7%, 44-occupation blind GDPval v2 50.4%, Erdos formal proofs</td></tr>
+              <tr><td><b>Single-Lab Focus</b></td><td>Google</td><td>TB 4.1 / SWE-sweep / GraphWalks</td><td>Pioneered cheating-adjusted scores, disclosed 3x Antigravity harness delta, 1M-context GraphWalks, and CWE-Bench v2 70.7%</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </details>
+
+    <details class="deep-dive wide">
+      <summary>
+        <span>Verification Ledger B: Full Frontier Benchmark Audit Across Five Chinese Labs (HY / DeepSeek / Qwen / GLM / Kimi)</span>
+        <span class="dd-chevron">Expand / Collapse</span>
+      </summary>
+      <div class="dd-body">
+        <div class="table-scroll">
+          <table class="ed-table">
+            <thead>
+              <tr><th>Core Benchmark (US Reference)</th><th>HY (Tencent Hunyuan)</th><th>DeepSeek</th><th>Qwen (Alibaba)</th><th>GLM (Zhipu)</th><th>Kimi (Moonshot)</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><b>FrontierCode 2.0</b><br><span class="b-sub">US peak 50.2%</span></td><td>Not on official board<br><span class="b-sub">AA Hy4 31.4%</span></td><td>V4.1 Flash 1017<br>20.2% ($0.38, devin)</td><td>v2 not on official board<br><span class="b-sub">AA Qwen4 Max 26.5%</span></td><td>GLM-5.3 20.2% ($7.5)<br><span class="b-sub">Flash 15.0% ($0.79)</span></td><td>K3.1 Pro 19.9% ($3.0)<br><span class="b-sub">K3 18.9% ($4.5)</span></td></tr>
+              <tr><td><b>FrontierSWE v2</b><br><span class="b-sub">US peak 69.9%</span></td><td>Not on official board<br><span class="b-sub">In-house Goal2Repo 23.2%</span></td><td>V4 Flash Vision<br>14.8% ($8.6 Pareto)</td><td>Qwen3.8-Max<br>17.8% ($51.3)</td><td><b>GLM-5.3 30.2% ($97)</b><br><span class="b-sub">Flash 18.1% ($11)</span></td><td>Kimi K3<br>25.9% ($110)</td></tr>
+              <tr><td><b>Terminal-Bench 4.1</b><br><span class="b-sub">US 71.2% / 65.8%</span></td><td>Hy4 37.9% ($348)<br><span class="b-sub">Flash 11.8% ($15)</span></td><td>V4.1 Flash 1017<br>38.5% ($185 Pareto)</td><td>Qwen3.8-Max<br>27.0% ($4.6K, CC)</td><td>GLM-5.3 41.2% ($2.7K)<br><span class="b-sub">Flash 37.0% ($375)</span></td><td><b>Kimi K3.1 Pro 59.7%</b><br><span class="b-sub">$1.1K (#1 CN)</span></td></tr>
+              <tr><td><b>TB-Science 0.1</b><br><span class="b-sub">US peak 77.1%</span></td><td>Not on official board<br><span class="b-sub">AA Hy4 12.9%</span></td><td>V4.1 Flash 15.7% (#7)<br><span class="b-sub">V4 Pro 3.8%</span></td><td>Not on official board<br><span class="b-sub">AA Qwen4 Max 23.3%</span></td><td>GLM-5.3<br>8.1% ($2.7K)</td><td>K3 7.1%<br><span class="b-sub"><b>AA K3.1 Pro 34.3%</b></span></td></tr>
+              <tr><td><b>HLE-Diamond</b><br><span class="b-sub">US peak 80.2%</span></td><td>Tencent Hy4<br>32.7% (AA v5.0.1)</td><td>V4.1 Flash 25.3%<br><span class="b-sub">Orig HLE 43.3%</span></td><td><b>Qwen4 Max 44.9%</b><br><span class="b-sub">#1 CN</span></td><td>GLM-5.3 (max) 17.9%<br><span class="b-sub">Orig HLE 42.3%</span></td><td>Kimi K3.1 Pro 37.3%<br><span class="b-sub">Orig 52.5% (tools 70%)</span></td></tr>
+              <tr><td><b>AutomationBench</b><br><span class="b-sub">US 56.6% strict pass</span></td><td>Not on official board<br><span class="b-sub">AA Hy4 36.2%</span></td><td>V4.1 / V4 Flash<br>AA 35.5%-36.7%</td><td><b>AA Qwen4 Max 47.2%</b><br><span class="b-sub">Objective 72.6%</span></td><td>GLM-5.3<br>AA 29.4%</td><td><b>AA K3.1 Pro 46.0%</b><br><span class="b-sub">Objective 73.3%</span></td></tr>
+              <tr><td><b>RLI / OSWorld v2</b><br><span class="b-sub">US 41.3% / 89.3%</span></td><td>Not on official board</td><td>RLI V4.1 Flash 9.6%<br><span class="b-sub">Only CN model on board</span></td><td>OSWorld v2 21.5%<br><span class="b-sub">1.0-Verified 73.3%</span></td><td>1.0-Verified<br>AutoGLM 48.0%</td><td>OSWorld v2 22.1%<br><span class="b-sub">1.0-Verified 73.1%</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="margin-top:10px;font-size:12.4px;color:var(--muted);">Note: Strictly distinguishes official native leaderboards, lab self-reports, and AA v5 unified-harness readings.</p>
+      </div>
+    </details>
+  </section>
+</main>
+
+<!-- Slide-out Benchmark Dossier Drawer -->
+<div class="drawer-backdrop" id="drawer-bg" role="dialog" aria-modal="true" aria-label="Full benchmark dossier">
+  <div class="drawer" id="drawer-content"></div>
+</div>
+
+<div id="svg-tooltip" role="tooltip"></div>
+
+<button type="button" id="back-to-top" aria-label="Back to top">↑ Top</button>
+
+<footer class="site-footer" style="max-width:1120px;">
+  <div class="footer-inner">
+    <span>Awesome Frontier Benchmarks | Zhongguancun Academy | 2026-11-26</span>
+    <span>
+      <a href="en.html">Read Full Essay</a>
+      <span style="margin:0 8px;color:var(--border-strong);">|</span>
+      <a href="#top">Back to Top</a>
+    </span>
+  </div>
+</footer>
+
+<script src="data-en.js?v=20261126-12"></script>
+<script src="charts-en.js?v=20261126-12"></script>
+</body>
+</html>

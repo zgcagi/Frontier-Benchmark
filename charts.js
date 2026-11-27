@@ -1493,9 +1493,22 @@
     });
   }
 
+  function initLangSwitch() {
+    $$("a[data-lang-switch]").forEach(a => {
+      a.addEventListener("click", e => {
+        const hash = window.location.hash;
+        if (!hash) return;
+        e.preventDefault();
+        const base = a.getAttribute("href").split("#")[0];
+        window.location.href = base + hash;
+      });
+    });
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
     initUIHelpers();
     initHeadingAnchors();
+    initLangSwitch();
     renderAAOvernight();
     renderReleaseShiftSVG();
     renderCodeChart("fswe");
